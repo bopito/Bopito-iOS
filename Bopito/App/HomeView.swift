@@ -10,11 +10,12 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var supabaseManager: SupabaseManager
     
     @State private var isComposing = false
     
-    @State private var posts: [Post] = []
+    @State private var submissions: [Submission]?
+    
     @State private var isLoading: Bool = true
     @State private var error: Error?
     
@@ -22,16 +23,24 @@ struct HomeView: View {
         ZStack {
             VStack {
                 if isLoading {
-                    ProgressView("Loading Posts...")
+                    ProgressView()
                 } else if let error = error {
                     Text("Error: \(error)")
                         .foregroundColor(.red)
                 } else {
                     ScrollView {
+                        Text("placeholder")
                         VStack(spacing: 1) {
-                            ForEach(posts) { post in
-                                PostView(post: post)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            if let submissions = submissions {
+                                ForEach(submissions) { submission in
+                                    PostView(post: submission)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Divider()
+//                                    Rectangle()
+//                                        .fill(Color.) // You can use any color here
+//                                                    .frame(height: 1)
+                                        
+                                }
                             }
                         }
                         .padding(.bottom, 100) // Adding some space at the bottom
@@ -82,14 +91,9 @@ struct HomeView: View {
     
     
     func loadPosts() async {
-        do {
-            isLoading = true
-            posts = try await authManager.getRecentPosts()
-            isLoading = false
-        } catch {
-            isLoading = false
-            self.error = error.localizedDescription as? any Error
-        }
+        isLoading = true
+        submissions = await supabaseManager.getRecentPosts()
+        isLoading = false
     }
 }
 
@@ -97,5 +101,5 @@ struct HomeView: View {
 #Preview {
     
     HomeView()
-        .environmentObject(AuthManager())
+        .environmentObject(SupabaseManager())
 }

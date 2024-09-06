@@ -16,10 +16,10 @@ import SwiftUI
 
 struct ReplyView: View {
     
-    @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var supabaseManager: SupabaseManager
     
-    @State var account: Account?
-    var reply: Reply
+    @State var user: User?
+    var reply: Submission
     @State var isLiked: Bool = false
     
     @State var isViewingAccount = false
@@ -33,25 +33,25 @@ struct ReplyView: View {
                 ZStack {
                     Circle()
                         .strokeBorder(Color.black, lineWidth: 1) // Gray outline
-                        .background(Circle().fill(account?.toColor() ?? .black))
+                        .background(Circle().fill(.black))
                         .frame(width: 70, height: 70) // Slightly larger than the image
                         //.shadow(radius: 3)
                     
-                    if let pictureURL = account?.picture {
-                        AsyncImage(url: pictureURL) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .clipShape(Circle())
-                                .shadow(radius: 5)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(width: 40, height: 40)
-                    } else {
-                        ProgressView()
-                            .frame(width: 40, height: 40)
-                    }
+//                    if let pictureURL = user?.profilePicture {
+//                        AsyncImage(url: pictureURL) { image in
+//                            image
+//                                .resizable()
+//                                .scaledToFill()
+//                                .clipShape(Circle())
+//                                .shadow(radius: 5)
+//                        } placeholder: {
+//                            ProgressView()
+//                        }
+//                        .frame(width: 40, height: 40)
+//                    } else {
+//                        ProgressView()
+//                            .frame(width: 40, height: 40)
+//                    }
                 }
                 
                 
@@ -60,13 +60,13 @@ struct ReplyView: View {
                     Button(action: {
                         isViewingAccount = true
                     }) {
-                        Text("@\(account?.username ?? "Unknown")")
-                            .font(.headline)
-                            .foregroundColor(account?.toColor() ?? .gray)
+//                        Text("@\(user?.username ?? "Unknown")")
+//                            .font(.headline)
+//                            .foregroundColor(.gray)
                     }.sheet(isPresented: $isViewingAccount, onDismiss: {
                         //
                     }) {
-                        AccountView()
+                        ProfileView()
                     }
             
                     // body text
@@ -76,13 +76,13 @@ struct ReplyView: View {
                     
                     HStack {
                         // time
-                        Text(reply.timestamp, style: .time)
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        // date
-                        Text(reply.timestamp, style: .date)
-                            .font(.caption)
-                            .foregroundColor(.gray)
+//                        Text(reply.timestamp, style: .time)
+//                            .font(.caption)
+//                            .foregroundColor(.gray)
+//                        // date
+//                        Text(reply.timestamp, style: .date)
+//                            .font(.caption)
+//                            .foregroundColor(.gray)
                         
                         Spacer()
                         
@@ -90,7 +90,7 @@ struct ReplyView: View {
                         Button(action: {
                             isShowingReplies = true
                         }) {
-                            Text("\(reply.repliesCount)")
+                            Text("\(reply.replies_count)")
                                 .font(.body)
                                 .foregroundColor(.gray)
                             Image(systemName: "bubble.left.fill")
@@ -108,26 +108,26 @@ struct ReplyView: View {
                         // Like button
                         Button(action: {
                             Task {
-                                do {
-                                    try await authManager.incrementReplyLikesCount(reply: reply)
-                                    reply.likesCount = try await authManager.getReplyLikesCount(reply: reply)
-                                    isLiked = try await authManager.getReplyIsLiked(reply: reply)
-                                } catch {
-                                    print("Error updating or fetching like count: \(error.localizedDescription)")
-                                }
+//                                do {
+//                                    try await authManager.incrementReplyLikesCount(reply: reply)
+//                                    reply.likesCount = try await authManager.getReplyLikesCount(reply: reply)
+//                                    isLiked = try await authManager.getReplyIsLiked(reply: reply)
+//                                } catch {
+//                                    print("Error updating or fetching like count: \(error.localizedDescription)")
+//                                }
                             }
                         }) {
                             HStack {
                                 
                                 if isLiked {
-                                    Text("\(reply.likesCount)")
+                                    Text("\(reply.likes_count)")
                                         .font(.body)
                                         .foregroundColor(.red)
                                     Image(systemName: "heart.fill")
                                         .font(.body)
                                         .foregroundColor(.red)
                                 } else {
-                                    Text("\(reply.likesCount)")
+                                    Text("\(reply.likes_count)")
                                         .font(.body)
                                         .foregroundColor(.gray)
                                     Image(systemName: "heart.fill")
@@ -142,14 +142,14 @@ struct ReplyView: View {
             }
             .padding(8)
             .background(
-                (account?.toColor() ?? .white)
-                    .opacity(0.2) // Set background color opacity to 0.1
+                .white
+                .opacity(0.2) // Set background color opacity to 0.1
             )
             //.cornerRadius(8)
             .task {
                 do {
-                    account = await authManager.getAccountByID(accountId: reply.userID)
-                    isLiked = try await authManager.getReplyIsLiked(reply: reply)
+//                    account = await authManager.getAccountByID(accountId: reply.userID)
+//                    isLiked = try await authManager.getReplyIsLiked(reply: reply)
                 } catch {
                     print("Error loading post data: \(error.localizedDescription)")
                 }

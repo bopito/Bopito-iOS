@@ -2,12 +2,12 @@ import SwiftUI
 
 struct PostRepliesView: View {
     
-    @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var supabaseManager: SupabaseManager
     
-    var post: Post
-    @State var account: Account?
+    var post: Submission?
+    @State var user: User?
     
-    @State private var replies: [Reply] = []
+    @State private var replies: [Submission] = []
     @State private var isLoading: Bool = true
     @State private var error: String?
     
@@ -57,24 +57,24 @@ struct PostRepliesView: View {
                         
                         Circle()
                             .strokeBorder(Color.black, lineWidth: 0) // Gray outline
-                            .background(Circle().fill(account?.toColor() ?? .black))
+                            .background(Circle().fill(.black))
                             .frame(width: 40, height: 40)
                         
-                        if let pictureURL = account?.picture {
-                            AsyncImage(url: pictureURL) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 20, height: 20)
-                        } else {
-                            ProgressView()
-                                .frame(width: 40, height: 40)
-                        }
+//                        if let pictureURL = user?.profilePicture {
+//                            AsyncImage(url: pictureURL) { image in
+//                                image
+//                                    .resizable()
+//                                    .scaledToFill()
+//                                    .clipShape(Circle())
+//                                    .shadow(radius: 5)
+//                            } placeholder: {
+//                                ProgressView()
+//                            }
+//                            .frame(width: 20, height: 20)
+//                        } else {
+//                            ProgressView()
+//                                .frame(width: 40, height: 40)
+//                        }
                     }
                     
                     TextField("Add a comment...", text: $replyText)
@@ -110,8 +110,9 @@ struct PostRepliesView: View {
         .animation(.easeOut, value: isTextFieldFocused)
         .onAppear() {
             Task {
-                account = try await authManager.getAccountByID(accountId: authManager.getCurrentUserID())
-                await loadReplies()
+                print("need to implement get account by id")
+//                account = try await authManager.getAccountByID(accountId: authManager.getCurrentUserID())
+//                await loadReplies()
             }
         }
     }
@@ -121,7 +122,7 @@ struct PostRepliesView: View {
     private func sendReply() async {
         do {
             // Logic to send the comment
-            try await authManager.submitReply(replyText: replyText, isTopLevel: true, parentID: post.uuid)
+//            try await authManager.createSubmission(replyText: replyText, isTopLevel: true, parentID: post.uuid)
             // Dismiss the keyboard after sending
             isTextFieldFocused = false
         } catch {
@@ -130,21 +131,20 @@ struct PostRepliesView: View {
     }
     
     private func loadReplies() async {
-        do {
-            replies = try await authManager.getTopLevelReplies(postID: post.uuid)
-            isLoading = false
-        } catch {
-            self.error = error.localizedDescription // Ensure error is mutable
-            isLoading = false
-        }
+//        do {
+//            replies = try await authManager.getTopLevelReplies(postID: post.uuid)
+//            isLoading = false
+//        } catch {
+//            self.error = error.localizedDescription // Ensure error is mutable
+//            isLoading = false
+//        }
     }
     
 }
 
 #Preview {
-    PostRepliesView(post:
-                        Post(uuid: "", userID: "hans", repliesIDs: [""],text: "This is a test! This is a test!   This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! This is a test! ")
-    )
+    PostRepliesView()
     
-    .environmentObject(AuthManager())
+    
+    .environmentObject(SupabaseManager())
 }

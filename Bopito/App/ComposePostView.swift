@@ -10,7 +10,7 @@ import SwiftUI
 struct ComposePostView: View {
     
     
-    @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var supabaseManager: SupabaseManager
     
     @Environment(\.presentationMode) var presentationMode // Add this line to access presentation mode
     @FocusState private var isTextFieldFocused: Bool // Add FocusState for managing focus
@@ -33,14 +33,7 @@ struct ComposePostView: View {
                 
                 Button(action: {
                     Task {
-                        do {
-                            try await authManager.submitPost(postText: postText)
-                            // Clear the text editor on success
-                            postText = ""
-                            print("Post submitted successfully.")
-                        } catch {
-                            print("Error submitting post: \(error.localizedDescription)")
-                        }
+                        await submit()
                         presentationMode.wrappedValue.dismiss()
                     }
                 }) {
@@ -62,15 +55,28 @@ struct ComposePostView: View {
         }
         .padding()
         .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                        // Request focus after a slight delay
-                        isTextFieldFocused = true
-                    }
-                }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                // Request focus after a slight delay
+                isTextFieldFocused = true
+            }
+        }
     }
     
     
-    
+    func submit() async {
+        guard let user = await supabaseManager.getCurrentUser() else {
+            return
+        }
+        let authorID = user.id
+        await supabaseManager.postSubmission(
+            author_id: authorID,
+            parent_id: nil,
+            image: "none",
+            text: postText)
+        // Clear the text editor on success
+        postText = ""
+        
+    }
     
     
 }
@@ -78,7 +84,7 @@ struct ComposePostView: View {
 
 #Preview {
     ComposePostView()
-        .environmentObject(AuthManager())
+        .environmentObject(SupabaseManager())
 }
 
 

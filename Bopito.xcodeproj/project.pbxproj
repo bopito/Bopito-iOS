@@ -9,12 +9,29 @@
 /* Begin PBXBuildFile section */
 		E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */; };
 		E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC62C8A48D000FBBD36 /* ContentView.swift */; };
-		E60DDAC92C8A48D000FBBD36 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC82C8A48D000FBBD36 /* Item.swift */; };
 		E60DDACB2C8A48D100FBBD36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E60DDACA2C8A48D100FBBD36 /* Assets.xcassets */; };
 		E60DDACE2C8A48D100FBBD36 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E60DDACD2C8A48D100FBBD36 /* Preview Assets.xcassets */; };
 		E60DDAD82C8A48D100FBBD36 /* BopitoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAD72C8A48D100FBBD36 /* BopitoTests.swift */; };
 		E60DDAE22C8A48D100FBBD36 /* BopitoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAE12C8A48D100FBBD36 /* BopitoUITests.swift */; };
 		E60DDAE42C8A48D100FBBD36 /* BopitoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAE32C8A48D100FBBD36 /* BopitoUITestsLaunchTests.swift */; };
+		E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAF02C8A48F900FBBD36 /* SupabaseManager.swift */; };
+		E60DDAF42C8A491F00FBBD36 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = E60DDAF32C8A491F00FBBD36 /* Auth */; };
+		E60DDAF62C8A491F00FBBD36 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = E60DDAF52C8A491F00FBBD36 /* Functions */; };
+		E60DDAF82C8A491F00FBBD36 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = E60DDAF72C8A491F00FBBD36 /* PostgREST */; };
+		E60DDAFA2C8A491F00FBBD36 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = E60DDAF92C8A491F00FBBD36 /* Realtime */; };
+		E60DDAFC2C8A491F00FBBD36 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = E60DDAFB2C8A491F00FBBD36 /* Storage */; };
+		E60DDAFF2C8A4AE300FBBD36 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = E60DDAFE2C8A4AE300FBBD36 /* Supabase */; };
+		E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB012C8A4B3400FBBD36 /* AppView.swift */; };
+		E60DDB0B2C8A4B8E00FBBD36 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB032C8A4B8E00FBBD36 /* ReplyView.swift */; };
+		E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */; };
+		E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */; };
+		E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */; };
+		E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */; };
+		E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */; };
+		E60DDB112C8A4B8E00FBBD36 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB092C8A4B8E00FBBD36 /* PostView.swift */; };
+		E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */; };
+		E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB132C8A4C5600FBBD36 /* Submission.swift */; };
+		E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB162C8A4C7C00FBBD36 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +55,6 @@
 		E60DDAC12C8A48D000FBBD36 /* Bopito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bopito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BopitoApp.swift; sourceTree = "<group>"; };
 		E60DDAC62C8A48D000FBBD36 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E60DDAC82C8A48D000FBBD36 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		E60DDACA2C8A48D100FBBD36 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E60DDACD2C8A48D100FBBD36 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E60DDAD32C8A48D100FBBD36 /* BopitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BopitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +62,18 @@
 		E60DDADD2C8A48D100FBBD36 /* BopitoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BopitoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E60DDAE12C8A48D100FBBD36 /* BopitoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BopitoUITests.swift; sourceTree = "<group>"; };
 		E60DDAE32C8A48D100FBBD36 /* BopitoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BopitoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E60DDAF02C8A48F900FBBD36 /* SupabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupabaseManager.swift; sourceTree = "<group>"; };
+		E60DDB012C8A4B3400FBBD36 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		E60DDB032C8A4B8E00FBBD36 /* ReplyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
+		E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePostView.swift; sourceTree = "<group>"; };
+		E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRepliesView.swift; sourceTree = "<group>"; };
+		E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E60DDB092C8A4B8E00FBBD36 /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		E60DDB132C8A4C5600FBBD36 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
+		E60DDB162C8A4C7C00FBBD36 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +81,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E60DDAF82C8A491F00FBBD36 /* PostgREST in Frameworks */,
+				E60DDAF62C8A491F00FBBD36 /* Functions in Frameworks */,
+				E60DDAFF2C8A4AE300FBBD36 /* Supabase in Frameworks */,
+				E60DDAF42C8A491F00FBBD36 /* Auth in Frameworks */,
+				E60DDAFC2C8A491F00FBBD36 /* Storage in Frameworks */,
+				E60DDAFA2C8A491F00FBBD36 /* Realtime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +114,7 @@
 				E60DDAD62C8A48D100FBBD36 /* BopitoTests */,
 				E60DDAE02C8A48D100FBBD36 /* BopitoUITests */,
 				E60DDAC22C8A48D000FBBD36 /* Products */,
+				E60DDAFD2C8A4AE300FBBD36 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -98,7 +133,9 @@
 			children = (
 				E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */,
 				E60DDAC62C8A48D000FBBD36 /* ContentView.swift */,
-				E60DDAC82C8A48D000FBBD36 /* Item.swift */,
+				E60DDAF02C8A48F900FBBD36 /* SupabaseManager.swift */,
+				E60DDB152C8A4C5900FBBD36 /* Components */,
+				E60DDB002C8A4B2500FBBD36 /* App */,
 				E60DDACA2C8A48D100FBBD36 /* Assets.xcassets */,
 				E60DDACC2C8A48D100FBBD36 /* Preview Content */,
 			);
@@ -130,6 +167,38 @@
 			path = BopitoUITests;
 			sourceTree = "<group>";
 		};
+		E60DDAFD2C8A4AE300FBBD36 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E60DDB002C8A4B2500FBBD36 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E60DDB012C8A4B3400FBBD36 /* AppView.swift */,
+				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
+				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
+				E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */,
+				E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */,
+				E60DDB092C8A4B8E00FBBD36 /* PostView.swift */,
+				E60DDB032C8A4B8E00FBBD36 /* ReplyView.swift */,
+				E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */,
+				E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E60DDB152C8A4C5900FBBD36 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E60DDB132C8A4C5600FBBD36 /* Submission.swift */,
+				E60DDB162C8A4C7C00FBBD36 /* User.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -146,6 +215,14 @@
 			dependencies = (
 			);
 			name = Bopito;
+			packageProductDependencies = (
+				E60DDAF32C8A491F00FBBD36 /* Auth */,
+				E60DDAF52C8A491F00FBBD36 /* Functions */,
+				E60DDAF72C8A491F00FBBD36 /* PostgREST */,
+				E60DDAF92C8A491F00FBBD36 /* Realtime */,
+				E60DDAFB2C8A491F00FBBD36 /* Storage */,
+				E60DDAFE2C8A4AE300FBBD36 /* Supabase */,
+			);
 			productName = Bopito;
 			productReference = E60DDAC12C8A48D000FBBD36 /* Bopito.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +295,9 @@
 				Base,
 			);
 			mainGroup = E60DDAB82C8A48D000FBBD36;
+			packageReferences = (
+				E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			productRefGroup = E60DDAC22C8A48D000FBBD36 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -260,9 +340,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */,
+				E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */,
+				E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */,
 				E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */,
-				E60DDAC92C8A48D000FBBD36 /* Item.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
+				E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */,
+				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
+				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
+				E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */,
+				E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */,
+				E60DDB0B2C8A4B8E00FBBD36 /* ReplyView.swift in Sources */,
+				E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */,
+				E60DDB112C8A4B8E00FBBD36 /* PostView.swift in Sources */,
+				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,6 +683,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E60DDAF32C8A491F00FBBD36 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		E60DDAF52C8A491F00FBBD36 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		E60DDAF72C8A491F00FBBD36 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		E60DDAF92C8A491F00FBBD36 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		E60DDAFB2C8A491F00FBBD36 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		E60DDAFE2C8A4AE300FBBD36 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E60DDAB92C8A48D000FBBD36 /* Project object */;
 }

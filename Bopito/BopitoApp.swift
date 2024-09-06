@@ -4,29 +4,19 @@
 //
 //  Created by Hans Heidmann on 9/5/24.
 //
-
 import SwiftUI
 import SwiftData
+import Supabase
 
 @main
 struct BopitoApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    @StateObject var supabaseManager = SupabaseManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(supabaseManager)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

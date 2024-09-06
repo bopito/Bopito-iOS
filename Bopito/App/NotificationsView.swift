@@ -15,5 +15,5 @@ struct NotificationsView: View {
 
 #Preview {
     NotificationsView()
-        .environmentObject(AuthManager())
+        .environmentObject(SupabaseManager())
 }
