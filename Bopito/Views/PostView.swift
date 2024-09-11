@@ -14,11 +14,15 @@ struct PostView: View {
     @State var post: Submission
     
     @State var user: User?
+    @State var currentUser: User?
+    
     @State var time_since: String?
     @State var isLiked: Bool = false
     
     @State var isViewingAccount = false
     @State var isShowingReplies = false
+    @State var isShowingDeleteAlert = false
+    @State var isShowingReportAlert = false
     
 
     
@@ -56,17 +60,51 @@ struct PostView: View {
                         
                         Spacer()
                         
-                        Button(action: {
-                            isViewingAccount = true
-                        }) {
-                            Image(systemName: "ellipsis")
-                                .font(.headline)
-                                .foregroundColor(.secondary)
-                        }.sheet(isPresented: $isViewingAccount, onDismiss: {
-                            //
-                        }) {
-                            ProfileView(user: user)
+                        if let currentUser = currentUser, let user = user {
+                            // if post was made by currentUser:
+                            if currentUser.id == user.id {
+                                // show delete button
+                                Button(action: {
+                                    isShowingDeleteAlert = true
+                                }) {
+                                    Image(systemName: "xmark")
+                                        .font(.headline)
+                                        .foregroundColor(.secondary)
+                                }.alert(isPresented: $isShowingDeleteAlert) {
+                                    Alert(
+                                        title: Text("Are you sure?"),
+                                        message: Text("This action can not be undone"),
+                                        primaryButton: .destructive(Text("Delete")) {
+                                            Task {
+                                                await deleteSubmission()
+                                            }
+                                        },
+                                        secondaryButton: .cancel()
+                                    )
+                                }
+                            } else {
+                                // show report button
+                                Button(action: {
+                                    isShowingReportAlert = true
+                                }) {
+                                    Image(systemName: "xmark.shield")
+                                        .font(.headline)
+                                        .foregroundColor(.secondary)
+                                }.alert(isPresented: $isShowingReportAlert) {
+                                    Alert(
+                                        title: Text("Are you sure?"),
+                                        message: Text("Be aware that making a fraudulent report will negatively affect your account status"),
+                                        primaryButton: .destructive(Text("Report")) {
+                                            Task {
+                                                await reportSubmission()
+                                            }
+                                        },
+                                        secondaryButton: .cancel()
+                                    )
+                                }
+                            }
                         }
+                        
                     }
             
                     // body text
@@ -166,7 +204,8 @@ struct PostView: View {
         // load user who made the post
         user = await supabaseManager.getUserByID(id: post.author_id)
         // get current user to see if they've liked it
-        if let currentUser = await supabaseManager.getCurrentUser() {
+        currentUser = await supabaseManager.getCurrentUser()
+        if let currentUser = currentUser {
             isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
         }
         // set time_since based on post created_at timestamp
@@ -184,7 +223,7 @@ struct PostView: View {
             post = updatedPost
             print(post.likes_count)
         }
-        if let currentUser = await supabaseManager.getCurrentUser() {
+        if let currentUser = currentUser {
             // update @State for isLiked
             isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
         }
@@ -193,7 +232,7 @@ struct PostView: View {
     
     func likePressed() async {
         // get current user
-        if let currentUser = await supabaseManager.getCurrentUser() {
+        if let currentUser = currentUser {
             // update @State for isLiked
             isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
             // check if liked
@@ -208,6 +247,14 @@ struct PostView: View {
             isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
             await reloadSubmission()
         }
+    }
+    
+    func deleteSubmission() async {
+        print("deleted!")
+    }
+    
+    func reportSubmission() async {
+        print("reported!")
     }
     
     

@@ -7,7 +7,7 @@ class User: Identifiable, Codable {
     var email: String?
     var phone: String?
     var username: String
-    var bio: String
+    var bio: String?
     var profile_picture: String
     var name: String?
     var followers_count: Int
@@ -17,7 +17,7 @@ class User: Identifiable, Codable {
          email: String?,
          phone: String?,
          username: String,
-         bio: String,
+         bio: String?,
          profile_picture: String,
          name: String?,
          followers_count: Int,

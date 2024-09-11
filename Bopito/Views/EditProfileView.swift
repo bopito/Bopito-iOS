@@ -10,6 +10,7 @@ import SwiftUI
 struct EditProfileView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
+    @Environment(\.presentationMode) var presentationMode // Add this line to access presentation mode
     
     @State var posts: [Submission]?
     @State var user: User?
@@ -20,7 +21,7 @@ struct EditProfileView: View {
     @State var bio: String = ""
     
     var body: some View {
-        VStack {
+        VStack (spacing:10) {
             Text("Edit Profile")
                 .font(.title)
             
@@ -33,7 +34,7 @@ struct EditProfileView: View {
                 Button(action: {
                     // Handle edit picture action
                 }) {
-                    Text("Edit Picture")
+                    Text("Change Picture")
                         .font(.headline)
                 }
                 
@@ -75,6 +76,23 @@ struct EditProfileView: View {
                 }
             }
             
+            Button(action: {
+                Task {
+                    await saveChangesPressed()
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }) {
+                Text("Save Changes")
+                    .font(.subheadline)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 20)
+                    .background(.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)  // Adjust this value for more or less rounded corners
+            }
+            .padding(20)
+            
+            
             Spacer()
         }
         .padding()
@@ -85,10 +103,20 @@ struct EditProfileView: View {
                     // Initialize the fields with the current user info
                     name = user.name ?? ""
                     username = user.username
-                    bio = user.bio
+                    bio = user.bio ?? ""
                 }
             }
         }
+    }
+    
+    func saveChangesPressed() async {
+        if let user = user {
+            user.name = name
+            user.username = username
+            user.bio = bio
+            await supabaseManager.updateUser(user: user)
+        }
+        
     }
 }
 

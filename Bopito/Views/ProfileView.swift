@@ -51,7 +51,7 @@ struct ProfileView: View {
                     .padding(.bottom, 10)
                 
                 // bio
-                Text("\(user.bio)")
+                Text("\(user.bio ?? "")")
                     .font(.callout)
                     .padding(.bottom, 10)
                 
@@ -94,7 +94,9 @@ struct ProfileView: View {
                     }
                     .padding(.bottom, 10)
                     .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
-                        //
+                        Task {
+                            await load()
+                        }
                     }) {
                         EditProfileView()
                     }
@@ -165,10 +167,13 @@ struct ProfileView: View {
                         ForEach(posts) { post in
                             PostView(post: post)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                            Divider()
                         }
+                        
+                            
                     }
                     .padding(.bottom, 40)
-                    .foregroundColor(.gray)
+                    
                 }
             } else {
                 Spacer()

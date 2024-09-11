@@ -62,7 +62,7 @@ class SupabaseManager: ObservableObject {
     private func createUserInDatabase(userId: String) async {
         do {
             print("creating acccount in supabase")
-            let randomUsername = "user\(Int.random(in: 1000000...9999999))"
+            let randomUsername = "user\(Int.random(in: 1000...9999))"
             try await supabase
                 .from("users")
                 .upsert(
@@ -70,7 +70,7 @@ class SupabaseManager: ObservableObject {
                          email: nil,
                          phone: nil,
                          username: randomUsername,
-                         bio: "?",
+                         bio: nil,
                          profile_picture: "https://api.dicebear.com/9.x/bottts-neutral/jpeg?seed=\(RandomGeneratorTool.shared.randomAlphaNumericString(length: 5))",
                          name: nil,
                          followers_count: 0,
@@ -94,6 +94,9 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    //
+    // Get User
+    //
     func getCurrentUser() async -> User? {
         do {
             let currentUser = try await supabase.auth.session.user
@@ -113,9 +116,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    //
-    // Get User
-    //
     func getUserByID(id: String) async -> User? {
         do {
             let user: User = try await supabase
@@ -131,6 +131,22 @@ class SupabaseManager: ObservableObject {
             return nil
         }
     }
+    
+    
+    //
+    // Update User
+    //
+    func updateUser(user: User) async {
+        do {
+            try await supabase
+                .from("users")
+                .upsert(user)
+                .execute()
+        } catch {
+            print("Failed to update User in Database. Error: \(error.localizedDescription)")
+        }
+    }
+    
     
     //
     // Submit a Post/Reply (Submission)
