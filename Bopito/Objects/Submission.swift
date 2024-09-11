@@ -14,16 +14,20 @@ class Submission: Identifiable, Codable {
     var parent_id: String?      // Foreign key for parent submission
     var replies_count: Int
     var likes_count: Int
-    var image: String
+    var image: String?
     var text: String
+    var created_at: String?
+    var edited_at: String?
     
     init(id: String,
          author_id: String,
          parent_id: String?,
          replies_count: Int,
          likes_count: Int,
-         image: String,    // Optional, defaults to nil if no image
-         text: String
+         image: String?,    // Optional, defaults to nil if no image
+         text: String,
+         created_at: String?,
+         edited_at: String?
     ) {
         self.id = id
         self.author_id = author_id
@@ -32,5 +36,7 @@ class Submission: Identifiable, Codable {
         self.likes_count = likes_count
         self.image = image
         self.text = text
+        self.created_at = created_at
+        self.edited_at = edited_at
     }
 }

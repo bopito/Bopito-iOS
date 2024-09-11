@@ -22,6 +22,9 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
+                Text("Latest")
+                    .font(.title2)
+                    .padding()
                 if isLoading {
                     ProgressView()
                 } else if let error = error {
@@ -29,7 +32,6 @@ struct HomeView: View {
                         .foregroundColor(.red)
                 } else {
                     ScrollView {
-                        Text("placeholder")
                         VStack(spacing: 1) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in
@@ -91,6 +93,7 @@ struct HomeView: View {
     
     
     func loadPosts() async {
+        
         isLoading = true
         submissions = await supabaseManager.getRecentPosts()
         isLoading = false

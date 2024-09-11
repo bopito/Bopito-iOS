@@ -16,12 +16,6 @@ struct AppView: View {
     var body: some View {
         
         TabView (selection: $selectedTab) {
-           
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
-                }
-                .tag(TabSelection.settings)
             
             HomeView()
                 .tabItem {
@@ -47,7 +41,6 @@ struct AppView: View {
 }
 
 enum TabSelection {
-    case settings
     case home
     case notifications
     case profile

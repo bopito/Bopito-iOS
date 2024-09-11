@@ -17,6 +17,8 @@ struct ComposePostView: View {
     
     @State private var postText: String = ""
     
+    @State var user: User?
+    
     var body: some View {
         VStack {
             HStack {
@@ -55,6 +57,9 @@ struct ComposePostView: View {
         }
         .padding()
         .onAppear {
+            Task {
+                await loadData()
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 // Request focus after a slight delay
                 isTextFieldFocused = true
@@ -62,20 +67,21 @@ struct ComposePostView: View {
         }
     }
     
+    func loadData() async {
+        user = await supabaseManager.getCurrentUser() // make sure logged in
+    }
     
     func submit() async {
-        guard let user = await supabaseManager.getCurrentUser() else {
-            return
-        }
-        let authorID = user.id
-        await supabaseManager.postSubmission(
-            author_id: authorID,
-            parent_id: nil,
-            image: "none",
-            text: postText)
-        // Clear the text editor on success
-        postText = ""
         
+        if let user = user { // if logged in
+            let authorID = user.id
+            await supabaseManager.postSubmission(
+                author_id: authorID,
+                parent_id: nil,
+                image: nil,
+                text: postText)
+            postText = "" // Clear the text editor on success
+        }
     }
     
     
