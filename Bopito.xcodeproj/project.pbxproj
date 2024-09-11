@@ -32,6 +32,12 @@
 		E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */; };
 		E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB132C8A4C5600FBBD36 /* Submission.swift */; };
 		E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB162C8A4C7C00FBBD36 /* User.swift */; };
+		E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */; };
+		E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1A2C8BE66400FBBD36 /* Like.swift */; };
+		E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */; };
+		E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */; };
+		E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */; };
+		E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB232C91E45D00FBBD36 /* Follow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +80,12 @@
 		E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		E60DDB132C8A4C5600FBBD36 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		E60DDB162C8A4C7C00FBBD36 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
+		E60DDB1A2C8BE66400FBBD36 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
+		E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTool.swift; sourceTree = "<group>"; };
+		E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomGeneratorTool.swift; sourceTree = "<group>"; };
+		E60DDB232C91E45D00FBBD36 /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,8 +146,9 @@
 				E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */,
 				E60DDAC62C8A48D000FBBD36 /* ContentView.swift */,
 				E60DDAF02C8A48F900FBBD36 /* SupabaseManager.swift */,
-				E60DDB152C8A4C5900FBBD36 /* Components */,
-				E60DDB002C8A4B2500FBBD36 /* App */,
+				E60DDB1E2C90E9C100FBBD36 /* Tools */,
+				E60DDB152C8A4C5900FBBD36 /* Objects */,
+				E60DDB002C8A4B2500FBBD36 /* Views */,
 				E60DDACA2C8A48D100FBBD36 /* Assets.xcassets */,
 				E60DDACC2C8A48D100FBBD36 /* Preview Content */,
 			);
@@ -174,7 +187,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E60DDB002C8A4B2500FBBD36 /* App */ = {
+		E60DDB002C8A4B2500FBBD36 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				E60DDB012C8A4B3400FBBD36 /* AppView.swift */,
@@ -186,17 +199,30 @@
 				E60DDB032C8A4B8E00FBBD36 /* ReplyView.swift */,
 				E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */,
 				E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */,
+				E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */,
+				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
 			);
-			path = App;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		E60DDB152C8A4C5900FBBD36 /* Components */ = {
+		E60DDB152C8A4C5900FBBD36 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
 				E60DDB132C8A4C5600FBBD36 /* Submission.swift */,
 				E60DDB162C8A4C7C00FBBD36 /* User.swift */,
+				E60DDB1A2C8BE66400FBBD36 /* Like.swift */,
+				E60DDB232C91E45D00FBBD36 /* Follow.swift */,
 			);
-			path = Components;
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		E60DDB1E2C90E9C100FBBD36 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */,
+				E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,17 +367,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */,
+				E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */,
 				E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */,
 				E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */,
 				E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */,
+				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
 				E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */,
+				E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */,
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
+				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
 				E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */,
+				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
 				E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */,
 				E60DDB0B2C8A4B8E00FBBD36 /* ReplyView.swift in Sources */,
 				E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */,
+				E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */,
 				E60DDB112C8A4B8E00FBBD36 /* PostView.swift in Sources */,
 				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,
 			);
@@ -514,6 +546,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Bopito/Preview Content\"";
@@ -523,8 +556,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,6 +576,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Bopito/Preview Content\"";
@@ -552,8 +586,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
