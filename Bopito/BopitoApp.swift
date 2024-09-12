@@ -11,7 +11,7 @@ import Supabase
 @main
 struct BopitoApp: App {
 
-    @StateObject var supabaseManager = SupabaseManager()
+    let supabaseManager = SupabaseManager()
     
     var body: some Scene {
         WindowGroup {

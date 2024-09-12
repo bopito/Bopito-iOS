@@ -11,7 +11,10 @@ struct ContentView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
+    @State var isChecked: Bool = false
+    
     var body: some View {
+        
         ZStack {
             if supabaseManager.isAuthenticated {
                 AppView() // Show app content when authenticated
@@ -28,7 +31,13 @@ struct ContentView: View {
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(8)
+                        
                     }
+                    Toggle(isOn: $isChecked) {
+                                    // Label
+                                    Text("I accept the User Agreement")
+                                        .font(.headline)
+                                }
                 }
             }
         }

@@ -19,29 +19,40 @@ struct AppView: View {
             
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Image(systemName: "house")
                 }
+                .padding(5)
                 .tag(TabSelection.home)
+            
+            EarnView()
+                .tabItem {
+                    Label("", systemImage: "bitcoinsign.circle")
+                }
+                .tag(TabSelection.earn)
+                .badge(0) // Example badge
             
             NotificationsView()
                 .tabItem {
-                    Label("Ding", systemImage: "bell.fill")
+                    Label("", systemImage: "bell.fill")
                 }
                 .tag(TabSelection.notifications)
             
             
             ProfileView()
                 .tabItem {
-                    Label("Me", systemImage: "person.fill")
+                    Label("", systemImage: "person.fill")
                 }
                 .tag(TabSelection.profile)
         }
+        .accentColor(.blue)
+        
         
     }
 }
 
 enum TabSelection {
     case home
+    case earn
     case notifications
     case profile
 }

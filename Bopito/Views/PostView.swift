@@ -183,6 +183,7 @@ struct PostView: View {
                 }
             }
             .padding(8)
+            //.background(.blue)
             .contentShape(Rectangle()) // Ensures the entire area responds to taps
             .onTapGesture {
                         isShowingReplies = true

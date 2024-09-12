@@ -32,7 +32,7 @@ struct HomeView: View {
                         .foregroundColor(.red)
                 } else {
                     ScrollView {
-                        VStack(spacing: 1) {
+                        VStack(spacing: 0) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in
                                     PostView(post: submission)

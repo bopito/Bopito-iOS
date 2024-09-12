@@ -13,6 +13,7 @@ struct ProfileView: View {
     
     @State var isViewingEditProfile: Bool = false
     @State var isViewingSettings: Bool = false
+    @State var isViewingFollows: Bool = false
 
     
     var body: some View {
@@ -57,24 +58,44 @@ struct ProfileView: View {
                 
                 // followers/following
                 HStack {
-                    VStack {
-                        Text("\(user.followers_count)")
-                            .font(.title3)
-                            .bold()
-                        Text("Followers")
-                            .font(.callout)
-                            .foregroundColor(.secondary)
+                    Button(action: {
+                        // Action to navigate to FollowersView
+                        isViewingFollows = true
+                    }) {
+                        VStack {
+                            Text("\(user.followers_count)")
+                                .font(.title3)
+                                .bold()
+                            Text("Followers")
+                                .font(.callout)
+                                .foregroundColor(.secondary)
+                        }
                     }
+                    .buttonStyle(PlainButtonStyle())
+                    .sheet(isPresented: $isViewingFollows) {
+                        FollowersFollowingTabView()
+                    }
+                    
                     Divider()
                         .frame(height: 35)
                         .padding(.horizontal, 10)
-                    VStack {
-                        Text("\(user.following_count)")
-                            .font(.title3)
-                            .bold()
-                        Text("Following")
-                            .font(.callout)
-                            .foregroundColor(.secondary)
+                    
+                    Button(action: {
+                        // Action to navigate to FollowersView
+                        isViewingFollows = true
+                    }) {
+                        VStack {
+                            Text("\(user.following_count)")
+                                .font(.title3)
+                                .bold()
+                            Text("Following")
+                                .font(.callout)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .sheet(isPresented: $isViewingFollows) {
+                        FollowersFollowingTabView()
                     }
                 }.padding(.bottom, 10)
                

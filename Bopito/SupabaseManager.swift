@@ -160,7 +160,7 @@ class SupabaseManager: ObservableObject {
             likes_count: 0,
             image: image,
             text: text,
-            created_at: nil, //Date().formatted(.dateTime.year().month().day().hour().minute().second()),
+            created_at: nil, //database can create this value
             edited_at: nil
         )
         do {
@@ -366,6 +366,45 @@ class SupabaseManager: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    //
+    // Get Followers / Following
+    //
+    func getFollowers(userID: String) async -> [Follow]? {
+        
+        do {
+            let followers: [Follow] = try await supabase
+                .from("follows")
+                .select()
+                .eq("user_id", value: userID)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            for element in followers {
+                print(element.follower_id)
+            }
+            return followers
+        } catch {
+            print("Failure - Could not get followers ... Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    func getFollowing(userID: String) async -> [Follow]? {
+        
+        do {
+            let following: [Follow] = try await supabase
+                .from("follows")
+                .select()
+                .eq("follower_id", value: userID)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            return following
+        } catch {
+            print("Failure - Could not get following ... Error: \(error.localizedDescription)")
+            return nil
         }
     }
     
