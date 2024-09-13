@@ -14,6 +14,7 @@ struct ProfileView: View {
     @State var isViewingEditProfile: Bool = false
     @State var isViewingSettings: Bool = false
     @State var isViewingFollows: Bool = false
+    @State var followsTab: Int = 0
 
     
     var body: some View {
@@ -29,11 +30,7 @@ struct ProfileView: View {
                 }
                 .padding(.top, 10)
                 .padding(.trailing, 10)
-                .sheet(isPresented: $isViewingSettings, onDismiss:  {
-                    //
-                }) {
-                    SettingsView()
-                }
+                
             }
              
              
@@ -60,6 +57,7 @@ struct ProfileView: View {
                 HStack {
                     Button(action: {
                         // Action to navigate to FollowersView
+                        followsTab = 0
                         isViewingFollows = true
                     }) {
                         VStack {
@@ -72,9 +70,7 @@ struct ProfileView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .sheet(isPresented: $isViewingFollows) {
-                        FollowersFollowingTabView()
-                    }
+                    
                     
                     Divider()
                         .frame(height: 35)
@@ -82,6 +78,7 @@ struct ProfileView: View {
                     
                     Button(action: {
                         // Action to navigate to FollowersView
+                        followsTab = 1
                         isViewingFollows = true
                     }) {
                         VStack {
@@ -94,9 +91,8 @@ struct ProfileView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .sheet(isPresented: $isViewingFollows) {
-                        FollowersFollowingTabView()
-                    }
+                    
+                    
                 }.padding(.bottom, 10)
                
                 if isCurrentUsersProfile {
@@ -114,13 +110,7 @@ struct ProfileView: View {
                             .cornerRadius(10)  // Adjust this value for more or less rounded corners
                     }
                     .padding(.bottom, 10)
-                    .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
-                        Task {
-                            await load()
-                        }
-                    }) {
-                        EditProfileView()
-                    }
+                    
                 } else {
                     Button(action: {
                         Task {
@@ -204,6 +194,21 @@ struct ProfileView: View {
             Task {
                 await load()
             }
+        }
+        .sheet(isPresented: $isViewingSettings, onDismiss:  {
+            //
+        }) {
+            SettingsView()
+        }
+        .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
+            Task {
+                await load()
+            }
+        }) {
+            EditProfileView()
+        }
+        .sheet(isPresented: $isViewingFollows) {
+            FollowsTabView(selectedTab: followsTab, user: user)
         }
     }
     

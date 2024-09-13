@@ -38,10 +38,11 @@
 		E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */; };
 		E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB232C91E45D00FBBD36 /* Follow.swift */; };
 		E60DDB272C92988E00FBBD36 /* EarnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB262C92988E00FBBD36 /* EarnView.swift */; };
-		E60DDB292C935FE100FBBD36 /* FollowersFollowingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB282C935FE100FBBD36 /* FollowersFollowingTabView.swift */; };
-		E60DDB2C2C9360B100FBBD36 /* FollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2B2C9360B100FBBD36 /* FollowersView.swift */; };
-		E60DDB2E2C9360C100FBBD36 /* FollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2D2C9360C100FBBD36 /* FollowingView.swift */; };
+		E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */; };
+		E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */; };
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
+		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
+		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,10 +91,11 @@
 		E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomGeneratorTool.swift; sourceTree = "<group>"; };
 		E60DDB232C91E45D00FBBD36 /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
 		E60DDB262C92988E00FBBD36 /* EarnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnView.swift; sourceTree = "<group>"; };
-		E60DDB282C935FE100FBBD36 /* FollowersFollowingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersFollowingTabView.swift; sourceTree = "<group>"; };
-		E60DDB2B2C9360B100FBBD36 /* FollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersView.swift; sourceTree = "<group>"; };
-		E60DDB2D2C9360C100FBBD36 /* FollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingView.swift; sourceTree = "<group>"; };
+		E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsTabView.swift; sourceTree = "<group>"; };
+		E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
+		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,7 +205,7 @@
 				E60DDB262C92988E00FBBD36 /* EarnView.swift */,
 				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
-				E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */,
+				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB092C8A4B8E00FBBD36 /* PostView.swift */,
 				E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */,
 				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
@@ -219,6 +221,7 @@
 				E60DDB162C8A4C7C00FBBD36 /* User.swift */,
 				E60DDB1A2C8BE66400FBBD36 /* Like.swift */,
 				E60DDB232C91E45D00FBBD36 /* Follow.swift */,
+				E694536D2C94AE1600F799E6 /* Notification.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -243,14 +246,22 @@
 			isa = PBXGroup;
 			children = (
 				E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */,
-				E60DDB282C935FE100FBBD36 /* FollowersFollowingTabView.swift */,
+				E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */,
+				E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */,
 				E60DDB2F2C93635C00FBBD36 /* FollowView.swift */,
-				E60DDB2B2C9360B100FBBD36 /* FollowersView.swift */,
-				E60DDB2D2C9360C100FBBD36 /* FollowingView.swift */,
 				E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */,
 				E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		E69453712C94BF8100F799E6 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */,
+				E694536F2C94BF7D00F799E6 /* NotificationView.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -403,18 +414,19 @@
 				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
 				E60DDB272C92988E00FBBD36 /* EarnView.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
+				E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */,
 				E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */,
-				E60DDB2E2C9360C100FBBD36 /* FollowingView.swift in Sources */,
 				E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */,
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
 				E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */,
-				E60DDB2C2C9360B100FBBD36 /* FollowersView.swift in Sources */,
+				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
 				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
 				E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */,
 				E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */,
-				E60DDB292C935FE100FBBD36 /* FollowersFollowingTabView.swift in Sources */,
+				E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */,
+				E694536E2C94AE1600F799E6 /* Notification.swift in Sources */,
 				E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */,
 				E60DDB112C8A4B8E00FBBD36 /* PostView.swift in Sources */,
 				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,

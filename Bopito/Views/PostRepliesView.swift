@@ -126,13 +126,26 @@ struct PostRepliesView: View {
         // update auth status
         // if authorized check if allowed to take action
         
-        if let currentUser = currentUser { // if logged in
-            let authorID = currentUser.id
+        if let currentUser = currentUser, let user = user {
+            // Create Post in DB
             await supabaseManager.postSubmission(
-                author_id: authorID,
+                author_id: currentUser.id,
                 parent_id: post.id,
                 image: nil,
                 text: replyText)
+            
+            // Create Notification in DB
+            let isPost = post.parent_id == nil
+            let message = "replied to your \(isPost ? "post" : "comment")!"
+            let type = "comment"
+            await supabaseManager.createNotificationInDatabase(
+                recipitentID: user.id,
+                senderID: currentUser.id,
+                type: type,
+                submissionID: post.id,
+                message: message
+            )
+            
             replyText = "" // Clear the text editor on success
         }
         isTextFieldFocused = false

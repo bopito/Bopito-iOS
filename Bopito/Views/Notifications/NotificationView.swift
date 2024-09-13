@@ -1,20 +1,19 @@
 //
-//  FollowView.swift
+//  NotificationView.swift
 //  Bopito
 //
-//  Created by Hans Heidmann on 9/12/24.
+//  Created by Hans Heidmann on 9/13/24.
 //
 
 import SwiftUI
 
-struct FollowView: View {
+struct NotificationView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
-     
-    @State var follow: Follow?
+    
+    @State var notification: Notification?
     @State var user: User?
     @State var currentUser: User?
-    @State var type: String?
     
     var body: some View {
         HStack {
@@ -28,15 +27,10 @@ struct FollowView: View {
             }
             
             VStack {
-                if let user = user {
-                    Text("\(user.username)")
-                    if let name = user.name {
-                        Text("\(name)")
-                    }
-                    
+                if let notification = notification, let user = user {
+                    Text("\(user.username)\(notification.message)")
                 } else {
-                    Text("@placeholder")
-                    Text("Place Holder")
+                    Text("Error")
                 }
             }
             .padding(.leading, 10)
@@ -73,19 +67,19 @@ struct FollowView: View {
     }
     
     func load() async {
-        if let follow = follow {
-            if type == "followers" {
-                user = await supabaseManager.getUserByID(id: follow.follower_id)
-            } else if type == "following" {
-                user = await supabaseManager.getUserByID(id: follow.user_id)
-            }
+        print("loading")
+        if let notification = notification {
+            user = await supabaseManager.getUserByID(id: notification.sender_id)
+            currentUser =  await supabaseManager.getCurrentUser()
             
             
         }
+        
+        
         
     }
 }
 
 #Preview {
-    FollowView()
+    NotificationView()
 }

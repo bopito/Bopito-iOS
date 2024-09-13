@@ -95,7 +95,52 @@ class SupabaseManager: ObservableObject {
     }
     
     //
-    // Get User
+    // Notifications
+    //
+    func createNotificationInDatabase(recipitentID: String, senderID: String, type: String, submissionID: String, message: String) async {
+        let notification = Notification(id: UUID().uuidString,
+                                        recipient_id: recipitentID,
+                                        sender_id: senderID,
+                                        type: type,
+                                        submission_id: submissionID,
+                                        is_read: false,
+                                        message: message
+        )
+        print(notification.id)
+        do {
+            try await supabase
+                .from("notifications")
+                .insert(notification)
+                .execute()
+        } catch {
+            print("Failed to insert Notification. Error: \(error.localizedDescription)")
+        }
+    }
+    
+    func getNotifications() async -> [Notification]? {
+        do {
+            let currentUser = try await supabase.auth.session.user
+            let notifications: [Notification] = try await supabase
+                .from("notifications")
+                .select()
+                .eq("recipient_id", value: currentUser.id)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            print("test")
+            for n in notifications {
+                print(n.type)
+            }
+            return notifications
+        } catch {
+            print("Failure - Could not get notifications ... Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    
+    //
+    // User
     //
     func getCurrentUser() async -> User? {
         do {
@@ -132,10 +177,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    
-    //
-    // Update User
-    //
     func updateUser(user: User) async {
         do {
             try await supabase
@@ -176,10 +217,9 @@ class SupabaseManager: ObservableObject {
                         .from("submissions")
                         .upsert(parentSubmission)
                         .execute()
-                    print("Success - Submission liked!")
+                    print("Success - Submission posted!")
                 }
             }
-            
         } catch {
             print(error)
         }
@@ -341,7 +381,6 @@ class SupabaseManager: ObservableObject {
             if let user = await getUserByID(id: userID) {
                 if currentUser.id != user.id {
                     do {
-                        print("test")
                         // decrease counts
                         currentUser.following_count -= 1
                         try await supabase
@@ -373,7 +412,6 @@ class SupabaseManager: ObservableObject {
     // Get Followers / Following
     //
     func getFollowers(userID: String) async -> [Follow]? {
-        
         do {
             let followers: [Follow] = try await supabase
                 .from("follows")
@@ -382,17 +420,14 @@ class SupabaseManager: ObservableObject {
                 .order("created_at", ascending: false)
                 .execute()
                 .value
-            for element in followers {
-                print(element.follower_id)
-            }
             return followers
         } catch {
             print("Failure - Could not get followers ... Error: \(error.localizedDescription)")
             return nil
         }
     }
+    
     func getFollowing(userID: String) async -> [Follow]? {
-        
         do {
             let following: [Follow] = try await supabase
                 .from("follows")

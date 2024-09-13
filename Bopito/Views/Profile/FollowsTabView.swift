@@ -7,28 +7,46 @@
 
 import SwiftUI
 
-struct FollowersFollowingTabView: View {
+struct FollowsTabView: View {
     
-    @State private var selectedTab = 0 // Track selected tab index
+    @State var selectedTab: Int = 1
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
     @State var currentUser: User?
+    @State var user: User?
     @State var followers: [Follow]?
     @State var following: [Follow]?
     
     var body: some View {
         VStack {
-            Divider()
+            if selectedTab == 0 {
+                Text("Followers")
+            } else {
+                Text("Following")
+            }
+            
             TabView(selection: $selectedTab) {
-                if let currentUser = currentUser, let followers = followers, let following = following {
-                    FollowersView(currentUser: currentUser, follows: followers) // First subview
+                if let currentUser = currentUser,
+                   let user = user,
+                   let followers = followers,
+                   let following = following
+                {
+                    FollowsView(user: user, 
+                                currentUser: currentUser,
+                                follows: followers,
+                                type: "followers"
+                    ) // First subview
                         .tag(0) // Assign a tag for each subview
                         .tabItem {
                             Label("Followers", systemImage: "1.circle")
                         }
                     
-                    FollowingView(currentUser: currentUser, follows: following) // Second subview
+                    FollowsView(user: user, 
+                                currentUser: currentUser,
+                                follows: following,
+                                type: "following"
+                    ) // Second subview
                         .tag(1)
                         .tabItem {
                             Label("Following", systemImage: "2.circle")
@@ -48,17 +66,17 @@ struct FollowersFollowingTabView: View {
         
     }
     
+    
     func load() async {
-        
         currentUser = await supabaseManager.getCurrentUser()
-        if let currentUser = currentUser {
-            followers = await supabaseManager.getFollowers(userID: currentUser.id)
-            following = await supabaseManager.getFollowing(userID: currentUser.id)
+        if let user = user {
+            followers = await supabaseManager.getFollowers(userID: user.id)
+            following = await supabaseManager.getFollowing(userID: user.id)
         }
     }
 }
 
 #Preview {
-    FollowersFollowingTabView()
+    FollowsTabView()
         .environmentObject(SupabaseManager())
 }
