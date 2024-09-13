@@ -15,7 +15,7 @@ struct NotificationsView: View {
     
     var body: some View {
             ScrollView {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     if let notifications = notifications {
                         ForEach(notifications) { notification in
                             NotificationView(notification: notification)

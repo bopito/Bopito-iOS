@@ -15,6 +15,10 @@ struct NotificationView: View {
     @State var user: User?
     @State var currentUser: User?
     
+    @State var time_since: String?
+    
+    @State var isShowingUser: Bool = false
+    
     var body: some View {
         HStack {
             if let user = user {
@@ -28,25 +32,28 @@ struct NotificationView: View {
             
             VStack {
                 if let notification = notification, let user = user {
-                    Text("\(user.username)\(notification.message)")
+                    Text("@\(user.username) \(notification.message)")
+                        .font(.subheadline)
                 } else {
-                    Text("Error")
+                    Text("@hanshanshans replied to your comment!")
+                    //.font(.callout)
+                        .font(.subheadline)
                 }
             }
             .padding(.leading, 10)
             
             Spacer()
+            Divider()
             
-            Button(action: {
-                
-            }) {
-                Text("follow")
+            VStack {
+                if let time_since = time_since {
+                    Text(time_since)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
             }
-            .padding(.horizontal, 30)
-            .padding(.vertical, 8)
-            .foregroundColor(.white)
-            .background(.blue)
-            .cornerRadius(10)
+            .padding(.horizontal, 10)
+            Divider()
             
         }
         .padding(10)
@@ -67,12 +74,15 @@ struct NotificationView: View {
     }
     
     func load() async {
-        print("loading")
         if let notification = notification {
             user = await supabaseManager.getUserByID(id: notification.sender_id)
             currentUser =  await supabaseManager.getCurrentUser()
             
-            
+            if let created_at = notification.created_at {
+                if let datetime = DateTimeTool.shared.getSwiftDate(supabaseTimestamp: created_at) {
+                    time_since = DateTimeTool.shared.timeAgo(from: datetime)
+                }
+            }
         }
         
         

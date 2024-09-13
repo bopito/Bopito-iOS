@@ -68,9 +68,10 @@ struct PostView: View {
                                     isShowingDeleteAlert = true
                                 }) {
                                     Image(systemName: "xmark")
-                                        .font(.headline)
+                                        .font(.subheadline)
                                         .foregroundColor(.secondary)
-                                }.alert(isPresented: $isShowingDeleteAlert) {
+                                }
+                                .alert(isPresented: $isShowingDeleteAlert) {
                                     Alert(
                                         title: Text("Are you sure?"),
                                         message: Text("This action can not be undone"),
@@ -87,10 +88,11 @@ struct PostView: View {
                                 Button(action: {
                                     isShowingReportAlert = true
                                 }) {
-                                    Image(systemName: "xmark.shield")
-                                        .font(.headline)
+                                    Image(systemName: "xmark.shield.fill")
+                                        .font(.subheadline)
                                         .foregroundColor(.secondary)
-                                }.alert(isPresented: $isShowingReportAlert) {
+                                }
+                                .alert(isPresented: $isShowingReportAlert) {
                                     Alert(
                                         title: Text("Are you sure?"),
                                         message: Text("Be aware that making a fraudulent report will negatively affect your account status"),
@@ -121,13 +123,6 @@ struct PostView: View {
                                     .font(.caption)
                                     .foregroundColor(.gray)
                         }
-//                        Text(post.created_at, style: .time)
-//                            .font(.caption)
-//                            .foregroundColor(.gray)
-//                        // date
-//                        Text(post.created_at, style: .date)
-//                            .font(.caption)
-//                            .foregroundColor(.gray)
                         
                         Spacer()
                         
@@ -141,16 +136,17 @@ struct PostView: View {
                             Image(systemName: "bubble.left.fill")
                                 .font(.body)
                                 .foregroundColor(.gray)
-                        }.sheet(isPresented: $isShowingReplies, onDismiss: {
+                        }
+                        .sheet(isPresented: $isShowingReplies, onDismiss: {
                             Task {
                                 await reloadSubmission()
                             }
                         }) {
                             PostRepliesView(post: post)
                         }
+                        .padding(.trailing, 15)
                         
                         
-                        Spacer()
                         
                         // Like button
                         Button(action: {
@@ -186,11 +182,11 @@ struct PostView: View {
             //.background(.blue)
             .contentShape(Rectangle()) // Ensures the entire area responds to taps
             .onTapGesture {
-                        isShowingReplies = true
-                    }
-                    .sheet(isPresented: $isShowingReplies) {
-                        PostRepliesView(post: post)
-                    }
+                isShowingReplies = true
+            }
+            .sheet(isPresented: $isShowingReplies) {
+                PostRepliesView(post: post)
+            }
             .onAppear() {
                 Task{
                    await loadData()
@@ -240,6 +236,17 @@ struct PostView: View {
             if !isLiked {
                 // like it if not
                 await supabaseManager.likeSubmission(submissionID: post.id, userID: currentUser.id)
+                // Create Notification in DB
+                let isPost = post.parent_id == nil
+                let message = "liked your \(isPost ? "post" : "comment")!"
+                let type = "like"
+                await supabaseManager.createNotificationInDatabase(
+                    recipitentID: post.author_id,
+                    senderID: currentUser.id,
+                    type: type,
+                    submissionID: post.id,
+                    message: message
+                )
             } else {
                 // otherwise unlike it
                 await supabaseManager.unlikeSubmission(submissionID: post.id, userID: currentUser.id)
@@ -252,6 +259,7 @@ struct PostView: View {
     
     func deleteSubmission() async {
         print("deleted!")
+        await supabaseManager.deleteSubmission(submissionID: post.id)
     }
     
     func reportSubmission() async {

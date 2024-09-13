@@ -174,7 +174,7 @@ struct ProfileView: View {
   
             if let posts = posts {
                 ScrollView {
-                    VStack(spacing: 1) {
+                    LazyVStack(spacing: 0) {
                         ForEach(posts) { post in
                             PostView(post: post)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -251,6 +251,17 @@ struct ProfileView: View {
                 if !isFollowing {
                     // follow
                     await supabaseManager.followUser(userID: userToFollow.id)
+                    // Create Notification in DB
+       
+                    let message = "started following you!"
+                    let type = "follow"
+                    await supabaseManager.createNotificationInDatabase(
+                        recipitentID: userToFollow.id,
+                        senderID: currentUser.id,
+                        type: type,
+                        submissionID: nil,
+                        message: message
+                    )
                 } else {
                     // otherwise unfollow
                     await supabaseManager.unfollowUser(userID: userToFollow.id)

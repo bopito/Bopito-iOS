@@ -97,7 +97,7 @@ class SupabaseManager: ObservableObject {
     //
     // Notifications
     //
-    func createNotificationInDatabase(recipitentID: String, senderID: String, type: String, submissionID: String, message: String) async {
+    func createNotificationInDatabase(recipitentID: String, senderID: String, type: String, submissionID: String?, message: String) async {
         let notification = Notification(id: UUID().uuidString,
                                         recipient_id: recipitentID,
                                         sender_id: senderID,
@@ -127,10 +127,6 @@ class SupabaseManager: ObservableObject {
                 .order("created_at", ascending: false)
                 .execute()
                 .value
-            print("test")
-            for n in notifications {
-                print(n.type)
-            }
             return notifications
         } catch {
             print("Failure - Could not get notifications ... Error: \(error.localizedDescription)")
@@ -190,7 +186,7 @@ class SupabaseManager: ObservableObject {
     
     
     //
-    // Submit a Post/Reply (Submission)
+    // Submissions
     //
     func postSubmission(author_id: String, parent_id: String?, image: String?, text: String) async {
         let submission = Submission(
@@ -225,9 +221,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    //
-    // Get a Submission
-    //
     func getSubmission(submissionID: String) async -> Submission? {
         do {
             let submission: Submission = try await supabase
@@ -245,6 +238,39 @@ class SupabaseManager: ObservableObject {
             return nil
         }
     }
+    
+    func deleteSubmission(submissionID: String) async {
+        do {
+            // Fetch the submission to check if it has a parent
+            if let submissionToDelete = await getSubmission(submissionID: submissionID) {
+                // If the submission has a parent, reduce the replies_count on it
+                if let parentID = submissionToDelete.parent_id {
+                    if var parentSubmission = await getSubmission(submissionID: parentID) {
+                        // Decrement replies count on parent submission
+                        parentSubmission.replies_count = max(0, parentSubmission.replies_count - 1)
+                        // Update the parent submission
+                        try await supabase
+                            .from("submissions")
+                            .upsert(parentSubmission)
+                            .execute()
+                    }
+                }
+                // Now delete the submission
+                try await supabase
+                    .from("submissions")
+                    .delete()
+                    .eq("id", value: submissionID)
+                    .execute()
+                
+                print("Submission deleted successfully!")
+            } else {
+                print("Submission not found.")
+            }
+        } catch {
+            print("Failed to delete submission. Error: \(error)")
+        }
+    }
+
     
     //
     // Like/Unlike a Submission
@@ -497,6 +523,7 @@ class SupabaseManager: ObservableObject {
             let submissions: [Submission] = try await supabase
                         .from("submissions")
                         .select()
+                        .is("parent_id", value: nil)
                         .eq("author_id", value: userID)
                         .order("created_at", ascending: false)
                         .execute()

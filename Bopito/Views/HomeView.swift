@@ -32,7 +32,7 @@ struct HomeView: View {
                         .foregroundColor(.red)
                 } else {
                     ScrollView {
-                        VStack(spacing: 0) {
+                       LazyVStack(spacing: 0) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in
                                     PostView(post: submission)

@@ -16,6 +16,8 @@ struct FollowView: View {
     @State var currentUser: User?
     @State var type: String?
     
+    @State var isShowingProfile = false
+    
     var body: some View {
         HStack {
             if let user = user {
@@ -60,11 +62,11 @@ struct FollowView: View {
         
         .contentShape(Rectangle()) // Ensures the entire area responds to taps
         .onTapGesture {
-                    //isShowingReplies = true
-                }
-//                .sheet(isPresented: $isShowingReplies) {
-//                    PostRepliesView(post: post)
-//                }
+            isShowingProfile = true
+        }
+        .sheet(isPresented: $isShowingProfile) {
+            ProfileView(user: user)
+        }
         .onAppear() {
             Task{
                await load()

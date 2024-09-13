@@ -57,10 +57,17 @@ struct EditProfileView: View {
                         .font(.headline)
                         .padding(.leading, 10)
                     Spacer()
-                    TextField("@\(user.username)", text: $username)
-                        .padding(.trailing, 10)
-                        .frame(maxWidth: 200)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("@\(username)", text: Binding(
+                        get: { username },
+                        set: { newValue in
+                            username = sanitizeUsername(newValue)
+                        }
+                    ))
+                    .padding(.trailing, 10)
+                    .frame(maxWidth: 200)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.asciiCapable) // only letter and numbers
+                    .autocapitalization(.none)
                 }
                 
                 
@@ -107,6 +114,11 @@ struct EditProfileView: View {
                 }
             }
         }
+    }
+    
+    func sanitizeUsername(_ input: String) -> String {
+        // Only allow lowercase letters and numbers
+        return input.lowercased().filter { $0.isLetter || $0.isNumber }
     }
     
     func saveChangesPressed() async {

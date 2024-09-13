@@ -19,7 +19,7 @@ struct FollowsView: View {
     var body: some View {
       
             ScrollView {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     if let follows = follows {
                         ForEach(follows) { follow in
                             FollowView(follow: follow, type: type)

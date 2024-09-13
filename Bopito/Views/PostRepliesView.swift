@@ -23,7 +23,7 @@ struct PostRepliesView: View {
                     .padding()
 
                 ScrollView {
-                    VStack(spacing: 1) {
+                    LazyVStack(spacing: 0) {
                         // original post
                         PostView(post: post)
                 
