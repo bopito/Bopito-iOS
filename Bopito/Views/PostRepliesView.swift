@@ -138,7 +138,7 @@ struct PostRepliesView: View {
             let isPost = post.parent_id == nil
             let message = "replied to your \(isPost ? "post" : "comment")!"
             let type = "comment"
-            await supabaseManager.createNotificationInDatabase(
+            await supabaseManager.createNotification(
                 recipitentID: user.id,
                 senderID: currentUser.id,
                 type: type,

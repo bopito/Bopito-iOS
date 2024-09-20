@@ -43,6 +43,8 @@
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
+		E69453732C9BE9FA00F799E6 /* PostFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* PostFullView.swift */; };
+		E69453752C9CBB1400F799E6 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453742C9CBB1400F799E6 /* Version.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +98,8 @@
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		E69453722C9BE9FA00F799E6 /* PostFullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFullView.swift; sourceTree = "<group>"; };
+		E69453742C9CBB1400F799E6 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +211,7 @@
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
 				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB092C8A4B8E00FBBD36 /* PostView.swift */,
+				E69453722C9BE9FA00F799E6 /* PostFullView.swift */,
 				E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */,
 				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
 				E60DDB2A2C935FE600FBBD36 /* Profile */,
@@ -222,6 +227,7 @@
 				E60DDB1A2C8BE66400FBBD36 /* Like.swift */,
 				E60DDB232C91E45D00FBBD36 /* Follow.swift */,
 				E694536D2C94AE1600F799E6 /* Notification.swift */,
+				E69453742C9CBB1400F799E6 /* Version.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -406,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */,
+				E69453752C9CBB1400F799E6 /* Version.swift in Sources */,
 				E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */,
 				E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */,
 				E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */,
@@ -420,6 +427,7 @@
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
+				E69453732C9BE9FA00F799E6 /* PostFullView.swift in Sources */,
 				E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */,
 				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
 				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,

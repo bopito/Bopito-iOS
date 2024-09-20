@@ -31,7 +31,7 @@ class DateTimeTool {
         
         if minutes < 60 {
             return "\(Int(minutes))m"
-        } else if hours < 72 {
+        } else if hours < 25 {
             return "\(Int(hours))h"
         } else {
             return "\(Int(days))d"

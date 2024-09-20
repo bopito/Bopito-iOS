@@ -25,6 +25,32 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func appVersionCurrent() async -> Bool {
+        // Get the current version of the app from the Info.plist
+        if let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            do {
+                // Fetch the latest version from Supabase
+                let latestVersion: Version = try await supabase
+                    .from("version")
+                    .select()
+                    .single() // need this if not doing [User] array
+                    .execute()
+                    .value
+                
+                print(latestVersion.version)
+                
+                if currentVersion == latestVersion.version {
+                    return true
+                } else {
+                    return false
+                }
+            } catch {
+                print("Error checking version: \(error.localizedDescription)")
+            }
+        }
+        return false
+    }
+    
     func updateAuthenticationState() async {
         do {
             _ = try await supabase.auth.user()
@@ -97,7 +123,7 @@ class SupabaseManager: ObservableObject {
     //
     // Notifications
     //
-    func createNotificationInDatabase(recipitentID: String, senderID: String, type: String, submissionID: String?, message: String) async {
+    func createNotification(recipitentID: String, senderID: String, type: String, submissionID: String?, message: String) async {
         let notification = Notification(id: UUID().uuidString,
                                         recipient_id: recipitentID,
                                         sender_id: senderID,
@@ -116,6 +142,7 @@ class SupabaseManager: ObservableObject {
             print("Failed to insert Notification. Error: \(error.localizedDescription)")
         }
     }
+    
     
     func getNotifications() async -> [Notification]? {
         do {

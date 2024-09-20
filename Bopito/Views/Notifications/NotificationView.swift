@@ -14,36 +14,39 @@ struct NotificationView: View {
     @State var notification: Notification?
     @State var user: User?
     @State var currentUser: User?
-    
+    @State var notificationType: String?
     @State var time_since: String?
     
-    @State var isShowingUser: Bool = false
+    @State private var sheetToPresent: SheetItem? = nil
     
     var body: some View {
-        HStack {
+        HStack (spacing: 0){
             if let user = user {
                 ProfilePictureView(profilePictureURL: user.profile_picture)
                     .frame(width: 50, height: 50)
-                    
+                
             } else {
                 ProgressView()
                     .frame(width: 50, height: 50)
             }
-            
-            VStack {
+
+            Group {
                 if let notification = notification, let user = user {
-                    Text("@\(user.username) \(notification.message)")
-                        .font(.subheadline)
+                    Text("**@\(user.username)**")
+                    +
+                    Text(" \(notification.message)")
                 } else {
-                    Text("@hanshanshans replied to your comment!")
-                    //.font(.callout)
-                        .font(.subheadline)
+                    Text("**@randomperson**")
+                    +
+                    Text(" replied to your comment!")
+                       
                 }
             }
+            .font(.subheadline)
             .padding(.leading, 10)
             
+            
             Spacer()
-            Divider()
             
             VStack {
                 if let time_since = time_since {
@@ -53,28 +56,42 @@ struct NotificationView: View {
                 }
             }
             .padding(.horizontal, 10)
-            Divider()
+            
             
         }
         .padding(10)
         //.background()
         
         .contentShape(Rectangle()) // Ensures the entire area responds to taps
-        .onTapGesture {
-                    //isShowingReplies = true
-                }
-//                .sheet(isPresented: $isShowingReplies) {
-//                    PostRepliesView(post: post)
-//                }
+        //        .onTapGesture {
+        //            if let notificationType = notificationType {
+        //                if type == "like" || type == "comment" {
+        //
+        //                }
+        //            }
+        //            //isShowingReplies = true
+        //        }
+        //        .sheet(isPresented: $sheetToPresent) { item in
+        //            PostRepliesView(post: post)
+        //            switch item {
+        //            case .first:
+        //                PostRepliesView(post: <#T##Submission#>)
+        //            case .second:
+        //                ProfileView(user: <#T##User?#>)
+        //            }
+        //        }
         .onAppear() {
             Task{
-               await load()
+                await load()
             }
+            
         }
     }
     
     func load() async {
         if let notification = notification {
+            notificationType = notification.type
+            
             user = await supabaseManager.getUserByID(id: notification.sender_id)
             currentUser =  await supabaseManager.getCurrentUser()
             
@@ -84,10 +101,20 @@ struct NotificationView: View {
                 }
             }
         }
-        
-        
-        
     }
+    
+    enum SheetItem: Identifiable {
+        case submission
+        case profile
+        
+        var id: Int {
+            switch self {
+            case .submission: return 1
+            case .profile: return 2
+            }
+        }
+    }
+    
 }
 
 #Preview {

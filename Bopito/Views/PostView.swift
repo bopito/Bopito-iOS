@@ -222,7 +222,8 @@ struct PostView: View {
         }
         if let currentUser = currentUser {
             // update @State for isLiked
-            isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
+            isLiked = await supabaseManager.isLiked(submissionID: post.id, 
+                                                    userID: currentUser.id)
         }
         
     }
@@ -231,28 +232,31 @@ struct PostView: View {
         // get current user
         if let currentUser = currentUser {
             // update @State for isLiked
-            isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
+            isLiked = await supabaseManager.isLiked(submissionID: post.id,
+                                                    userID: currentUser.id)
             // check if liked
             if !isLiked {
                 // like it if not
-                await supabaseManager.likeSubmission(submissionID: post.id, userID: currentUser.id)
+                await supabaseManager.likeSubmission(submissionID: post.id,
+                                                     userID: currentUser.id)
                 // Create Notification in DB
                 let isPost = post.parent_id == nil
                 let message = "liked your \(isPost ? "post" : "comment")!"
                 let type = "like"
-                await supabaseManager.createNotificationInDatabase(
-                    recipitentID: post.author_id,
-                    senderID: currentUser.id,
-                    type: type,
-                    submissionID: post.id,
-                    message: message
+                await supabaseManager.createNotification(recipitentID: post.author_id,
+                                                                   senderID: currentUser.id,
+                                                                   type: type,
+                                                                   submissionID: post.id,
+                                                                   message: message
                 )
             } else {
                 // otherwise unlike it
-                await supabaseManager.unlikeSubmission(submissionID: post.id, userID: currentUser.id)
+                await supabaseManager.unlikeSubmission(submissionID: post.id, 
+                                                       userID: currentUser.id)
             }
             // update @State for isLiked
-            isLiked = await supabaseManager.isLiked(submissionID: post.id, userID: currentUser.id)
+            isLiked = await supabaseManager.isLiked(submissionID: post.id, 
+                                                    userID: currentUser.id)
             await reloadSubmission()
         }
     }

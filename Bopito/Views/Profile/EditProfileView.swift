@@ -29,8 +29,7 @@ struct EditProfileView: View {
                 // Profile picture
                 ProfilePictureView(profilePictureURL: user.profile_picture)
                     .frame(width: 100, height: 100)
-                    .padding()
-                
+                    
                 Button(action: {
                     // Handle edit picture action
                 }) {
@@ -117,8 +116,9 @@ struct EditProfileView: View {
     }
     
     func sanitizeUsername(_ input: String) -> String {
-        // Only allow lowercase letters and numbers
-        return input.lowercased().filter { $0.isLetter || $0.isNumber }
+        // Only allow English letters (both lowercase and uppercase) and numbers
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+        return input.unicodeScalars.filter { allowedCharacters.contains($0) }.map(String.init).joined().lowercased()
     }
     
     func saveChangesPressed() async {

@@ -255,7 +255,7 @@ struct ProfileView: View {
        
                     let message = "started following you!"
                     let type = "follow"
-                    await supabaseManager.createNotificationInDatabase(
+                    await supabaseManager.createNotification(
                         recipitentID: userToFollow.id,
                         senderID: currentUser.id,
                         type: type,

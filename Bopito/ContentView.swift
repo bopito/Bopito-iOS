@@ -11,36 +11,66 @@ struct ContentView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
-    @State var isChecked: Bool = false
+    @State private var isOutdated = false
+    @State private var latestVersion: String?
+    @State private var currentVersion: String?
+    @State private var isDevelopment = true // Set this to true during development to bypass
+    
     
     var body: some View {
         
-        ZStack {
-            if supabaseManager.isAuthenticated {
-                AppView() // Show app content when authenticated
+        VStack {
+            if isOutdated {
+                Text("A new version is available! Please update the app.")
+                    .foregroundColor(.red)
+                    .padding()
+                Button("Update Now") {
+                    // Open App Store for updating
+                    if let url = URL(string: "itms-apps://itunes.apple.com/app/id{your_app_id}") {
+                        UIApplication.shared.open(url)
+                    }
+                }
             } else {
-                VStack {
-                    Button(action: {
-                        Task {
-                            await supabaseManager.signInAnonymously()
+                if supabaseManager.isAuthenticated {
+                    AppView() // Show app content when authenticated
+                } else {
+                    VStack {
+                        Button(action: {
+                            Task {
+                                await supabaseManager.signInAnonymously()
+                            }
+                        }) {
+                            Text("Join Anonymously")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                            
                         }
-                    }) {
-                        Text("I accept EULA terms")
-                            .font(.headline)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
                         
                     }
-                    Toggle(isOn: $isChecked) {
-                                    // Label
-                                    Text("I accept the User Agreement")
-                                        .font(.headline)
-                                }
                 }
             }
         }
+        .onAppear {
+            Task {
+                await checkForUpdate()
+            }
+        }
+        
+    }
+    
+    
+    func checkForUpdate() async {
+        let isCurrent = await supabaseManager.appVersionCurrent()
+            if !isCurrent {
+                // Handle the case where the app version is outdated
+                isOutdated = true
+            } else {
+                isOutdated = false
+            }
+
     }
 }
 
@@ -49,6 +79,6 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(SupabaseManager())
-      
+    
     
 }
