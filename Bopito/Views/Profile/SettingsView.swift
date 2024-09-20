@@ -16,17 +16,10 @@ struct SettingsView: View {
     
     var body: some View {
         VStack {
-            
-            Text("settings")
-                .font(.largeTitle)
-                .padding()
-            
-            
-            Image(systemName: "person.circle")
+            Image("bopito-logo")
                 .resizable()
-                .scaledToFit()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.gray)
+                .frame(width: 128, height: 128)
+                .padding(100)
             
             
             
@@ -36,12 +29,12 @@ struct SettingsView: View {
                 }
                 
             }) {
-                Text("Logout")
-                    .foregroundColor(.red)
+                Text("Log out")
+                    .foregroundColor(.white)
+                    .bold()
                     .padding()
-                    .background(Color.white)
+                    .background(.blue)
                     .cornerRadius(10)
-                    .shadow(radius: 5)
             }
             
         }

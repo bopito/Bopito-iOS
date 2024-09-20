@@ -22,9 +22,6 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text("Latest")
-                    .font(.title2)
-                    .padding()
                 if isLoading {
                     ProgressView()
                 } else if let error = error {
@@ -32,16 +29,19 @@ struct HomeView: View {
                         .foregroundColor(.red)
                 } else {
                     ScrollView {
-                       LazyVStack(spacing: 0) {
+                        Text("Recent Posts")
+                            .font(.title2)
+                            .padding()
+                        LazyVStack(spacing: 0) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in
                                     PostView(post: submission)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Divider()
-//                                    Rectangle()
-//                                        .fill(Color.) // You can use any color here
-//                                                    .frame(height: 1)
-                                        
+                                    //                                    Rectangle()
+                                    //                                        .fill(Color.) // You can use any color here
+                                    //                                                    .frame(height: 1)
+                                    
                                 }
                             }
                         }
