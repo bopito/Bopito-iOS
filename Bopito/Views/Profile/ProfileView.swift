@@ -176,7 +176,7 @@ struct ProfileView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(posts) { post in
-                            PostView(post: post)
+                            SubmissionView(submission: post)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Divider()
                         }

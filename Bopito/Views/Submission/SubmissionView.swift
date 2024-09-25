@@ -8,31 +8,38 @@
 import SwiftUI
 import Charts
 
-struct PostView2: View {
+enum ActiveSheet: Identifiable {
+    case shares, replies, boosts, dislikes, likes, profile
+
+    var id: Int {
+        hashValue
+    }
+}
+
+struct SubmissionView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
-    @State var post: Submission
+    @State private var activeSheet: ActiveSheet?
     
     @State var user: User?
     @State var currentUser: User?
     
+    @State var submission: Submission
     @State var time_since: String?
     
     @State var voteValue: Int = 0
+    
     @State var likesCount: Int = 0
     @State var dislikesCount: Int = 0
     @State var boostsCount: Int = 0
     @State var commentsCount: Int = 0
     @State var sharesCount: Int = 0
     
+    @State var isReported: Bool = false
+    
     @State var score: Int = 0
     
-    
-    @State var isViewingAccount = false
-    @State var isShowingReplies = false
-    @State var isShowingDeleteAlert = false
-    @State var isShowingReportAlert = false
     
     var body: some View {
         
@@ -85,7 +92,7 @@ struct PostView2: View {
             
             // Submission Text
             HStack {
-                Text(post.text)
+                Text(submission.text)
                     .font(.body)
                 
             }.padding(.horizontal, 10)
@@ -103,12 +110,12 @@ struct PostView2: View {
                 // Share Submission
                 HStack {
                     Button(action: {
-                        //
+                        activeSheet = .shares
                     }) {
                         Image("share")
                             .renderingMode(.template)
                             .resizable()
-                            .frame(width: 21, height: 21)
+                            .frame(width: 17, height: 17)
                         //.foregroundColor(.primary)
                             .foregroundColor(.gray)
                         Text("\(sharesCount)")
@@ -122,13 +129,13 @@ struct PostView2: View {
                 // Comment on Submission
                 HStack {
                     Button(action: {
-                        //
+                        activeSheet = .replies
                     }) {
                         Image("comment")
                             .renderingMode(.template)
                             .resizable()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(.green)
+                            .frame(width: 18, height: 18)
+                            .foregroundColor(commentsCount > 0 ? .gray : .secondary)
                         Text("\(commentsCount)")
                             .foregroundColor(.primary)
                     }
@@ -139,13 +146,13 @@ struct PostView2: View {
                 // Boost on Submission
                 HStack {
                     Button(action: {
-                        //
+                        activeSheet = .boosts
                     }) {
                         Image("boost")
                             .renderingMode(.template)
                             .resizable()
-                            .frame(width: 23, height: 23)
-                            .foregroundColor(.yellow)
+                            .frame(width: 19, height: 19)
+                            .foregroundColor(boostsCount > 0 ? .gray : .secondary)
                         Text("\(boostsCount)")
                             .foregroundColor(.primary)
                     }
@@ -153,8 +160,9 @@ struct PostView2: View {
                 
                 Spacer()
                 
-                // Fire / Water Buttons
-                
+                //
+                // Thumbs Down
+                //
                 Button(action: {
                     Task {
                         if (voteValue >= 0) {
@@ -168,43 +176,97 @@ struct PostView2: View {
                     Image("thumb")
                         .renderingMode(.template)
                         .resizable()
-                        .frame(width: 23, height: 23)
-                        .foregroundColor(voteValue < 0 ? .red : .gray)
+                        .frame(width: 19, height: 19)
+                        .foregroundColor(voteValue < 0 ? .red : .secondary)
                         .scaleEffect(x: -1, y: -1) // Flips the image vertically
                     Text("\(dislikesCount)")
                         .foregroundColor(.primary)
                 }
+                .simultaneousGesture(
+                    TapGesture()
+                        .onEnded {
+                            // Short press (tap) action for voting
+                            Task {
+                                if (voteValue <= 0) {
+                                    await votePressed(value: 1)
+                                } else {
+                                    await votePressed(value: 0)
+                                }
+                            }
+                        }
+                )
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
+                        .onEnded { _ in
+                            // Long press action to open the sheet
+                            activeSheet = .dislikes
+                        }
+                )
                 
                 Spacer()
                 
+                //
+                // Thumbs Up
+                //
                 Button(action: {
-                    Task {
-                        if (voteValue <= 0) {
-                            await votePressed(value: 1)
-                        } else {
-                            await votePressed(value: 0)
-                        }
-                    }
-                    
+                    // No action here, using gestures instead
                 }) {
-                    Image("thumb")
-                        .renderingMode(.template)
-                        .resizable()
-                        .frame(width: 23, height: 23)
-                        .foregroundColor(voteValue > 0 ? .blue : .gray)
-                    Text("\(likesCount)")
-                        .foregroundColor(.primary)
-                    
-                }.padding(.trailing, 0)
+                    HStack {
+                        Image("thumb")
+                            .renderingMode(.template)
+                            .resizable()
+                            .frame(width: 19, height: 19)
+                            .foregroundColor(voteValue > 0 ? .blue : .secondary)
+                        Text("\(likesCount)")
+                            .foregroundColor(.primary)
+                    }
+                }
+                .simultaneousGesture(
+                    TapGesture()
+                        .onEnded {
+                            // Short press (tap) action for voting
+                            Task {
+                                if (voteValue <= 0) {
+                                    await votePressed(value: 1)
+                                } else {
+                                    await votePressed(value: 0)
+                                }
+                            }
+                        }
+                )
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
+                        .onEnded { _ in
+                            // Long press action to open the sheet
+                            activeSheet = .likes
+                        }
+                )
                 
                 
             }
             .padding(10)
             
         }
+        .sheet(item: $activeSheet) { sheet in
+            switch sheet {
+                case .shares:
+                    Text("Shares") // Replace with your Account ViewTe
+                case .replies:
+                    RepliesView(submission: submission)
+                case .boosts:
+                    Text("Boosts") // Replace with your Delete Alert
+                case .dislikes:
+                    Text("Dislikes") // Replace with your Report Alert
+                case .likes:
+                    Text("Likes")
+                case .profile:
+                    Text("Profile")
+            }
+        }
         .task {
             await load()
         }
+        
         
         
         
@@ -215,7 +277,7 @@ struct PostView2: View {
     
     func load() async {
         // load user who made the post
-        user = await supabaseManager.getUserByID(id: post.author_id)
+        user = await supabaseManager.getUserByID(id: submission.author_id)
         
         // get current user to see if they've liked it
         currentUser = await supabaseManager.getCurrentUser()
@@ -224,24 +286,29 @@ struct PostView2: View {
         if let currentUser = currentUser {
             // Update local value for thumb color
             voteValue = await supabaseManager.getUserVote(
-                submissionID: post.id,
+                submissionID: submission.id,
                 userID: currentUser.id)
             
         }
         
         // Get Likes and Dislikes Counts
         likesCount = await supabaseManager.getSubmissionVotesCount(
-            submissionID: post.id,
+            submissionID: submission.id,
             value: 1
         )
         dislikesCount = await supabaseManager.getSubmissionVotesCount(
-            submissionID: post.id,
+            submissionID: submission.id,
             value: -1
+        )
+        
+        // Get Comments Count
+        commentsCount = await supabaseManager.getCommentsCount(
+            parentID: submission.id
         )
         
         
         // set time_since based on post created_at timestamp
-        if let created_at = post.created_at {
+        if let created_at = submission.created_at {
             if let datetime = DateTimeTool.shared.getSwiftDate(supabaseTimestamp: created_at) {
                 time_since = DateTimeTool.shared.timeAgo(from: datetime)
             } else {
@@ -251,8 +318,8 @@ struct PostView2: View {
     }
     
     func reloadSubmission() async {
-        if let updatedPost = await supabaseManager.getSubmission(submissionID: post.id) {
-            post = updatedPost
+        if let updatedPost = await supabaseManager.getSubmission(submissionID: submission.id) {
+            submission = updatedPost
         }
         
     }
@@ -263,33 +330,33 @@ struct PostView2: View {
         if let currentUser = currentUser {
             // cast vote
             await supabaseManager.castVote(
-                submissionID: post.id,
+                submissionID: submission.id,
                 likerID: currentUser.id,
-                receiverID: post.author_id,
+                receiverID: submission.author_id,
                 value: value)
             // Update local value for thumb color
             voteValue = await supabaseManager.getUserVote(
-                submissionID: post.id,
+                submissionID: submission.id,
                 userID: currentUser.id)
             // Update Likes/Dislikes counts
             likesCount = await supabaseManager.getSubmissionVotesCount(
-                submissionID: post.id,
+                submissionID: submission.id,
                 value: 1
             )
             dislikesCount = await supabaseManager.getSubmissionVotesCount(
-                submissionID: post.id,
+                submissionID: submission.id,
                 value: -1
             )
             
             // Create Notification in DB
-            let isPost = post.parent_id == nil
+            let isPost = submission.parent_id == nil
             let message = "liked your \(isPost ? "post" : "comment")!"
             let type = "like"
             await supabaseManager.createNotification(
-                recipitentID: post.author_id,
+                recipitentID: submission.author_id,
                 senderID: currentUser.id,
                 type: type,
-                submissionID: post.id,
+                submissionID: submission.id,
                 message: message
             )
             
@@ -299,7 +366,7 @@ struct PostView2: View {
     
     func deleteSubmission() async {
         print("deleted!")
-        await supabaseManager.deleteSubmission(submissionID: post.id)
+        await supabaseManager.deleteSubmission(submissionID: submission.id)
     }
     
     func reportSubmission() async {
@@ -309,13 +376,11 @@ struct PostView2: View {
 
 struct PostView2_Previews: PreviewProvider {
     static var previews: some View {
-        PostView2(
-            post:
+        SubmissionView(
+            submission:
                 Submission(id: "preview_fake_id",
                            author_id: "preview_fake_id",
                            parent_id: nil,
-                           replies_count: 1,
-                           likes_count: 2,
                            image: "none",
                            text: "Hello, World!",
                            created_at: Date().formatted(),

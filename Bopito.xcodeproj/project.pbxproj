@@ -24,10 +24,9 @@
 		E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB012C8A4B3400FBBD36 /* AppView.swift */; };
 		E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */; };
 		E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */; };
-		E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */; };
+		E60DDB0E2C8A4B8E00FBBD36 /* RepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB062C8A4B8E00FBBD36 /* RepliesView.swift */; };
 		E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */; };
 		E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */; };
-		E60DDB112C8A4B8E00FBBD36 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB092C8A4B8E00FBBD36 /* PostView.swift */; };
 		E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */; };
 		E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB132C8A4C5600FBBD36 /* Submission.swift */; };
 		E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB162C8A4C7C00FBBD36 /* User.swift */; };
@@ -43,7 +42,7 @@
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
-		E69453732C9BE9FA00F799E6 /* PostView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* PostView2.swift */; };
+		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
 		E69453752C9CBB1400F799E6 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453742C9CBB1400F799E6 /* Version.swift */; };
 		E69453782CA338F300F799E6 /* BoostsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453772CA338F300F799E6 /* BoostsSheetView.swift */; };
 /* End PBXBuildFile section */
@@ -80,10 +79,9 @@
 		E60DDB012C8A4B3400FBBD36 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePostView.swift; sourceTree = "<group>"; };
-		E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRepliesView.swift; sourceTree = "<group>"; };
+		E60DDB062C8A4B8E00FBBD36 /* RepliesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepliesView.swift; sourceTree = "<group>"; };
 		E60DDB072C8A4B8E00FBBD36 /* NotificationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		E60DDB092C8A4B8E00FBBD36 /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		E60DDB0A2C8A4B8E00FBBD36 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		E60DDB132C8A4C5600FBBD36 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		E60DDB162C8A4C7C00FBBD36 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -99,7 +97,7 @@
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		E69453722C9BE9FA00F799E6 /* PostView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView2.swift; sourceTree = "<group>"; };
+		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
 		E69453742C9CBB1400F799E6 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		E69453772CA338F300F799E6 /* BoostsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostsSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -209,12 +207,7 @@
 				E60DDB012C8A4B3400FBBD36 /* AppView.swift */,
 				E60DDB262C92988E00FBBD36 /* EarnView.swift */,
 				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
-				E69453772CA338F300F799E6 /* BoostsSheetView.swift */,
-				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
-				E60DDB092C8A4B8E00FBBD36 /* PostView.swift */,
-				E69453722C9BE9FA00F799E6 /* PostView2.swift */,
-				E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */,
-				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
+				E664647D2CA3EAA20083C1D4 /* Submission */,
 				E60DDB252C92559A00FBBD36 /* Auth */,
 				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB2A2C935FE600FBBD36 /* Profile */,
@@ -259,9 +252,21 @@
 				E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */,
 				E60DDB2F2C93635C00FBBD36 /* FollowView.swift */,
 				E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */,
+				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
 				E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		E664647D2CA3EAA20083C1D4 /* Submission */ = {
+			isa = PBXGroup;
+			children = (
+				E69453722C9BE9FA00F799E6 /* SubmissionView.swift */,
+				E60DDB062C8A4B8E00FBBD36 /* RepliesView.swift */,
+				E69453772CA338F300F799E6 /* BoostsSheetView.swift */,
+				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
+			);
+			path = Submission;
 			sourceTree = "<group>";
 		};
 		E69453712C94BF8100F799E6 /* Notifications */ = {
@@ -431,8 +436,8 @@
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
-				E69453732C9BE9FA00F799E6 /* PostView2.swift in Sources */,
-				E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */,
+				E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */,
+				E60DDB0E2C8A4B8E00FBBD36 /* RepliesView.swift in Sources */,
 				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
 				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
 				E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */,
@@ -440,7 +445,6 @@
 				E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */,
 				E694536E2C94AE1600F799E6 /* Notification.swift in Sources */,
 				E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */,
-				E60DDB112C8A4B8E00FBBD36 /* PostView.swift in Sources */,
 				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

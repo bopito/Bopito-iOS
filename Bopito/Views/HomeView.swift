@@ -35,7 +35,7 @@ struct HomeView: View {
                         LazyVStack(spacing: 0) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in
-                                    PostView2(post: submission)
+                                    SubmissionView(submission: submission)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Divider()
                                     //                                    Rectangle()
@@ -93,7 +93,6 @@ struct HomeView: View {
     
     
     func loadPosts() async {
-        
         isLoading = true
         submissions = await supabaseManager.getRecentPosts()
         isLoading = false

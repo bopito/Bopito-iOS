@@ -1,13 +1,17 @@
 import SwiftUI
 
-struct PostRepliesView: View {
+struct RepliesView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
-    @State var post: Submission
+    
+    
+    @State var submission: Submission
+
+    @State private var replies: [Submission]?
+    
     @State var user: User?
     @State var currentUser: User?
-    @State private var replies: [Submission]?
     
     @State private var isLoading: Bool = true
     @State private var error: String?
@@ -24,25 +28,12 @@ struct PostRepliesView: View {
 
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        // original post
-                        PostView(post: post)
-                
-                        Divider()
-                       
                         if let replies = replies {
                             ForEach(replies) { reply in
-                                PostView(post: reply)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading, 25)
-                                Divider()
-                                if reply.replies_count == 0 {
-                                        
-                                }
-//                                ReplyView(reply: reply)
-//                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                SubmissionView(submission: reply)
                             }
+                            Divider()
                         }
-                        
                     }
                     .padding(.bottom, 100) // Adding some space at the bottom
                 }
@@ -116,9 +107,9 @@ struct PostRepliesView: View {
     }
 
     func loadData() async {
-        user = await supabaseManager.getUserByID(id: post.author_id)
+        user = await supabaseManager.getUserByID(id: submission.author_id)
         currentUser = await supabaseManager.getCurrentUser()
-        replies = await supabaseManager.getReplies(parentID: post.id)
+        replies = await supabaseManager.getReplies(parentID: submission.id)
     }
     
     func sendReply() async {
@@ -130,19 +121,19 @@ struct PostRepliesView: View {
             // Create Post in DB
             await supabaseManager.postSubmission(
                 author_id: currentUser.id,
-                parent_id: post.id,
+                parent_id: submission.id,
                 image: nil,
                 text: replyText)
             
             // Create Notification in DB
-            let isPost = post.parent_id == nil
+            let isPost = submission.parent_id == nil
             let message = "replied to your \(isPost ? "post" : "comment")!"
             let type = "comment"
             await supabaseManager.createNotification(
                 recipitentID: user.id,
                 senderID: currentUser.id,
                 type: type,
-                submissionID: post.id,
+                submissionID: submission.id,
                 message: message
             )
             
@@ -152,9 +143,8 @@ struct PostRepliesView: View {
     }
     
     func reloadSubmission() async {
-        if let updatedPost = await supabaseManager.getSubmission(submissionID: post.id) {
-            post = updatedPost
-            print(post.likes_count)
+        if let updatedPost = await supabaseManager.getSubmission(submissionID: submission.id) {
+            submission = updatedPost
         }
     }
     
@@ -163,13 +153,11 @@ struct PostRepliesView: View {
 }
 
 #Preview {
-    PostRepliesView(
-        post:
-            Submission(id: "1", 
+    RepliesView(
+        submission:
+            Submission(id: "1",
                        author_id: "1",
                        parent_id: nil,
-                       replies_count: 1,
-                       likes_count: 2,
                        image: "none",
                        text: "hello",
                        created_at: Date().formatted(.dateTime.year().month().day().hour().minute().second()),

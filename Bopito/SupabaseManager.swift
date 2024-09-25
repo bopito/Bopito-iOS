@@ -144,7 +144,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    
     func getNotifications() async -> [Notification]? {
         do {
             let currentUser = try await supabase.auth.session.user
@@ -221,8 +220,6 @@ class SupabaseManager: ObservableObject {
             id: UUID().uuidString,
             author_id: author_id,
             parent_id: parent_id,
-            replies_count: 0,
-            likes_count: 0,
             image: image,
             text: text,
             created_at: nil, //database can create this value
@@ -236,7 +233,6 @@ class SupabaseManager: ObservableObject {
             // make sure can get submission to like it
             if let parent_id = parent_id {
                 if let parentSubmission = await getSubmission(submissionID: parent_id) {
-                    parentSubmission.replies_count += 1
                     try await supabase
                         .from("submissions")
                         .upsert(parentSubmission)
@@ -274,8 +270,6 @@ class SupabaseManager: ObservableObject {
                 // If the submission has a parent, reduce the replies_count on it
                 if let parentID = submissionToDelete.parent_id {
                     if var parentSubmission = await getSubmission(submissionID: parentID) {
-                        // Decrement replies count on parent submission
-                        parentSubmission.replies_count = max(0, parentSubmission.replies_count - 1)
                         // Update the parent submission
                         try await supabase
                             .from("submissions")
@@ -298,83 +292,28 @@ class SupabaseManager: ObservableObject {
             print("Failed to delete submission. Error: \(error)")
         }
     }
+    
+    func getCommentsCount(parentID: String) async -> Int {
+        do {
+            let response = try await supabase
+                .from("submissions")
+                .select(count: .exact)
+                .eq("parent_id", value: parentID)
+                .execute()
+            if let count = response.count {
+                return count
+            } else {
+                return 0
+            }
+        } catch {
+            return 0
+        }
+    }
 
     
     //
-    // Like/Unlike a Submission
+    // Voting
     //
-    func isLiked(submissionID: String, userID: String) async -> Bool {
-        do {
-            try await supabase
-                .from("likes")
-                .select()
-                .eq("user_id", value: userID)
-                .eq("submission_id", value: submissionID)
-                .single()
-                .execute()
-                .value
-            return true
-        } catch {
-            return false
-        }
-    }
-    
-    func likeSubmission(submissionID: String, likerID: String, receiverID: String) async {
-        let like = Like(
-            id: UUID().uuidString,
-            submission_id: submissionID,
-            liker_id: likerID,
-            receiver_id: receiverID,
-            value: 1
-        )
-        do {
-            print("Trying to like submission...")
-            // make sure can get submission to like it
-            if let submission = await getSubmission(submissionID: submissionID) {
-                // update the submission with new like count
-                submission.likes_count += 1
-                try await supabase
-                    .from("submissions")
-                    .upsert(submission)
-                    .execute()
-                // add the like to "likes" table
-                try await supabase
-                    .from("likes")
-                    .insert(like)
-                    .execute()
-                print("Success - Submission liked!")
-            }
-        } catch {
-            print("Failure - Could not like submission ... Error: \(error.localizedDescription)")
-        }
-    }
-    
-    func unlikeSubmission(submissionID: String, userID: String) async {
-        do {
-            print("Trying to un-like submission...")
-            // make sure can get submission to like it
-            if let submission = await getSubmission(submissionID: submissionID) {
-                // update the submission with new like count
-                submission.likes_count -= 1
-                try await supabase
-                    .from("submissions")
-                    .upsert(submission)
-                    .execute()
-                try await supabase
-                    .from("likes")
-                    .delete()
-                    .eq("user_id", value: userID)
-                    .eq("submission_id", value: submissionID)
-                    .single()
-                    .execute()
-                print("Success - Submission unliked!")
-            }
-        } catch {
-            print("Failure - Could not unlike submission ... Error: \(error.localizedDescription)")
-        }
-    }
-    
-    
     func castVote(submissionID: String, likerID: String, receiverID: String, value: Int) async {
         do {
             let vote: Like = try await supabase
@@ -418,7 +357,6 @@ class SupabaseManager: ObservableObject {
         }
     }
  
-    
     func getUserVote(submissionID: String, userID: String) async -> Int {
         do {
             let vote: Like = try await supabase
@@ -456,7 +394,7 @@ class SupabaseManager: ObservableObject {
     
     
     //
-    // Follow/Unfollow a User
+    // Follow/Unfollow
     //
     func isFollowing(userID: String, followerID: String) async -> Bool {
         do {
@@ -544,9 +482,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    //
-    // Get Followers / Following
-    //
     func getFollowers(userID: String) async -> [Follow]? {
         do {
             let followers: [Follow] = try await supabase
@@ -585,6 +520,7 @@ class SupabaseManager: ObservableObject {
     // Home Feed
     //
     func getRecentPosts() async -> [Submission]? {
+        print("test")
         do {
 //            let response = try await supabase
 //                .from("submissions")
