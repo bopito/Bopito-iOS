@@ -35,7 +35,7 @@ struct HomeView: View {
                         LazyVStack(spacing: 0) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in
-                                    PostView(post: submission)
+                                    PostView2(post: submission)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Divider()
                                     //                                    Rectangle()
@@ -46,7 +46,7 @@ struct HomeView: View {
                             }
                         }
                         .padding(.bottom, 100) // Adding some space at the bottom
-                    }
+                    }.scrollIndicators(.hidden)
                 }
             }
             VStack {

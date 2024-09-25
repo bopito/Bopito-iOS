@@ -12,6 +12,7 @@ class User: Identifiable, Codable {
     var name: String?
     var followers_count: Int
     var following_count: Int
+    var verified: Bool
     
     init(id: String,
          email: String?,
@@ -21,7 +22,8 @@ class User: Identifiable, Codable {
          profile_picture: String,
          name: String?,
          followers_count: Int,
-         following_count: Int
+         following_count: Int,
+         verified: Bool
     ) {
         self.id = id
         self.email = email
@@ -32,6 +34,7 @@ class User: Identifiable, Codable {
         self.name = name
         self.followers_count = followers_count
         self.following_count = following_count
+        self.verified = verified
     }
 }
 

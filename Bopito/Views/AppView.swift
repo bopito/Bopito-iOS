@@ -24,7 +24,7 @@ struct AppView: View {
                 .padding(5)
                 .tag(TabSelection.home)
             
-            PostFullView()
+            EarnView()
                 .tabItem {
                     Label("", systemImage: "bitcoinsign.circle")
                 }

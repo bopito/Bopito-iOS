@@ -238,7 +238,9 @@ struct PostView: View {
             if !isLiked {
                 // like it if not
                 await supabaseManager.likeSubmission(submissionID: post.id,
-                                                     userID: currentUser.id)
+                                                     likerID: currentUser.id,
+                                                     receiverID: post.author_id
+                )
                 // Create Notification in DB
                 let isPost = post.parent_id == nil
                 let message = "liked your \(isPost ? "post" : "comment")!"

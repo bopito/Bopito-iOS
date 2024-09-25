@@ -100,7 +100,8 @@ class SupabaseManager: ObservableObject {
                          profile_picture: "https://api.dicebear.com/9.x/bottts-neutral/jpeg?seed=\(RandomGeneratorTool.shared.randomAlphaNumericString(length: 5))",
                          name: nil,
                          followers_count: 0,
-                         following_count: 0
+                         following_count: 0,
+                         verified: false
                         )
                 )
                 .execute()
@@ -318,11 +319,13 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func likeSubmission(submissionID: String, userID: String) async {
+    func likeSubmission(submissionID: String, likerID: String, receiverID: String) async {
         let like = Like(
             id: UUID().uuidString,
             submission_id: submissionID,
-            user_id: userID
+            liker_id: likerID,
+            receiver_id: receiverID,
+            value: 1
         )
         do {
             print("Trying to like submission...")
@@ -350,7 +353,7 @@ class SupabaseManager: ObservableObject {
         do {
             print("Trying to un-like submission...")
             // make sure can get submission to like it
-            if let submission = await getSubmission(submissionID: submissionID) { 
+            if let submission = await getSubmission(submissionID: submissionID) {
                 // update the submission with new like count
                 submission.likes_count -= 1
                 try await supabase
@@ -368,6 +371,86 @@ class SupabaseManager: ObservableObject {
             }
         } catch {
             print("Failure - Could not unlike submission ... Error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func castVote(submissionID: String, likerID: String, receiverID: String, value: Int) async {
+        do {
+            let vote: Like = try await supabase
+                .from("likes")
+                .select()
+                .eq("liker_id", value: likerID)
+                .eq("submission_id", value: submissionID)
+                .single()
+                .execute()
+                .value
+            print("old vote value: \(vote.value)")
+            vote.value = value
+            print("new vote value: \(vote.value)")
+            do {
+                try await supabase
+                    .from("likes")
+                    .upsert(vote)
+                    .execute()
+            } catch {
+                print("Failed to replace Vote in DB: \(error.localizedDescription)")
+            }
+        } catch {
+            print("Vote not found: \(error.localizedDescription)")
+            print("Creating new Vote")
+            let vote = Like(
+                id: UUID().uuidString,
+                submission_id: submissionID,
+                liker_id: likerID,
+                receiver_id: receiverID,
+                value: value)
+            print("creating new vote with: \(vote.value)")
+            do {
+                try await supabase
+                    .from("likes")
+                    .upsert(vote)
+                    .execute()
+            } catch {
+                print("Failed to add Vote to DB: \(error.localizedDescription)")
+            }
+            
+        }
+    }
+ 
+    
+    func getUserVote(submissionID: String, userID: String) async -> Int {
+        do {
+            let vote: Like = try await supabase
+                .from("likes")
+                .select()
+                .eq("submission_id", value: submissionID)
+                .eq("liker_id", value: userID)
+                .single()
+                .execute()
+                .value
+            return vote.value
+        } catch {
+            print("Failed to get Vote from DB: \(error.localizedDescription)")
+            return 0
+        }
+    }
+    
+    func getSubmissionVotesCount(submissionID: String, value: Int) async -> Int {
+        do {
+            let response = try await supabase
+                .from("likes")
+                .select(count: .exact)
+                .eq("submission_id", value: submissionID)
+                .eq("value", value: value)
+                .execute()
+            if let count = response.count {
+                return count
+            } else {
+                return 0
+            }
+        } catch {
+            return 0
         }
     }
     

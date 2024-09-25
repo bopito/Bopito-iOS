@@ -43,8 +43,9 @@
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
-		E69453732C9BE9FA00F799E6 /* PostFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* PostFullView.swift */; };
+		E69453732C9BE9FA00F799E6 /* PostView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* PostView2.swift */; };
 		E69453752C9CBB1400F799E6 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453742C9CBB1400F799E6 /* Version.swift */; };
+		E69453782CA338F300F799E6 /* BoostsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453772CA338F300F799E6 /* BoostsSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,8 +99,9 @@
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		E69453722C9BE9FA00F799E6 /* PostFullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFullView.swift; sourceTree = "<group>"; };
+		E69453722C9BE9FA00F799E6 /* PostView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView2.swift; sourceTree = "<group>"; };
 		E69453742C9CBB1400F799E6 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		E69453772CA338F300F799E6 /* BoostsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostsSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,16 +206,17 @@
 		E60DDB002C8A4B2500FBBD36 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E60DDB252C92559A00FBBD36 /* Auth */,
 				E60DDB012C8A4B3400FBBD36 /* AppView.swift */,
 				E60DDB262C92988E00FBBD36 /* EarnView.swift */,
 				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
+				E69453772CA338F300F799E6 /* BoostsSheetView.swift */,
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
-				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB092C8A4B8E00FBBD36 /* PostView.swift */,
-				E69453722C9BE9FA00F799E6 /* PostFullView.swift */,
+				E69453722C9BE9FA00F799E6 /* PostView2.swift */,
 				E60DDB062C8A4B8E00FBBD36 /* PostRepliesView.swift */,
 				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
+				E60DDB252C92559A00FBBD36 /* Auth */,
+				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB2A2C935FE600FBBD36 /* Profile */,
 			);
 			path = Views;
@@ -423,11 +426,12 @@
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
 				E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */,
 				E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */,
+				E69453782CA338F300F799E6 /* BoostsSheetView.swift in Sources */,
 				E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */,
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
-				E69453732C9BE9FA00F799E6 /* PostFullView.swift in Sources */,
+				E69453732C9BE9FA00F799E6 /* PostView2.swift in Sources */,
 				E60DDB0E2C8A4B8E00FBBD36 /* PostRepliesView.swift in Sources */,
 				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
 				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
@@ -605,17 +609,19 @@
 				DEVELOPMENT_TEAM = D2495MYV67;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Bopito;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.HansHeidmann.Bopito;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -635,17 +641,19 @@
 				DEVELOPMENT_TEAM = D2495MYV67;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Bopito;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.HansHeidmann.Bopito;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

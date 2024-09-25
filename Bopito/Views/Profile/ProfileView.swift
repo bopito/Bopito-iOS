@@ -185,7 +185,7 @@ struct ProfileView: View {
                     }
                     .padding(.bottom, 40)
                     
-                }
+                }.scrollIndicators(.hidden)
             } else {
                 Spacer()
             }
