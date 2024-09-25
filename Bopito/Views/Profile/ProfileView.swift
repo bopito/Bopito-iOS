@@ -7,6 +7,7 @@ struct ProfileView: View {
     
     @State var posts: [Submission]?
     @State var user: User?
+    @State var currentUser: User?
     
     @State var isCurrentUsersProfile: Bool = false
     @State var isFollowing: Bool = false
@@ -112,20 +113,7 @@ struct ProfileView: View {
                     .padding(.bottom, 10)
                     
                 } else {
-                    Button(action: {
-                        Task {
-                            await followPressed()
-                        }
-                    }) {
-                        Text(isFollowing ? "Following" : "Follow")
-                            .font(.subheadline)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 20)
-                            .background(isFollowing ? Color.blue : Color(uiColor: .systemGray5))
-                            .foregroundColor(isFollowing ? .white : .primary)
-                            .cornerRadius(10)
-                    }
-                    .padding(.bottom, 10)
+                    FollowButtonView(user: user, currentUser: currentUser)
                 }
                 
                 
@@ -135,42 +123,7 @@ struct ProfileView: View {
                 ProgressView()
             }
             
-            // Buttons in an HStack
-//            HStack(spacing: 1) {
-//                Button(action: {
-//                    // Action for the "Posts" button
-//                    print("Posts button tapped")
-//                }) {
-//                    Text("Posts")
-//                        .font(.title3)
-//                        .foregroundColor(.primary)
-//                        .frame(maxWidth: .infinity) // Make the button take up all available width
-//                        .padding()
-//                        .background(Color.gray)
-//                }
-//                Button(action: {
-//                    // Action for the "Comments" button
-//                    print("Comments button tapped")
-//                }) {
-//                    Text("Comments")
-//                        .font(.title3)
-//                        .foregroundColor(.primary)
-//                        .frame(maxWidth: .infinity) // Make the button take up all available width
-//                        .padding()
-//                }
-//                
-//                Button(action: {
-//                    // Action for the "Likes" button
-//                    print("Likes button tapped")
-//                }) {
-//                    Text("Likes")
-//                        .font(.title3)
-//                        .foregroundColor(.primary)
-//                        .frame(maxWidth: .infinity) // Make the button take up all available width
-//                        .padding()
-//                }
-//            }
-//            .frame(width: UIScreen.main.bounds.width) // Ensure HStack takes up full width
+            
   
             if let posts = posts {
                 ScrollView {
@@ -218,21 +171,23 @@ struct ProfileView: View {
         if user == nil {
             // show currentUser's account if not instantiated with another User
             user = await supabaseManager.getCurrentUser()
+            currentUser = await supabaseManager.getCurrentUser()
             isCurrentUsersProfile = true
         } else {
-            // get the current info for the account being viewed
-            if let userAccount = user {
-                user = await supabaseManager.getUserByID(id: userAccount.id)
-                // check if following to update state
-                if let currentUser = await supabaseManager.getCurrentUser() {
-                    isFollowing = await supabaseManager.isFollowing(userID: userAccount.id, followerID: currentUser.id)
-                    if userAccount.id == currentUser.id {
-                        isCurrentUsersProfile = true
-                    } else {
-                        isCurrentUsersProfile = false
-                    }
+            currentUser = await supabaseManager.getCurrentUser()
+            
+            if let reloadUser = user {
+                user = await supabaseManager.getUserByID(id: reloadUser.id)
+            }
+            
+            if let user = user, let currentUser = currentUser {
+                if user.id == currentUser.id {
+                    isCurrentUsersProfile = true
+                } else {
+                    isCurrentUsersProfile = false
                 }
             }
+            
         }
         
         // Load user posts
@@ -241,39 +196,7 @@ struct ProfileView: View {
         }
     }
     
-    func followPressed() async {
-        // get current user
-        if let userToFollow = user {
-            if let currentUser = await supabaseManager.getCurrentUser() {
-                // update @State for isLiked
-                isFollowing = await supabaseManager.isFollowing(userID: userToFollow.id, followerID: currentUser.id)
-                // check if liked
-                if !isFollowing {
-                    // follow
-                    await supabaseManager.followUser(userID: userToFollow.id)
-                    // Create Notification in DB
-       
-                    let message = "started following you!"
-                    let type = "follow"
-                    await supabaseManager.createNotification(
-                        recipitentID: userToFollow.id,
-                        senderID: currentUser.id,
-                        type: type,
-                        submissionID: nil,
-                        message: message
-                    )
-                } else {
-                    // otherwise unfollow
-                    await supabaseManager.unfollowUser(userID: userToFollow.id)
-                }
-                // update @State for isLiked
-                isFollowing = await supabaseManager.isFollowing(userID: userToFollow.id, followerID: currentUser.id)
-                
-                user = await supabaseManager.getUserByID(id: userToFollow.id)
-            }
-        }
-        
-    }
+    
 }
 
 #Preview {

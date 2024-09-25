@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 enum ActiveSheet: Identifiable {
-    case shares, replies, boosts, dislikes, likes, profile
+    case shares, replies, boosts, voters, profile
 
     var id: Int {
         hashValue
@@ -51,6 +51,9 @@ struct SubmissionView: View {
                     ProfilePictureView(profilePictureURL: user.profile_picture)
                         .frame(width: 35, height: 35)
                         .padding(.top, 5)
+                        .onTapGesture {
+                            activeSheet = .profile
+                        }
                 } else {
                     
                     Image(systemName: "person.crop.circle.fill")
@@ -63,6 +66,9 @@ struct SubmissionView: View {
                     HStack {
                         if let user = user {
                             Text("@\(user.username)")
+                                .onTapGesture {
+                                    activeSheet = .profile
+                                }
                             if user.verified == true {
                                 Image(systemName: "checkmark.seal.fill")
                                     .foregroundColor(.blue)
@@ -164,14 +170,7 @@ struct SubmissionView: View {
                 // Thumbs Down
                 //
                 Button(action: {
-                    Task {
-                        if (voteValue >= 0) {
-                            await votePressed(value: -1)
-                        } else {
-                            await votePressed(value: 0)
-                        }
-                    }
-                    
+                    // No action here, using gestures instead
                 }) {
                     Image("thumb")
                         .renderingMode(.template)
@@ -187,8 +186,8 @@ struct SubmissionView: View {
                         .onEnded {
                             // Short press (tap) action for voting
                             Task {
-                                if (voteValue <= 0) {
-                                    await votePressed(value: 1)
+                                if (voteValue >= 0) {
+                                    await votePressed(value: -1)
                                 } else {
                                     await votePressed(value: 0)
                                 }
@@ -199,7 +198,7 @@ struct SubmissionView: View {
                     LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
                         .onEnded { _ in
                             // Long press action to open the sheet
-                            activeSheet = .dislikes
+                            activeSheet = .voters
                         }
                 )
                 
@@ -238,7 +237,7 @@ struct SubmissionView: View {
                     LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
                         .onEnded { _ in
                             // Long press action to open the sheet
-                            activeSheet = .likes
+                            activeSheet = .voters
                         }
                 )
                 
@@ -255,12 +254,10 @@ struct SubmissionView: View {
                     RepliesView(submission: submission)
                 case .boosts:
                     Text("Boosts") // Replace with your Delete Alert
-                case .dislikes:
-                    Text("Dislikes") // Replace with your Report Alert
-                case .likes:
-                    Text("Likes")
+                case .voters:
+                    VotersView(submissionID: submission.id)
                 case .profile:
-                    Text("Profile")
+                    ProfileView(user: user)
             }
         }
         .task {
@@ -276,11 +273,15 @@ struct SubmissionView: View {
     
     
     func load() async {
-        // load user who made the post
-        user = await supabaseManager.getUserByID(id: submission.author_id)
+        if user == nil || currentUser == nil {
+      
+            // load user who made the post
+            user = await supabaseManager.getUserByID(id: submission.author_id)
+            
+            // get current user to see if they've liked it
+            currentUser = await supabaseManager.getCurrentUser()
+        }
         
-        // get current user to see if they've liked it
-        currentUser = await supabaseManager.getCurrentUser()
         
         
         if let currentUser = currentUser {

@@ -40,6 +40,9 @@
 		E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */; };
 		E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */; };
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
+		E664647F2CA480AE0083C1D4 /* VotersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E664647E2CA480AE0083C1D4 /* VotersView.swift */; };
+		E66464812CA481CC0083C1D4 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464802CA481CC0083C1D4 /* VoteView.swift */; };
+		E66464832CA4889D0083C1D4 /* FollowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464822CA4889D0083C1D4 /* FollowButtonView.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
 		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
@@ -95,6 +98,9 @@
 		E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsTabView.swift; sourceTree = "<group>"; };
 		E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
+		E664647E2CA480AE0083C1D4 /* VotersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotersView.swift; sourceTree = "<group>"; };
+		E66464802CA481CC0083C1D4 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
+		E66464822CA4889D0083C1D4 /* FollowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButtonView.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
@@ -251,6 +257,7 @@
 				E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */,
 				E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */,
 				E60DDB2F2C93635C00FBBD36 /* FollowView.swift */,
+				E66464822CA4889D0083C1D4 /* FollowButtonView.swift */,
 				E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */,
 				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
 				E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */,
@@ -263,6 +270,8 @@
 			children = (
 				E69453722C9BE9FA00F799E6 /* SubmissionView.swift */,
 				E60DDB062C8A4B8E00FBBD36 /* RepliesView.swift */,
+				E664647E2CA480AE0083C1D4 /* VotersView.swift */,
+				E66464802CA481CC0083C1D4 /* VoteView.swift */,
 				E69453772CA338F300F799E6 /* BoostsSheetView.swift */,
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
 			);
@@ -420,6 +429,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E60DDB122C8A4B8E00FBBD36 /* ProfileView.swift in Sources */,
+				E66464832CA4889D0083C1D4 /* FollowButtonView.swift in Sources */,
+				E664647F2CA480AE0083C1D4 /* VotersView.swift in Sources */,
 				E69453752C9CBB1400F799E6 /* Version.swift in Sources */,
 				E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */,
 				E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */,
@@ -440,6 +451,7 @@
 				E60DDB0E2C8A4B8E00FBBD36 /* RepliesView.swift in Sources */,
 				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
 				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
+				E66464812CA481CC0083C1D4 /* VoteView.swift in Sources */,
 				E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */,
 				E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */,
 				E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */,

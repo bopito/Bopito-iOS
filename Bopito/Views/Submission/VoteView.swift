@@ -1,22 +1,21 @@
 //
-//  FollowView.swift
+//  VoteView.swift
 //  Bopito
 //
-//  Created by Hans Heidmann on 9/12/24.
+//  Created by Hans Heidmann on 9/25/24.
 //
 
 import SwiftUI
 
-struct FollowView: View {
+struct VoteView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
-     
-    @State var follow: Follow?
+    
+    @State var vote: Like?
     @State var user: User?
     @State var currentUser: User?
-    @State var type: String?
     
-    @State var isShowingProfile = false
+    @State var isShowingProfile: Bool = false
     
     var body: some View {
         HStack {
@@ -45,6 +44,23 @@ struct FollowView: View {
             
             Spacer()
             
+            if let vote = vote {
+                Image("thumb")
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: 19, height: 19)
+                    .foregroundColor(vote.value > 0 ? .blue : .red)
+            } else {
+                // placeholder
+                Image("thumb")
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: 19, height: 19)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
             FollowButtonView(user: user, currentUser: currentUser)
             
         }
@@ -65,20 +81,16 @@ struct FollowView: View {
         }
     }
     
+    
     func load() async {
-        if let follow = follow {
-            if type == "followers" {
-                user = await supabaseManager.getUserByID(id: follow.follower_id)
-            } else if type == "following" {
-                user = await supabaseManager.getUserByID(id: follow.user_id)
-            }
-            
-            
+        // if vote get user
+        if let vote = vote {
+            user = await supabaseManager.getUserByID(id: vote.liker_id)
+            currentUser = await supabaseManager.getCurrentUser()
         }
-        
     }
 }
 
 #Preview {
-    FollowView()
+    VoteView()
 }

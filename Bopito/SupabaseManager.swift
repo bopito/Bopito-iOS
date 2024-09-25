@@ -369,7 +369,6 @@ class SupabaseManager: ObservableObject {
                 .value
             return vote.value
         } catch {
-            print("Failed to get Vote from DB: \(error.localizedDescription)")
             return 0
         }
     }
@@ -389,6 +388,23 @@ class SupabaseManager: ObservableObject {
             }
         } catch {
             return 0
+        }
+    }
+    
+    func getSubmissionVotes(parentID: String) async -> [Like]? {
+        do {
+            let votes: [Like] = try await supabase
+                .from("likes")
+                .select()
+                .eq("submission_id", value: parentID)
+                .neq("value", value: 0)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            return votes
+        } catch {
+            print("Failure - Could not get votes ... Error: \(error.localizedDescription)")
+            return nil
         }
     }
     
@@ -520,7 +536,6 @@ class SupabaseManager: ObservableObject {
     // Home Feed
     //
     func getRecentPosts() async -> [Submission]? {
-        print("test")
         do {
 //            let response = try await supabase
 //                .from("submissions")
