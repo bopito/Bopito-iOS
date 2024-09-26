@@ -20,8 +20,11 @@ struct HomeView: View {
     @State private var error: Error?
     
     var body: some View {
+        
         ZStack {
             VStack {
+                Text("Recent Posts")
+                    .font(.title)
                 if isLoading {
                     ProgressView()
                 } else if let error = error {
@@ -29,9 +32,7 @@ struct HomeView: View {
                         .foregroundColor(.red)
                 } else {
                     ScrollView {
-                        Text("Recent Posts")
-                            .font(.title2)
-                            .padding()
+                        
                         LazyVStack(spacing: 0) {
                             if let submissions = submissions {
                                 ForEach(submissions) { submission in

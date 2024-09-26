@@ -113,6 +113,7 @@ struct SubmissionView: View {
             
             
             HStack {
+                
                 // Share Submission
                 HStack {
                     Button(action: {
@@ -127,8 +128,7 @@ struct SubmissionView: View {
                         Text("\(sharesCount)")
                             .foregroundColor(.primary)
                     }
-                }.padding(.leading, 0)
-                
+                }
                 
                 Spacer()
                 
@@ -141,7 +141,7 @@ struct SubmissionView: View {
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 18, height: 18)
-                            .foregroundColor(commentsCount > 0 ? .gray : .secondary)
+                            .foregroundColor(commentsCount > 0 ? .green : .secondary)
                         Text("\(commentsCount)")
                             .foregroundColor(.primary)
                     }
@@ -158,17 +158,15 @@ struct SubmissionView: View {
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 19, height: 19)
-                            .foregroundColor(boostsCount > 0 ? .gray : .secondary)
+                            .foregroundColor(boostsCount > 0 ? .yellow : .secondary)
                         Text("\(boostsCount)")
                             .foregroundColor(.primary)
                     }
                 }
-                
+                 
                 Spacer()
-                
-                //
+
                 // Thumbs Down
-                //
                 Button(action: {
                     // No action here, using gestures instead
                 }) {
@@ -204,9 +202,7 @@ struct SubmissionView: View {
                 
                 Spacer()
                 
-                //
                 // Thumbs Up
-                //
                 Button(action: {
                     // No action here, using gestures instead
                 }) {
@@ -249,7 +245,7 @@ struct SubmissionView: View {
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
                 case .shares:
-                    Text("Shares") // Replace with your Account ViewTe
+                    SharesView()
                 case .replies:
                     RepliesView(submission: submission)
                 case .boosts:
@@ -305,6 +301,11 @@ struct SubmissionView: View {
         // Get Comments Count
         commentsCount = await supabaseManager.getCommentsCount(
             parentID: submission.id
+        )
+        
+        // Get Boosts Count
+        boostsCount = await supabaseManager.getBoostsCount(
+            submissionID: submission.id
         )
         
         

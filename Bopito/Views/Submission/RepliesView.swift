@@ -22,9 +22,14 @@ struct RepliesView: View {
     var body: some View {
         ZStack {
             VStack {
+                Capsule()
+                        .fill(Color.secondary)
+                        .opacity(0.5)
+                        .frame(width: 50, height: 5)
+                        .padding(.top, 20)
+                
                 Text("Replies")
                     .font(.title2)
-                    .padding()
 
                 ScrollView {
                     LazyVStack(spacing: 0) {
@@ -55,7 +60,7 @@ struct RepliesView: View {
                 
                 Divider()
 
-                HStack {
+                HStack (spacing:0) {
                     if let currentUser = currentUser {
                         ProfilePictureView(profilePictureURL: currentUser.profile_picture)
                             .frame(width: 60, height: 60)
@@ -66,7 +71,7 @@ struct RepliesView: View {
                     
                     
                     TextField("Add a comment...", text: $replyText)
-                        .padding(.leading)
+                        .padding(.leading, 8)
                         .padding(7)
                         .background(Color(.systemGray6))
                         .cornerRadius(20)
@@ -81,7 +86,12 @@ struct RepliesView: View {
                         }
                     }) {
                         Text("Send")
-                            .padding(.trailing)
+                            //.padding(.trailing)
+                            .padding(15)
+                            .foregroundColor(.white)
+                            .background(.blue)
+                            .cornerRadius(30)
+                            
                     }
                 }
                 .padding()

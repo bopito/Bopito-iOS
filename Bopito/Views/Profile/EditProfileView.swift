@@ -33,8 +33,10 @@ struct EditProfileView: View {
                 Button(action: {
                     // Handle edit picture action
                 }) {
+                    /*
                     Text("Change Picture")
                         .font(.headline)
+                     */
                 }
                 
                 Divider()

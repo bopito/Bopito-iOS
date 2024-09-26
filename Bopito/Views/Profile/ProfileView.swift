@@ -27,7 +27,7 @@ struct ProfileView: View {
                 }) {
                     Image(systemName :"gearshape")
                         .font(.system(size: 30))
-                        .foregroundColor(.black)
+                        .foregroundColor(.secondary)
                 }
                 .padding(.top, 10)
                 .padding(.trailing, 10)
@@ -109,7 +109,7 @@ struct ProfileView: View {
                             .font(.subheadline)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 20)
-                            .background(Color.mint)
+                            .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)  // Adjust this value for more or less rounded corners
                     }

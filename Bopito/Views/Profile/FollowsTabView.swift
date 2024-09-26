@@ -22,8 +22,10 @@ struct FollowsTabView: View {
         VStack {
             if selectedTab == 0 {
                 Text("Followers")
+                    .font(.title)
             } else {
                 Text("Following")
+                    .font(.title)
             }
             
             TabView(selection: $selectedTab) {

@@ -27,9 +27,14 @@ struct BoostsView: View {
     
     var body: some View {
         VStack {
+            Capsule()
+                    .fill(Color.secondary)
+                    .opacity(0.5)
+                    .frame(width: 50, height: 5)
+                    .padding(.top, 20)
             
             Text("Battle")
-                .font(.title)
+                .font(.title2)
             
             HStack {
                 // Chart

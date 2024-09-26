@@ -35,23 +35,57 @@ struct ContentView: View {
                     AppView() // Show app content when authenticated
                 } else {
                     VStack {
+                        
+                        Spacer()
+                        
+                        Image("bopito-logo")
+                            .resizable()
+                            .frame(width: 128, height: 128)
+                            .padding(100)
+                        
                         Button(action: {
                             Task {
                                 await supabaseManager.signInAnonymously()
                             }
                         }) {
-                            Text("Join Anonymously")
+                            Text("Let's Go!")
                                 .font(.headline)
-                                .padding()
+                                .padding(.horizontal, 15)
+                                .padding(.vertical, 10)
                                 .background(Color.blue)
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
-                            
                         }
                         
+                        Spacer()
+                        
+                        VStack {
+                            Text("By continuing, you agree to Bopito's ")
+                                .font(.caption)
+                            +
+                            Text("[Terms of Service](https://bopito.com/privacy-policy)")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                            +
+                            Text(" and confirm that you have read and understand the ")
+                                .font(.caption)
+                            +
+                            Text("[Privacy Policy](https://bopito.com/privacy-policy)")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                            +
+                            Text(".")
+                                .font(.caption)
+                        }
+                        .padding(40)
+                        
                     }
+                    
+                    
                 }
             }
+            
+           
         }
         .onAppear {
             Task {

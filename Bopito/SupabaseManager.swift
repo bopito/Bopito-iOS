@@ -454,6 +454,23 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func getBoostsCount(submissionID: String) async -> Int {
+        do {
+            let response = try await supabase
+                .from("boosts")
+                .select(count: .exact)
+                .eq("submission_id", value: submissionID)
+                .execute()
+            if let count = response.count {
+                return count
+            } else {
+                return 0
+            }
+        } catch {
+            return 0
+        }
+    }
+    
     
     //
     // Follow/Unfollow
