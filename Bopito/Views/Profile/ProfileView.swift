@@ -50,9 +50,12 @@ struct ProfileView: View {
                     .padding(.bottom, 10)
                 
                 // bio
-                Text("\(user.bio ?? "")")
-                    .font(.callout)
-                    .padding(.bottom, 10)
+                if let bio = user.bio {
+                    Text(bio)
+                        .font(.callout)
+                        .padding(.bottom, 10)
+                }
+                
                 
                 // followers/following
                 HStack {
@@ -106,14 +109,15 @@ struct ProfileView: View {
                             .font(.subheadline)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 20)
-                            .background(Color(uiColor: .systemGray5))
-                            .foregroundColor(.primary)
+                            .background(Color.mint)
+                            .foregroundColor(.white)
                             .cornerRadius(10)  // Adjust this value for more or less rounded corners
                     }
                     .padding(.bottom, 10)
                     
                 } else {
                     FollowButtonView(user: user, currentUser: currentUser)
+                        .padding(.bottom, 10)
                 }
                 
                 

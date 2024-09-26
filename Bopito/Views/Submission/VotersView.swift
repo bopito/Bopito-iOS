@@ -44,4 +44,5 @@ struct VotersView: View {
 
 #Preview {
     VotersView()
+        .environmentObject(SupabaseManager())
 }

@@ -11,47 +11,53 @@ struct FollowButtonView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
+    @State var voterID: String?
+    
     @State var user: User?
     @State var currentUser: User?
     
-    @State var isCurrentUser: Bool = false
+    @State var isCurrentUser: Bool = true
     
     @State var isFollowing: Bool = false
     
     var body: some View {
-        if !isCurrentUser {
-            Button(action: {
-                Task {
-                    await followPressed()
-                }
-            }) {
+        
+        Button(action: {
+            Task {
+                await followPressed()
+            }
+        }) {
+            if !isCurrentUser {
                 Text(isFollowing ? "Following" : "Follow")
                     .font(.subheadline)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 20)
                     .background(isFollowing ? Color.secondary : Color.blue)
-                    .foregroundColor(isFollowing ? .primary : .white)
+                    .foregroundColor(isFollowing ? .white : .white)
                     .cornerRadius(10)
             }
-            .padding(.bottom, 10)
-            .task {
-                await load()
-            }
+        }
+        .task {
+            await load()
         }
     }
     
     
+    
     func load() async {
+        currentUser = await supabaseManager.getCurrentUser()
         
-        print(user?.id ?? nil, "   ", currentUser?.id ?? nil)
-        if let user = user, let currentUser = currentUser {
-            if user.id == currentUser.id {
+        if let userRef = user, let currentUserRef = currentUser {
+            
+            if userRef.id == currentUserRef.id {
                 isCurrentUser = true
+            } else {
+                isCurrentUser = false
             }
             
             isFollowing = await supabaseManager.isFollowing(
-                userID: user.id,
-                followerID: currentUser.id)
+                userID: userRef.id,
+                followerID: currentUserRef.id)
         }
         
     }
@@ -93,4 +99,5 @@ struct FollowButtonView: View {
 
 #Preview {
     FollowButtonView()
+        .environmentObject(SupabaseManager())
 }

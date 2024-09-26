@@ -19,6 +19,13 @@ class DateTimeTool {
         return isoFormatter.date(from: supabaseTimestamp+"Z")
     }
     
+    func convertSwiftDateToSupabaseString(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX" // ISO 8601 format with timezone
+        formatter.timeZone = TimeZone(secondsFromGMT: 0) // Ensuring UTC timezone
+        return formatter.string(from: date)
+    }
+    
     func timeAgo(from date: Date) -> String {
         let now = Date()
         let timeInterval = now.timeIntervalSince(date)
@@ -31,7 +38,7 @@ class DateTimeTool {
         
         if minutes < 60 {
             return "\(Int(minutes))m"
-        } else if hours < 25 {
+        } else if hours < 24 {
             return "\(Int(hours))h"
         } else {
             return "\(Int(days))d"

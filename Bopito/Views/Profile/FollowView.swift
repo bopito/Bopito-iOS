@@ -45,7 +45,9 @@ struct FollowView: View {
             
             Spacer()
             
-            FollowButtonView(user: user, currentUser: currentUser)
+            if let user = user {
+                FollowButtonView(user: user)
+            }
             
         }
         .padding(10)
@@ -72,8 +74,6 @@ struct FollowView: View {
             } else if type == "following" {
                 user = await supabaseManager.getUserByID(id: follow.user_id)
             }
-            
-            
         }
         
     }
@@ -81,4 +81,6 @@ struct FollowView: View {
 
 #Preview {
     FollowView()
+        .environmentObject(SupabaseManager())
 }
+

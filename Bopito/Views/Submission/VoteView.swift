@@ -93,4 +93,5 @@ struct VoteView: View {
 
 #Preview {
     VoteView()
+        .environmentObject(SupabaseManager())
 }

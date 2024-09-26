@@ -253,7 +253,7 @@ struct SubmissionView: View {
                 case .replies:
                     RepliesView(submission: submission)
                 case .boosts:
-                    Text("Boosts") // Replace with your Delete Alert
+                    BoostsView(submission: submission)
                 case .voters:
                     VotersView(submissionID: submission.id)
                 case .profile:

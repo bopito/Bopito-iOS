@@ -408,6 +408,52 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    //
+    // Boosts
+    //
+    func applyBoost(price: Int, time: Int, value:Int, category: String, submissionID: String, userID: String) async {
+        // Add the time (in seconds) to the current date
+        let expirationDate = DateTimeTool.shared.convertSwiftDateToSupabaseString(
+            date: Date().addingTimeInterval(TimeInterval(time))
+        )
+        let boost: Boost = Boost(
+            id: UUID().uuidString,
+            expires_at: expirationDate,
+            value: value,
+            submission_id: submissionID,
+            user_id: userID,
+            live: true,
+            price: price,
+            time: time,
+            category: category
+        )
+        do {
+            print("NOTE - Maybe change to UPSERT so Boost can't be abused by people with more money?")
+            try await supabase
+                .from("boosts")
+                .insert(boost)
+                .execute()
+        } catch {
+            print("Failed to add Boost: \(error.localizedDescription)")
+        }
+    }
+    
+    func getBoosts(submissionID: String) async -> [Boost]? {
+        do {
+            let boosts: [Boost] = try await supabase
+                .from("boosts")
+                .select()
+                .eq("submission_id", value: submissionID)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            return boosts
+        } catch {
+            print("Failure - Could not get boosts ... Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     
     //
     // Follow/Unfollow
