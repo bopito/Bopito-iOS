@@ -88,7 +88,7 @@ class SupabaseManager: ObservableObject {
     private func createUserInDatabase(userId: String) async {
         do {
             print("creating acccount in supabase")
-            let randomUsername = "user\(Int.random(in: 1000...9999))"
+            let randomUsername = "user\(Int.random(in: 100000...999999))"
             try await supabase
                 .from("users")
                 .upsert(
@@ -245,6 +245,69 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func getAllSubmissions(feedFilter: String) async -> [Submission]? {
+        do {
+            // let type = // need to check if
+            var order = "created_at"
+            if feedFilter == "New" {
+                order = "created_at"
+            } else if feedFilter == "Hot" {
+                order = "created_at"
+            }
+            else if feedFilter == "Top" {
+                
+            }
+            let submissions: [Submission] = try await supabase
+                .from("submissions")
+                .select()
+                .is("parent_id", value: nil)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            
+            return submissions
+            
+        } catch {
+            print("Failed to get user by ID. Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func getReplies(parentID: String) async -> [Submission]? {
+        do {
+            let submissions: [Submission] = try await supabase
+                        .from("submissions")
+                        .select()
+                        .eq("parent_id", value: parentID)
+                        .order("created_at", ascending: false)
+                        .execute()
+                        .value
+            return submissions
+            
+        } catch {
+            print("Failed to get replies for post with id:\(parentID) ... Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func getUserSubmissions(userID: String) async -> [Submission]? {
+        do {
+            let submissions: [Submission] = try await supabase
+                        .from("submissions")
+                        .select()
+                        .is("parent_id", value: nil)
+                        .eq("author_id", value: userID)
+                        .order("created_at", ascending: false)
+                        .execute()
+                        .value
+            return submissions
+            
+        } catch {
+            print("Failed to get posts for user with id:\(userID) ... Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     func getSubmission(submissionID: String) async -> Submission? {
         do {
             let submission: Submission = try await supabase
@@ -269,7 +332,7 @@ class SupabaseManager: ObservableObject {
             if let submissionToDelete = await getSubmission(submissionID: submissionID) {
                 // If the submission has a parent, reduce the replies_count on it
                 if let parentID = submissionToDelete.parent_id {
-                    if var parentSubmission = await getSubmission(submissionID: parentID) {
+                    if let parentSubmission = await getSubmission(submissionID: parentID) {
                         // Update the parent submission
                         try await supabase
                             .from("submissions")
@@ -460,6 +523,7 @@ class SupabaseManager: ObservableObject {
                 .from("boosts")
                 .select(count: .exact)
                 .eq("submission_id", value: submissionID)
+                .eq("live", value: true)
                 .execute()
             if let count = response.count {
                 return count
@@ -595,70 +659,6 @@ class SupabaseManager: ObservableObject {
     
     
     
-    //
-    // Home Feed
-    //
-    func getRecentPosts() async -> [Submission]? {
-        do {
-//            let response = try await supabase
-//                .from("submissions")
-//                .select()
-//                .execute()
-            //print(response.string())
-            
-            let submissions: [Submission] = try await supabase
-                .from("submissions")
-                .select()
-                .is("parent_id", value: nil)
-                .order("created_at", ascending: false)
-                .execute()
-                .value
-            
-            return submissions
-            
-        } catch {
-            print("Failed to get user by ID. Error: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
-    func getReplies(parentID: String) async -> [Submission]? {
-        do {
-            let submissions: [Submission] = try await supabase
-                        .from("submissions")
-                        .select()
-                        .eq("parent_id", value: parentID)
-                        .order("created_at", ascending: false)
-                        .execute()
-                        .value
-            return submissions
-            
-        } catch {
-            print("Failed to get replies for post with id:\(parentID) ... Error: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
-    //
-    // Profile Feed
-    //
-    func getUserPosts(userID: String) async -> [Submission]? {
-        do {
-            let submissions: [Submission] = try await supabase
-                        .from("submissions")
-                        .select()
-                        .is("parent_id", value: nil)
-                        .eq("author_id", value: userID)
-                        .order("created_at", ascending: false)
-                        .execute()
-                        .value
-            return submissions
-            
-        } catch {
-            print("Failed to get posts for user with id:\(userID) ... Error: \(error.localizedDescription)")
-            return nil
-        }
-    }
     
     
     

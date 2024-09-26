@@ -219,10 +219,10 @@
 			isa = PBXGroup;
 			children = (
 				E60DDB012C8A4B3400FBBD36 /* AppView.swift */,
-				E60DDB262C92988E00FBBD36 /* EarnView.swift */,
-				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
-				E664647D2CA3EAA20083C1D4 /* Submission */,
 				E60DDB252C92559A00FBBD36 /* Auth */,
+				E67558992CA5E64500B98B5C /* Coins */,
+				E67558982CA5E62E00B98B5C /* Home  */,
+				E664647D2CA3EAA20083C1D4 /* Submission */,
 				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB2A2C935FE600FBBD36 /* Profile */,
 				E66464862CA52AD00083C1D4 /* TermsOfServiceView.swift */,
@@ -288,6 +288,22 @@
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
 			);
 			path = Submission;
+			sourceTree = "<group>";
+		};
+		E67558982CA5E62E00B98B5C /* Home  */ = {
+			isa = PBXGroup;
+			children = (
+				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
+			);
+			path = "Home ";
+			sourceTree = "<group>";
+		};
+		E67558992CA5E64500B98B5C /* Coins */ = {
+			isa = PBXGroup;
+			children = (
+				E60DDB262C92988E00FBBD36 /* EarnView.swift */,
+			);
+			path = Coins;
 			sourceTree = "<group>";
 		};
 		E69453712C94BF8100F799E6 /* Notifications */ = {

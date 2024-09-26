@@ -19,12 +19,52 @@ struct HomeView: View {
     @State private var isLoading: Bool = true
     @State private var error: Error?
     
+    
+    let feedTypes = ["All", "Following"]
+    let feedFilters = ["New", "Hot", "Top"] // top posts expire after 7 days
+    @State private var selectedFeedType = "All"
+    @State private var selectedFilterType = "New" // maybe randomize to inspire exploration for now?
+    
     var body: some View {
         
         ZStack {
-            VStack {
-                Text("Recent Posts")
-                    .font(.title)
+            VStack (spacing:0){
+                
+                Image("bopito-logo")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .padding()
+                
+                HStack (spacing:0){
+                    Picker("Feed Type", selection: $selectedFeedType) {
+                        ForEach(feedTypes, id: \.self) { type in
+                            Text(type)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal,10)
+                    .onChange(of: selectedFeedType) {
+                        Task {
+                            await selectionChanged()
+                        }
+                    }
+                    
+                    Picker("Sort by", selection: $selectedFilterType) {
+                        ForEach(feedFilters, id: \.self) { sort in
+                            Text(sort)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal, 10)
+                    .onChange(of: selectedFilterType) {
+                        Task {
+                            await selectionChanged()
+                        }
+                    }
+                }
+                Divider()
+                    .padding(.top, 10)
+                
                 if isLoading {
                     ProgressView()
                 } else if let error = error {
@@ -39,9 +79,6 @@ struct HomeView: View {
                                     SubmissionView(submission: submission)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Divider()
-                                    //                                    Rectangle()
-                                    //                                        .fill(Color.) // You can use any color here
-                                    //                                                    .frame(height: 1)
                                     
                                 }
                             }
@@ -95,7 +132,14 @@ struct HomeView: View {
     
     func loadPosts() async {
         isLoading = true
-        submissions = await supabaseManager.getRecentPosts()
+        submissions = await supabaseManager.getAllSubmissions(feedFilter: selectedFilterType)
+        isLoading = false
+    }
+    
+    func selectionChanged() async {
+        print(selectedFeedType, selectedFilterType)
+        isLoading = true
+        submissions = await supabaseManager.getAllSubmissions(feedFilter: selectedFeedType)
         isLoading = false
     }
 }
@@ -106,3 +150,4 @@ struct HomeView: View {
     HomeView()
         .environmentObject(SupabaseManager())
 }
+

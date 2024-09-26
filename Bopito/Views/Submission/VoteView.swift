@@ -19,13 +19,16 @@ struct VoteView: View {
     
     var body: some View {
         HStack {
+            
             if let user = user {
                 ProfilePictureView(profilePictureURL: user.profile_picture)
                     .frame(width: 35, height: 35)
+                    .padding(.leading, 10)
                     
             } else {
                 ProgressView()
                     .frame(width: 35, height: 35)
+                    .padding(.leading, 10)
             }
             
             VStack {
@@ -59,9 +62,10 @@ struct VoteView: View {
                     .foregroundColor(.secondary)
             }
             
-            Spacer()
-            
-            FollowButtonView(user: user, currentUser: currentUser)
+            if let user = user {
+                FollowButtonView(user: user)
+                    .padding(.leading, 10)
+            }
             
         }
         .padding(10)

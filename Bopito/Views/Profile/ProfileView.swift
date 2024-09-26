@@ -4,7 +4,6 @@ struct ProfileView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
-    
     @State var posts: [Submission]?
     @State var user: User?
     @State var currentUser: User?
@@ -17,7 +16,6 @@ struct ProfileView: View {
     @State var isViewingFollows: Bool = false
     @State var followsTab: Int = 0
 
-    
     var body: some View {
         VStack (spacing: 0){
             HStack {
@@ -33,7 +31,6 @@ struct ProfileView: View {
                 .padding(.trailing, 10)
                 
             }
-             
              
             if let user = user {
                 //username
@@ -56,7 +53,6 @@ struct ProfileView: View {
                         .padding(.bottom, 10)
                 }
                 
-                
                 // followers/following
                 HStack {
                     Button(action: {
@@ -74,7 +70,6 @@ struct ProfileView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    
                     
                     Divider()
                         .frame(height: 35)
@@ -95,8 +90,6 @@ struct ProfileView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    
-                    
                 }.padding(.bottom, 10)
                
                 if isCurrentUsersProfile {
@@ -119,10 +112,7 @@ struct ProfileView: View {
                     FollowButtonView(user: user, currentUser: currentUser)
                         .padding(.bottom, 10)
                 }
-                
-                
                 Divider()
-                
             } else {
                 ProgressView()
             }
@@ -196,7 +186,7 @@ struct ProfileView: View {
         
         // Load user posts
         if let user = user {
-            posts = await supabaseManager.getUserPosts(userID: user.id)
+            posts = await supabaseManager.getUserSubmissions(userID: user.id)
         }
     }
     
