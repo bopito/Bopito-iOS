@@ -47,6 +47,7 @@
 		E66464872CA52AD00083C1D4 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464862CA52AD00083C1D4 /* TermsOfServiceView.swift */; };
 		E67558952CA53C3700B98B5C /* SharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558942CA53C3700B98B5C /* SharesView.swift */; };
 		E67558972CA53E6900B98B5C /* BoostersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558962CA53E6900B98B5C /* BoostersView.swift */; };
+		E675589B2CA6558200B98B5C /* BoostButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675589A2CA6558200B98B5C /* BoostButtonView.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
 		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
@@ -109,6 +110,7 @@
 		E66464862CA52AD00083C1D4 /* TermsOfServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceView.swift; sourceTree = "<group>"; };
 		E67558942CA53C3700B98B5C /* SharesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesView.swift; sourceTree = "<group>"; };
 		E67558962CA53E6900B98B5C /* BoostersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostersView.swift; sourceTree = "<group>"; };
+		E675589A2CA6558200B98B5C /* BoostButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostButtonView.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				E664647E2CA480AE0083C1D4 /* VotersView.swift */,
 				E66464802CA481CC0083C1D4 /* VoteView.swift */,
 				E69453772CA338F300F799E6 /* BoostsView.swift */,
+				E675589A2CA6558200B98B5C /* BoostButtonView.swift */,
 				E67558962CA53E6900B98B5C /* BoostersView.swift */,
 				E67558942CA53C3700B98B5C /* SharesView.swift */,
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
@@ -465,6 +468,7 @@
 				E66464852CA4C2240083C1D4 /* Boost.swift in Sources */,
 				E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */,
 				E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */,
+				E675589B2CA6558200B98B5C /* BoostButtonView.swift in Sources */,
 				E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */,
 				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
 				E60DDB272C92988E00FBBD36 /* EarnView.swift in Sources */,

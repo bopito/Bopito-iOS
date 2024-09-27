@@ -10,7 +10,7 @@ import Charts
 
 struct BoostData {
     let category: String
-    var count: Double
+    var totalValue: Int
 }
 
 struct BoostsView: View {
@@ -36,6 +36,8 @@ struct BoostsView: View {
             Text("Battle")
                 .font(.title2)
             
+            Divider()
+            
             HStack {
                 // Chart
                 ZStack {
@@ -52,15 +54,17 @@ struct BoostsView: View {
                     } else {
                         Chart(boostData, id: \.category) { item in
                             SectorMark(
-                                angle: .value("Count", item.count),
+                                angle: .value("Count", item.totalValue),
                                 innerRadius: .ratio(0.4),
                                 angularInset: 2
                             )
                             .cornerRadius(5)
                             .foregroundStyle(by: .value("Category", item.category))
                             .annotation(position: .overlay) {
-                                Text("\(Int(item.count))")
-                                    .foregroundStyle(.white)
+                                if item.totalValue != 0 {
+                                    Text("\(item.totalValue)")
+                                        .foregroundStyle(.white)
+                                }
                             }
                         }
                         .scaledToFit()
@@ -138,65 +142,48 @@ struct BoostsView: View {
                 .padding(.trailing, 10)
             }
             
+            Divider()
             
-            Button(action: {
-                Task{
-                    await boostPurchased(price: 1, time: 1, value: 5, category: "pushes")
+            HStack {
+                if let currentUser = currentUser {
+                    ProfilePictureView(profilePictureURL: currentUser.profile_picture)
+                        .frame(width: 50, height: 50)
+                    VStack (alignment: .leading, spacing: 0) {
+                        HStack (spacing: 0) {
+                            Image("coin")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                            Text("♾️")
+                                
+                        }
+                        Text(currentUser.username)
+                            .padding(.leading, 2)
+                    }
                 }
-            }) {
-                HStack (spacing:10) {
-                    Text("🔥")
-                    Text("+1")
-                    Spacer()
-                    Text("⏱️")
-                        .font(.title)
-                    Text("100")
-                    Spacer()
-                    Image("coin")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                    Text("5")
-                    Spacer()
-                    Text("Buy")
-                    
-                }
-                .padding()
+                
             }
-            .font(.title2)
-            .foregroundColor(.white)
-            .background(.blue)
-            .cornerRadius(10)
-            .padding(.horizontal)
             
-            Button(action: {
-                Task{
-                    await boostPurchased(price: 1, time: 1, value: -3, category: "pulls")
+            BoostButtonView(submission: submission, emoji: "🌟", backgroundColor: .blue, value: 1, time: 10, price: 1, category: "pushes") {
+                Task {
+                    await updateBoostData()
                 }
-            }) {
-                HStack (spacing:10) {
-                    Text("🔥")
-                    Text("-1")
-                    Spacer()
-                    Text("⏱️")
-                        .font(.title)
-                    Text("100")
-                    Spacer()
-                    Image("coin")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                    Text("5")
-                    Spacer()
-                    Text("Buy")
-                    
-                }
-                .padding()
             }
-            .font(.title2)
-            .foregroundColor(.white)
-            .background(.red)
-            .cornerRadius(10)
-            .padding(.horizontal)
-            
+            BoostButtonView(submission: submission, emoji: "🚀", backgroundColor: .blue,  value: 2, time: 30, price: 5, category: "pushes") {
+                Task {
+                    await updateBoostData()
+                }
+            }
+            BoostButtonView(submission: submission, emoji: "🌟", backgroundColor: .red, value: -1, time: 10, price: 1, category: "pulls") {
+                Task {
+                    await updateBoostData()
+                }
+            }
+            BoostButtonView(submission: submission, emoji: "🌟", backgroundColor: .red, value: -2, time: 30, price: 5, category: "pulls") {
+                Task {
+                    await updateBoostData()
+                }
+            }
+           
             
             Spacer()
         }
@@ -211,24 +198,15 @@ struct BoostsView: View {
         await updateBoostData()
     }
     
-    func boostPurchased(price: Int, time: Int, value:Int, category: String) async {
-        if let submission = submission, let currentUser = currentUser {
-            await supabaseManager.applyBoost(
-                price: price,
-                time: time,
-                value: value,
-                category: category,
-                submissionID: submission.id,
-                userID: currentUser.id
-            )
-        }
-        await updateBoostData()
-    }
+   
     
     
     func updateBoostData() async {
         // Check if both submission and currentUser are available
-        if let submission = submission, let currentUser = currentUser {
+        if let submission = submission {
+            
+            // Update Boosts count on Submission
+            await supabaseManager.updateBoostsCount(submissionID: submission.id)
             // Fetch boosts from the server
             boosts = await supabaseManager.getBoosts(submissionID: submission.id)
             
@@ -237,24 +215,24 @@ struct BoostsView: View {
                     return
                 }
                 // Initialize the counts for each category
-                var pushesDead = BoostData(category: "pushesDead", count: 0)
-                var pullsDead = BoostData(category: "pullsDead", count: 0)
-                var pullsLive = BoostData(category: "pullsLive", count: 0)
-                var pushesLive = BoostData(category: "pushesLive", count: 0)
+                var pushesDead = BoostData(category: "pushesDead", totalValue: 0)
+                var pullsDead = BoostData(category: "pullsDead", totalValue: 0)
+                var pullsLive = BoostData(category: "pullsLive", totalValue: 0)
+                var pushesLive = BoostData(category: "pushesLive", totalValue: 0)
                 
                 // Update counts based on the fetched boosts
                 for boost in boosts {
                     if boost.category == "pushes" {
                         if boost.live {
-                            pushesLive.count += 1
+                            pushesLive.totalValue += boost.value
                         } else {
-                            pushesDead.count += 1
+                            pushesDead.totalValue += boost.value
                         }
                     } else if boost.category == "pulls" {
                         if boost.live {
-                            pullsLive.count += 1
+                            pullsLive.totalValue += boost.value
                         } else {
-                            pullsDead.count += 1
+                            pullsDead.totalValue += boost.value
                         }
                     }
                 }

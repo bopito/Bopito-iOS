@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 enum ActiveSheet: Identifiable {
-    case shares, replies, boosts, voters, profile
+    case shares, replies, boosts, boosters, voters, profile
 
     var id: Int {
         hashValue
@@ -150,20 +150,33 @@ struct SubmissionView: View {
                 Spacer()
                 
                 // Boost on Submission
-                HStack {
-                    Button(action: {
-                        activeSheet = .boosts
-                    }) {
-                        Image("boost")
-                            .renderingMode(.template)
-                            .resizable()
-                            .frame(width: 19, height: 19)
-                            .foregroundColor(boostsCount > 0 ? .yellow : .secondary)
-                        Text("\(boostsCount)")
-                            .foregroundColor(.primary)
-                    }
+                
+                Button(action: {
+                    activeSheet = .boosts
+                }) {
+                    Image("boost")
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 19, height: 19)
+                        .foregroundColor(boostsCount > 0 ? .yellow : .secondary)
+                    Text("\(boostsCount)")
+                        .foregroundColor(.primary)
                 }
-                 
+                .simultaneousGesture(
+                    TapGesture()
+                        .onEnded {
+                            activeSheet = .boosts
+                        }
+                )
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
+                        .onEnded { _ in
+                            // Long press action to open the sheet
+                            activeSheet = .boosters
+                        }
+                )
+                
+                
                 Spacer()
 
                 // Thumbs Down
@@ -185,8 +198,10 @@ struct SubmissionView: View {
                             // Short press (tap) action for voting
                             Task {
                                 if (voteValue >= 0) {
+                                    dislikesCount += 1
                                     await votePressed(value: -1)
                                 } else {
+                                    dislikesCount -= 1
                                     await votePressed(value: 0)
                                 }
                             }
@@ -222,8 +237,10 @@ struct SubmissionView: View {
                             // Short press (tap) action for voting
                             Task {
                                 if (voteValue <= 0) {
+                                    likesCount += 1
                                     await votePressed(value: 1)
                                 } else {
+                                    likesCount -= 1
                                     await votePressed(value: 0)
                                 }
                             }
@@ -242,7 +259,12 @@ struct SubmissionView: View {
             .padding(10)
             
         }
-        .sheet(item: $activeSheet) { sheet in
+        .sheet(item: $activeSheet, onDismiss: {
+            Task {
+                print("reload not working on sheet (boosts, replies, etc) dismissal for submission view")
+                await reloadSubmission()
+            }
+        }) { sheet in
             switch sheet {
                 case .shares:
                     SharesView()
@@ -250,6 +272,8 @@ struct SubmissionView: View {
                     RepliesView(submission: submission)
                 case .boosts:
                     BoostsView(submission: submission)
+                case .boosters:
+                    BoostersView()
                 case .voters:
                     VotersView(submissionID: submission.id)
                 case .profile:
@@ -278,35 +302,21 @@ struct SubmissionView: View {
             currentUser = await supabaseManager.getCurrentUser()
         }
         
-        
-        
         if let currentUser = currentUser {
-            // Update local value for thumb color
             voteValue = await supabaseManager.getUserVote(
                 submissionID: submission.id,
                 userID: currentUser.id)
-            
         }
         
         // Get Likes and Dislikes Counts
-        likesCount = await supabaseManager.getSubmissionVotesCount(
-            submissionID: submission.id,
-            value: 1
-        )
-        dislikesCount = await supabaseManager.getSubmissionVotesCount(
-            submissionID: submission.id,
-            value: -1
-        )
+        likesCount = submission.likes_count
+        dislikesCount = submission.dislikes_count
         
         // Get Comments Count
-        commentsCount = await supabaseManager.getCommentsCount(
-            parentID: submission.id
-        )
+        commentsCount = submission.replies_count
         
         // Get Boosts Count
-        boostsCount = await supabaseManager.getBoostsCount(
-            submissionID: submission.id
-        )
+        boostsCount = submission.boosts_count
         
         
         // set time_since based on post created_at timestamp
@@ -320,8 +330,10 @@ struct SubmissionView: View {
     }
     
     func reloadSubmission() async {
+        print(submission.likes_count)
         if let updatedPost = await supabaseManager.getSubmission(submissionID: submission.id) {
             submission = updatedPost
+            print(submission.likes_count)
         }
         
     }
@@ -341,14 +353,8 @@ struct SubmissionView: View {
                 submissionID: submission.id,
                 userID: currentUser.id)
             // Update Likes/Dislikes counts
-            likesCount = await supabaseManager.getSubmissionVotesCount(
-                submissionID: submission.id,
-                value: 1
-            )
-            dislikesCount = await supabaseManager.getSubmissionVotesCount(
-                submissionID: submission.id,
-                value: -1
-            )
+            await supabaseManager.updateLikesCount(submissionID: submission.id)
+            await supabaseManager.updateDislikesCount(submissionID: submission.id)
             
             // Create Notification in DB
             let isPost = submission.parent_id == nil
@@ -386,7 +392,12 @@ struct PostView2_Previews: PreviewProvider {
                            image: "none",
                            text: "Hello, World!",
                            created_at: Date().formatted(),
-                           edited_at: Date().formatted()
+                           edited_at: Date().formatted(),
+                           likes_count: 0,
+                           dislikes_count: 0,
+                           boosts_count: 0,
+                           replies_count: 0,
+                           score: 0
                           )
         )
         .environmentObject(SupabaseManager())

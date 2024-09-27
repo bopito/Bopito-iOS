@@ -223,7 +223,12 @@ class SupabaseManager: ObservableObject {
             image: image,
             text: text,
             created_at: nil, //database can create this value
-            edited_at: nil
+            edited_at: nil,
+            likes_count: 0,
+            dislikes_count: 0,
+            boosts_count: 0,
+            replies_count: 0,
+            score: 0
         )
         do {
             try await supabase
@@ -242,34 +247,6 @@ class SupabaseManager: ObservableObject {
             }
         } catch {
             print(error)
-        }
-    }
-    
-    func getAllSubmissions(feedFilter: String) async -> [Submission]? {
-        do {
-            // let type = // need to check if
-            var order = "created_at"
-            if feedFilter == "New" {
-                order = "created_at"
-            } else if feedFilter == "Hot" {
-                order = "created_at"
-            }
-            else if feedFilter == "Top" {
-                
-            }
-            let submissions: [Submission] = try await supabase
-                .from("submissions")
-                .select()
-                .is("parent_id", value: nil)
-                .order("created_at", ascending: false)
-                .execute()
-                .value
-            
-            return submissions
-            
-        } catch {
-            print("Failed to get user by ID. Error: \(error.localizedDescription)")
-            return nil
         }
     }
     
@@ -356,7 +333,51 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func getCommentsCount(parentID: String) async -> Int {
+    func updateLikesCount(submissionID: String) async {
+        do {
+            let response = try await supabase
+                .from("likes")
+                .select(count: .exact)
+                .eq("submission_id", value: submissionID)
+                .eq("value", value: 1)
+                .execute()
+            if let count = response.count {
+                try await supabase
+                  .from("submissions")
+                  .update(["likes_count": count])
+                  .eq("id", value: submissionID)
+                  .execute()
+            } else {
+                print("error getting likes count")
+            }
+        } catch {
+            print("Failed to get likes or update submission likes_count. Error: \(error)")
+        }
+    }
+    
+    func updateDislikesCount(submissionID: String) async {
+        do {
+            let response = try await supabase
+                .from("likes")
+                .select(count: .exact)
+                .eq("submission_id", value: submissionID)
+                .eq("value", value: -1)
+                .execute()
+            if let count = response.count {
+                try await supabase
+                  .from("submissions")
+                  .update(["dislikes_count": count])
+                  .eq("id", value: submissionID)
+                  .execute()
+            } else {
+                print("error getting likes count")
+            }
+        } catch {
+            print("Failed to get likes or update submission likes_count. Error: \(error)")
+        }
+    }
+    
+    func updateRepliesCount(parentID: String) async {
         do {
             let response = try await supabase
                 .from("submissions")
@@ -364,12 +385,38 @@ class SupabaseManager: ObservableObject {
                 .eq("parent_id", value: parentID)
                 .execute()
             if let count = response.count {
-                return count
+                try await supabase
+                  .from("submissions")
+                  .update(["replies_count": count])
+                  .eq("id", value: parentID)
+                  .execute()
             } else {
-                return 0
+                print("error getting replies count")
             }
         } catch {
-            return 0
+            print("Failed to get replies or update submission replies count. Error: \(error)")
+        }
+    }
+    
+    func updateBoostsCount(submissionID: String) async {
+        do {
+            let response = try await supabase
+                .from("boosts")
+                .select(count: .exact)
+                .eq("submission_id", value: submissionID)
+                .is("live", value: true)
+                .execute()
+            if let count = response.count {
+                try await supabase
+                  .from("submissions")
+                  .update(["boosts_count": count])
+                  .eq("id", value: submissionID)
+                  .execute()
+            } else {
+                print("error getting likes count")
+            }
+        } catch {
+            print("Failed to get likes or update submission likes_count. Error: \(error)")
         }
     }
 
@@ -436,24 +483,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func getSubmissionVotesCount(submissionID: String, value: Int) async -> Int {
-        do {
-            let response = try await supabase
-                .from("likes")
-                .select(count: .exact)
-                .eq("submission_id", value: submissionID)
-                .eq("value", value: value)
-                .execute()
-            if let count = response.count {
-                return count
-            } else {
-                return 0
-            }
-        } catch {
-            return 0
-        }
-    }
-    
     func getSubmissionVotes(parentID: String) async -> [Like]? {
         do {
             let votes: [Like] = try await supabase
@@ -491,6 +520,7 @@ class SupabaseManager: ObservableObject {
             category: category
         )
         do {
+            
             print("NOTE - Maybe change to UPSERT so Boost can't be abused by people with more money?")
             try await supabase
                 .from("boosts")
@@ -658,7 +688,29 @@ class SupabaseManager: ObservableObject {
     }
     
     
-    
+    //
+    // Feeds
+    //
+    func getAllSubmissions(feedType: String, feedFilter: String) async -> [Submission]? {
+        do {
+            // let type = // need to check if
+            print(feedType, feedFilter)
+          
+            let submissions: [Submission] = try await supabase
+                .from("submissions")
+                .select()
+                .is("parent_id", value: nil)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            
+            return submissions
+            
+        } catch {
+            print("Failed to get user by ID. Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
     
     
     

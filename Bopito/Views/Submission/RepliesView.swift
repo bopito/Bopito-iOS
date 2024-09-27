@@ -128,12 +128,15 @@ struct RepliesView: View {
         // if authorized check if allowed to take action
         
         if let currentUser = currentUser, let user = user {
-            // Create Post in DB
+            // Create Submission in DB
             await supabaseManager.postSubmission(
                 author_id: currentUser.id,
                 parent_id: submission.id,
                 image: nil,
                 text: replyText)
+            
+            // Update Replies Count for Submission
+            await supabaseManager.updateRepliesCount(parentID: submission.id)
             
             // Create Notification in DB
             let isPost = submission.parent_id == nil
@@ -171,7 +174,12 @@ struct RepliesView: View {
                        image: "none",
                        text: "hello",
                        created_at: Date().formatted(.dateTime.year().month().day().hour().minute().second()),
-                       edited_at: Date().formatted(.dateTime.year().month().day().hour().minute().second())
+                       edited_at: Date().formatted(.dateTime.year().month().day().hour().minute().second()),
+                       likes_count: 0,
+                       dislikes_count: 0,
+                       boosts_count: 0,
+                       replies_count: 0,
+                       score: 0
                       )
         )
     .environmentObject(SupabaseManager())
