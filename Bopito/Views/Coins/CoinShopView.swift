@@ -9,6 +9,11 @@ import SwiftUI
 
 struct CoinShopView: View {
     
+    @EnvironmentObject var supabaseManager: SupabaseManager
+    
+    @State var currentUser: User?
+    
+    @State private var selectedItem: Int? = 4
     let items = [
         ("100", "$0.99"),
         ("200", "$1.99"),
@@ -20,11 +25,6 @@ struct CoinShopView: View {
         ("800", "$7.99"),
         ("900", "$8.99")
     ]
-    
-    // State to track the selected item
-    @State private var selectedItem: Int? = nil
-    
-    // Define 3 columns for the grid
     let columns = [
         GridItem(.flexible(), spacing: 10),
         GridItem(.flexible(), spacing: 10),
@@ -42,32 +42,31 @@ struct CoinShopView: View {
             .background()
             
             HStack {
-                Spacer()
                 Image(systemName: "checkmark.shield.fill")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.green)
                     .bold()
                 Text("Secure Payment")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.green)
                     .bold()
-                Spacer()
             }
+            .frame(maxWidth: .infinity)
             .padding(10)
-            .background(.quaternary)
-            
-            
+            .background(.green.quaternary)
             
             
             VStack (spacing:0) {
                 HStack {
-                    Text("Balance")
+                    Text("Balance:")
                     Image("coin")
                         .resizable()
                         .frame(width: 25, height: 25)
-                    Text("90")
+                    if let currentUser = currentUser {
+                        Text("\(currentUser.balance)")
+                    }
                 }
                 .font(.title3)
                 .bold()
-                .padding(.top, 20)
+                .padding(.top, 10)
                 
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(0..<items.count, id: \.self) { index in
@@ -99,40 +98,48 @@ struct CoinShopView: View {
                     }
                 }
                 .padding(10)
+                
+                
             }
-            
             .background()
             .cornerRadius(10)
             .padding(10)
             
-            HStack {
-                Image(systemName: "play")
-                Text("Earn for Free")
+            
+            VStack (spacing:0){
+                Text("Don't want to pay? Not a problem!")
+                    .padding(.top,10)
+                HStack {
+                    Image(systemName: "play")
+                    Text("Earn for Free")
+                }
+                .bold()
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(10)
+                .background(.green)
+                .cornerRadius(10)
+                .padding(10)
             }
-            .bold()
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(10)
-            .background(.red)
+            .background()
             .cornerRadius(10)
             .padding(.horizontal, 10)
-            
-            HStack {
-                Image(systemName: "checkmark.seal.fill")
-                Text("Get Verified")
-            }
-            .bold()
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(10)
-            .background(.blue)
-            .cornerRadius(10)
-            .padding(10)
             
             
             Spacer()
             
-            VStack {
+            Image("bopito-logo-gray")
+                .resizable()
+                .frame(width: 48, height: 40)
+            Text("Bopito")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
+            Spacer()
+            
+            
+            
+            VStack (spacing:0){
                 HStack {
                     Text("Total")
                         .bold()
@@ -145,14 +152,17 @@ struct CoinShopView: View {
                 Button(action: {
                                     // Add recharge functionality here
                                 }) {
-                                    Text("Recharge")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.green)
-                                        .cornerRadius(10)
-                                        .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
+                                    HStack {
+                                        Text("")
+                                        Text("Recharge")
+                                    }
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                                    .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
                                 }
                                 .padding(.horizontal, 20)
                                 .padding(.bottom, 10)
@@ -161,9 +171,17 @@ struct CoinShopView: View {
             .background()
         }
         .background(.quaternary)
+        .task {
+            await load()
+        }
+    }
+    
+    func load() async {
+        currentUser = await supabaseManager.getCurrentUser()
     }
 }
 
 #Preview {
     CoinShopView()
+        .environmentObject(SupabaseManager())
 }

@@ -10,7 +10,12 @@ import Charts
 
 enum ActiveSheet: Identifiable {
     case shares, replies, boosts, boosters, voters, profile
-
+    var id: Int {
+        hashValue
+    }
+}
+enum ActiveAlert: Identifiable {
+    case delete, report
     var id: Int {
         hashValue
     }
@@ -19,9 +24,7 @@ enum ActiveSheet: Identifiable {
 struct SubmissionView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
-    
-    @State private var activeSheet: ActiveSheet?
-    
+
     @State var user: User?
     @State var currentUser: User?
     
@@ -36,9 +39,13 @@ struct SubmissionView: View {
     @State var commentsCount: Int = 0
     @State var sharesCount: Int = 0
     
-    @State var isReported: Bool = false
+    @State var flagged: Bool = false
     
     @State var score: Int = 0
+    
+    // Popup Views
+    @State private var activeSheet: ActiveSheet?
+    @State private var activeAlert: ActiveAlert?
     
     
     var body: some View {
@@ -89,7 +96,35 @@ struct SubmissionView: View {
                         }
                         
                         Spacer()
-                        Image(systemName: "ellipsis")
+                        
+                        Menu {
+                            if let user = user, let currentUser = currentUser {
+                                if user.id == currentUser.id {
+                                    // Delete option
+                                    Button(action: {
+                                        activeAlert = .delete
+                                    }) {
+                                        Label("Delete post", systemImage: "trash")
+                                            .foregroundColor(.red)
+                                    }
+                                                                    } else {
+                                    // Report option
+                                    Button(action: {
+                                        activeAlert = .report
+                                    }) {
+                                        Label("Report post", systemImage: "flag")
+                                            .foregroundColor(.red)
+                                    }
+                                    
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .padding(10)
+                                .background()
+                        }
+                        .contentShape(Rectangle()) // Make the entire area tappable
+                        
                     }
                 }
                 .padding(.leading, 10)
@@ -178,7 +213,7 @@ struct SubmissionView: View {
                 
                 
                 Spacer()
-
+                
                 // Thumbs Down
                 Button(action: {
                     // No action here, using gestures instead
@@ -266,18 +301,43 @@ struct SubmissionView: View {
             }
         }) { sheet in
             switch sheet {
-                case .shares:
-                    SharesView()
-                case .replies:
-                    RepliesView(submission: submission)
-                case .boosts:
-                    BoostsView(submission: submission)
-                case .boosters:
-                    BoostersView()
-                case .voters:
-                    VotersView(submissionID: submission.id)
-                case .profile:
-                    ProfileView(user: user)
+            case .shares:
+                SharesView()
+            case .replies:
+                RepliesView(submission: submission)
+            case .boosts:
+                BoostsView(submission: submission)
+            case .boosters:
+                BoostersView()
+            case .voters:
+                VotersView(submissionID: submission.id)
+            case .profile:
+                ProfileView(user: user)
+            }
+        }
+        .alert(item: $activeAlert) { alertType in
+            switch alertType {
+            case .delete:
+                return Alert(
+                    title: Text("Delete Post"),
+                    message: Text("Are you sure you want to delete this post? This action cannot be undone."),
+                    primaryButton: .destructive(Text("Delete"), action: {
+                        // Handle delete action
+                        print("Post deleted")
+                    }),
+                    secondaryButton: .cancel()
+                )
+                
+            case .report:
+                return Alert(
+                    title: Text("Report Post"),
+                    message: Text("Are you sure you want to report this post?"),
+                    primaryButton: .destructive(Text("Report"), action: {
+                        // Handle report action
+                        print("Post reported")
+                    }),
+                    secondaryButton: .cancel()
+                )
             }
         }
         .task {
@@ -294,7 +354,7 @@ struct SubmissionView: View {
     
     func load() async {
         if user == nil || currentUser == nil {
-      
+            
             // load user who made the post
             user = await supabaseManager.getUserByID(id: submission.author_id)
             
@@ -397,7 +457,8 @@ struct PostView2_Previews: PreviewProvider {
                            dislikes_count: 0,
                            boosts_count: 0,
                            replies_count: 0,
-                           score: 0
+                           score: 0,
+                           reports: 0
                           )
         )
         .environmentObject(SupabaseManager())

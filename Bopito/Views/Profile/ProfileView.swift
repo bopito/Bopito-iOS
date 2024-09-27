@@ -18,6 +18,14 @@ struct ProfileView: View {
 
     var body: some View {
         VStack (spacing: 0){
+            
+            if let user = user {
+                //username
+                Text("\(user.name ?? user.username)'s Profile")
+                    .font(.title2)
+                    .padding(.top, 10)
+            }
+            
             HStack {
                 Spacer()
                 Button(action: {
@@ -33,10 +41,6 @@ struct ProfileView: View {
             }
              
             if let user = user {
-                //username
-                Text("\(user.name ?? user.username)")
-                    .font(.title2)
-                    .padding(.bottom, 10)
                 // profile picture
                 ProfilePictureView(profilePictureURL: user.profile_picture)
                     .frame(width: 85, height: 85)

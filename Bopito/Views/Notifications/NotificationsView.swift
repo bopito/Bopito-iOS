@@ -14,10 +14,12 @@ struct NotificationsView: View {
     @State var notifications: [Notification]?
     
     var body: some View {
+        VStack {
+            Text("Notifications")
+                .font(.title2)
+                .padding(.top, 10)
+            
             ScrollView {
-                Text("Notifications")
-                    .font(.title2)
-                
                 LazyVStack(spacing: 0) {
                     if let notifications = notifications {
                         ForEach(notifications) { notification in
@@ -33,6 +35,7 @@ struct NotificationsView: View {
                 print("loading")
                 await load()
             }
+        }
     }
     
     func load() async {

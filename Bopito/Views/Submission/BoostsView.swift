@@ -153,8 +153,8 @@ struct BoostsView: View {
                             Image("coin")
                                 .resizable()
                                 .frame(width: 25, height: 25)
-                            Text("♾️")
-                                
+                            Text("\(currentUser.balance)")
+                                .bold()
                         }
                         Text(currentUser.username)
                             .padding(.leading, 2)

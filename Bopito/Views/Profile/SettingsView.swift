@@ -29,13 +29,25 @@ struct SettingsView: View {
                 }
                 
             }) {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
                 Text("Log out")
-                    .foregroundColor(.white)
-                    .bold()
-                    .padding()
-                    .background(.blue)
-                    .cornerRadius(10)
+                    
+            }.foregroundColor(.white)
+                .bold()
+                .padding(10)
+                .background(.blue)
+                .cornerRadius(10)
+            
+            
+            HStack {
+                Image(systemName: "checkmark.seal.fill")
+                Text("Get Verified")
             }
+            .bold()
+            .foregroundStyle(.white)
+            .padding(10)
+            .background(.green)
+            .cornerRadius(10)
             
         }
     }
