@@ -49,6 +49,11 @@
 		E67558972CA53E6900B98B5C /* BoostersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558962CA53E6900B98B5C /* BoostersView.swift */; };
 		E675589B2CA6558200B98B5C /* BoostButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675589A2CA6558200B98B5C /* BoostButtonView.swift */; };
 		E675589D2CA68D9200B98B5C /* CoinShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675589C2CA68D9200B98B5C /* CoinShopView.swift */; };
+		E675589F2CAC74F800B98B5C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E675589E2CAC74F800B98B5C /* StoreKit.framework */; };
+		E67558A12CAC754800B98B5C /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558A02CAC754800B98B5C /* InAppPurchaseManager.swift */; };
+		E67558A62CAC8EB900B98B5C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E67558A52CAC8EB900B98B5C /* FirebaseMessaging */; };
+		E67558AA2CAC9A9100B98B5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E67558A92CAC9A9100B98B5C /* GoogleService-Info.plist */; };
+		E67558AC2CACA27C00B98B5C /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558AB2CACA27C00B98B5C /* NotificationsManager.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
 		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
@@ -113,6 +118,12 @@
 		E67558962CA53E6900B98B5C /* BoostersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostersView.swift; sourceTree = "<group>"; };
 		E675589A2CA6558200B98B5C /* BoostButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostButtonView.swift; sourceTree = "<group>"; };
 		E675589C2CA68D9200B98B5C /* CoinShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinShopView.swift; sourceTree = "<group>"; };
+		E675589E2CAC74F800B98B5C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		E67558A02CAC754800B98B5C /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
+		E67558A22CAC7ECC00B98B5C /* Bopito.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bopito.entitlements; sourceTree = "<group>"; };
+		E67558A32CAC7EE700B98B5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E67558A92CAC9A9100B98B5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E67558AB2CACA27C00B98B5C /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
@@ -125,7 +136,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E67558A62CAC8EB900B98B5C /* FirebaseMessaging in Frameworks */,
 				E60DDAF82C8A491F00FBBD36 /* PostgREST in Frameworks */,
+				E675589F2CAC74F800B98B5C /* StoreKit.framework in Frameworks */,
 				E60DDAF62C8A491F00FBBD36 /* Functions in Frameworks */,
 				E60DDAFF2C8A4AE300FBBD36 /* Supabase in Frameworks */,
 				E60DDAF42C8A491F00FBBD36 /* Auth in Frameworks */,
@@ -154,6 +167,7 @@
 		E60DDAB82C8A48D000FBBD36 = {
 			isa = PBXGroup;
 			children = (
+				E67558A92CAC9A9100B98B5C /* GoogleService-Info.plist */,
 				E60DDAC32C8A48D000FBBD36 /* Bopito */,
 				E60DDAD62C8A48D100FBBD36 /* BopitoTests */,
 				E60DDAE02C8A48D100FBBD36 /* BopitoUITests */,
@@ -175,9 +189,13 @@
 		E60DDAC32C8A48D000FBBD36 /* Bopito */ = {
 			isa = PBXGroup;
 			children = (
+				E67558A32CAC7EE700B98B5C /* Info.plist */,
+				E67558A22CAC7ECC00B98B5C /* Bopito.entitlements */,
 				E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */,
 				E60DDAC62C8A48D000FBBD36 /* ContentView.swift */,
 				E60DDAF02C8A48F900FBBD36 /* SupabaseManager.swift */,
+				E67558A02CAC754800B98B5C /* InAppPurchaseManager.swift */,
+				E67558AB2CACA27C00B98B5C /* NotificationsManager.swift */,
 				E60DDB1E2C90E9C100FBBD36 /* Tools */,
 				E60DDB152C8A4C5900FBBD36 /* Objects */,
 				E60DDB002C8A4B2500FBBD36 /* Views */,
@@ -215,6 +233,7 @@
 		E60DDAFD2C8A4AE300FBBD36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E675589E2CAC74F800B98B5C /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -344,6 +363,7 @@
 				E60DDAF92C8A491F00FBBD36 /* Realtime */,
 				E60DDAFB2C8A491F00FBBD36 /* Storage */,
 				E60DDAFE2C8A4AE300FBBD36 /* Supabase */,
+				E67558A52CAC8EB900B98B5C /* FirebaseMessaging */,
 			);
 			productName = Bopito;
 			productReference = E60DDAC12C8A48D000FBBD36 /* Bopito.app */;
@@ -419,6 +439,7 @@
 			mainGroup = E60DDAB82C8A48D000FBBD36;
 			packageReferences = (
 				E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				E67558A42CAC8EB900B98B5C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = E60DDAC22C8A48D000FBBD36 /* Products */;
 			projectDirPath = "";
@@ -438,6 +459,7 @@
 			files = (
 				E60DDACE2C8A48D100FBBD36 /* Preview Assets.xcassets in Resources */,
 				E60DDACB2C8A48D100FBBD36 /* Assets.xcassets in Resources */,
+				E67558AA2CAC9A9100B98B5C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +512,7 @@
 				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
 				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
 				E67558972CA53E6900B98B5C /* BoostersView.swift in Sources */,
+				E67558AC2CACA27C00B98B5C /* NotificationsManager.swift in Sources */,
 				E66464812CA481CC0083C1D4 /* VoteView.swift in Sources */,
 				E60DDAF12C8A48F900FBBD36 /* SupabaseManager.swift in Sources */,
 				E60DDB0F2C8A4B8E00FBBD36 /* NotificationsView.swift in Sources */,
@@ -498,6 +521,7 @@
 				E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */,
 				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,
 				E66464872CA52AD00083C1D4 /* TermsOfServiceView.swift in Sources */,
+				E67558A12CAC754800B98B5C /* InAppPurchaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,12 +683,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Bopito/Bopito.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Bopito/Preview Content\"";
 				DEVELOPMENT_TEAM = D2495MYV67;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Bopito/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bopito;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -691,12 +717,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Bopito/Bopito.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Bopito/Preview Content\"";
 				DEVELOPMENT_TEAM = D2495MYV67;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Bopito/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bopito;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -843,6 +871,14 @@
 				minimumVersion = 2.5.1;
 			};
 		};
+		E67558A42CAC8EB900B98B5C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -875,6 +911,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
+		};
+		E67558A52CAC8EB900B98B5C /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E67558A42CAC8EB900B98B5C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,9 +9,12 @@ import SwiftUI
 
 struct NotificationsView: View {
     @EnvironmentObject var supabaseManager: SupabaseManager
+    @EnvironmentObject var notificationManager: NotificationManager
     
     @State var currentUser: User?
     @State var notifications: [Notification]?
+    
+    @State var notificationsEnabled: Bool = false
     
     var body: some View {
         VStack {
@@ -39,11 +42,20 @@ struct NotificationsView: View {
     }
     
     func load() async {
-        notifications = await supabaseManager.getNotifications()
+        notificationManager.checkNotificationSettings()
+        notificationsEnabled = notificationManager.notificationsEnabled
+        if !notificationsEnabled {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                await UIApplication.shared.open(url)
+            }
+        } else {
+            notifications = await supabaseManager.getNotifications()
+        }
     }
 }
 
 #Preview {
     NotificationsView()
         .environmentObject(SupabaseManager())
+        .environmentObject(NotificationManager())
 }

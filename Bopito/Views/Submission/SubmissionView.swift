@@ -120,7 +120,8 @@ struct SubmissionView: View {
                             }
                         } label: {
                             Image(systemName: "ellipsis")
-                                .padding(10)
+                                .padding(.leading, 20)
+                                .padding(.vertical, 10)
                                 .background()
                         }
                         .contentShape(Rectangle()) // Make the entire area tappable

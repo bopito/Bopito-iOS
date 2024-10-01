@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct CoinShopView: View {
     
@@ -13,18 +14,9 @@ struct CoinShopView: View {
     
     @State var currentUser: User?
     
-    @State private var selectedItem: Int? = 4
-    let items = [
-        ("100", "$0.99"),
-        ("200", "$1.99"),
-        ("300", "$2.99"),
-        ("400", "$3.99"),
-        ("500", "$4.99"),
-        ("600", "$5.99"),
-        ("700", "$6.99"),
-        ("800", "$7.99"),
-        ("900", "$8.99")
-    ]
+    @State private var products: [SKProduct] = []
+    
+    @State private var selectedItem: Int? = nil  // Tracks the selected product
     let columns = [
         GridItem(.flexible(), spacing: 10),
         GridItem(.flexible(), spacing: 10),
@@ -53,27 +45,29 @@ struct CoinShopView: View {
             .padding(10)
             .background(.green.quaternary)
             
-            
             VStack (spacing:0) {
                 HStack {
                     Text("Balance:")
                     Image("coin")
                         .resizable()
                         .frame(width: 25, height: 25)
+                    
                     if let currentUser = currentUser {
                         Text("\(currentUser.balance)")
                     }
+                    
                 }
                 .font(.title3)
                 .bold()
                 .padding(.top, 10)
                 
+                // Use StoreKit products in LazyVGrid
                 LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(0..<items.count, id: \.self) { index in
-                        let item = items[index]
+                    ForEach(0..<products.count, id: \.self) { index in
+                        let product = products[index]
                         
                         Button(action: {
-                            // Set the selected item to the current index
+                            // Set the selected product to the current index
                             selectedItem = index
                         }) {
                             VStack {
@@ -81,12 +75,13 @@ struct CoinShopView: View {
                                     Image("coin")
                                         .resizable()
                                         .frame(width: 25, height: 25)
-                                    Text(item.0)
+                                    Text(product.localizedTitle)
                                         .font(.title3)
                                         .bold()
                                         .foregroundColor(.white)
                                 }
-                                Text(item.1)
+                                // Display localized price
+                                Text(product.localizedPrice())
                                     .font(.callout)
                                     .foregroundColor(.white)
                             }
@@ -98,13 +93,10 @@ struct CoinShopView: View {
                     }
                 }
                 .padding(10)
-                
-                
             }
             .background()
             .cornerRadius(10)
             .padding(10)
-            
             
             VStack (spacing:0){
                 Text("Don't want to pay? Not a problem!")
@@ -125,7 +117,6 @@ struct CoinShopView: View {
             .cornerRadius(10)
             .padding(.horizontal, 10)
             
-            
             Spacer()
             
             Image("bopito-logo-gray")
@@ -137,47 +128,65 @@ struct CoinShopView: View {
 
             Spacer()
             
-            
-            
             VStack (spacing:0){
                 HStack {
                     Text("Total")
                         .bold()
                     Spacer()
-                    Text("$0")
+                    Text(selectedItem != nil ? "\(products[selectedItem!].localizedPrice())" : "$0")
                         .bold()
                 }
                 .padding(20)
                 
                 Button(action: {
-                                    // Add recharge functionality here
-                                }) {
-                                    HStack {
-                                        Text("")
-                                        Text("Recharge")
-                                    }
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .cornerRadius(10)
-                                    .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
-                                }
-                                .padding(.horizontal, 20)
-                                .padding(.bottom, 10)
-                
+                    // Trigger the purchase here based on the selected product
+                    if let index = selectedItem {
+                        purchaseProduct(products[index])
+                    }
+                }) {
+                    HStack {
+                        Text("")
+                        Text("Recharge")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                    .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 10)
             }
             .background()
         }
         .background(.quaternary)
         .task {
             await load()
+            await loadProducts()
         }
     }
     
+    // Fetch current user data
     func load() async {
         currentUser = await supabaseManager.getCurrentUser()
+    }
+    
+    // Fetch products from StoreKit
+    func loadProducts() async {
+        let productIDs = Set(["com.yourapp.coins100"])
+        let request = SKProductsRequest(productIdentifiers: productIDs)
+        request.delegate = InAppPurchaseManager.shared
+        request.start()
+        
+        print("Requested products: \(productIDs)")
+    }
+    
+    // Purchase the selected product
+    func purchaseProduct(_ product: SKProduct) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
     }
 }
 
