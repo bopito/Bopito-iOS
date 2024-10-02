@@ -48,7 +48,7 @@ struct BoostsView: View {
                                 angle: .value("Placeholder", 1),
                                 innerRadius: .ratio(0.4)
                             )
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color.secondary)
                         }
                         .scaledToFit()
                     } else {
@@ -173,12 +173,12 @@ struct BoostsView: View {
                     await updateBoostData()
                 }
             }
-            BoostButtonView(submission: submission, emoji: "🌟", backgroundColor: .red, value: -1, time: 10, price: 1, category: "pulls") {
+            BoostButtonView(submission: submission, emoji: "💩", backgroundColor: .red, value: 1, time: 10, price: 1, category: "pulls") {
                 Task {
                     await updateBoostData()
                 }
             }
-            BoostButtonView(submission: submission, emoji: "🌟", backgroundColor: .red, value: -2, time: 30, price: 5, category: "pulls") {
+            BoostButtonView(submission: submission, emoji: "💀", backgroundColor: .red, value: 2, time: 30, price: 5, category: "pulls") {
                 Task {
                     await updateBoostData()
                 }

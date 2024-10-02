@@ -17,149 +17,162 @@ struct ProfileView: View {
     @State var followsTab: Int = 0
 
     var body: some View {
-        VStack (spacing: 0){
-            
-            if let user = user {
-                //username
-                Text("\(user.name ?? user.username)'s Profile")
-                    .font(.title2)
+        ZStack {
+            VStack {
+                HStack (alignment:.top) {
+                    Spacer()
+                    Button(action: {
+                        isViewingSettings = true
+                    }) {
+                        Image(systemName :"gearshape")
+                            .font(.system(size: 23))
+                            .foregroundColor(.secondary)
+                    }
                     .padding(.top, 10)
-            }
-            
-            HStack {
+                    .padding(.trailing, 10)
+                }
                 Spacer()
-                Button(action: {
-                    isViewingSettings = true
-                }) {
-                    Image(systemName :"gearshape")
-                        .font(.system(size: 30))
-                        .foregroundColor(.secondary)
-                }
-                .padding(.top, 10)
-                .padding(.trailing, 10)
-                
-            }
-             
-            if let user = user {
-                // profile picture
-                ProfilePictureView(profilePictureURL: user.profile_picture)
-                    .frame(width: 85, height: 85)
-                    .padding(.bottom, 10)
-                //username
-                Text("@\(user.username)")
-                    .font(.headline)
-                    .padding(.bottom, 10)
-                
-                // bio
-                if let bio = user.bio {
-                    Text(bio)
-                        .font(.callout)
-                        .padding(.bottom, 10)
-                }
-                
-                // followers/following
-                HStack {
-                    Button(action: {
-                        // Action to navigate to FollowersView
-                        followsTab = 0
-                        isViewingFollows = true
-                    }) {
-                        VStack {
-                            Text("\(user.followers_count)")
-                                .font(.title3)
-                                .bold()
-                            Text("Followers")
-                                .font(.callout)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    Divider()
-                        .frame(height: 35)
-                        .padding(.horizontal, 10)
-                    
-                    Button(action: {
-                        // Action to navigate to FollowersView
-                        followsTab = 1
-                        isViewingFollows = true
-                    }) {
-                        VStack {
-                            Text("\(user.following_count)")
-                                .font(.title3)
-                                .bold()
-                            Text("Following")
-                                .font(.callout)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }.padding(.bottom, 10)
-               
-                if isCurrentUsersProfile {
-                    Button(action: {
-                        Task {
-                           isViewingEditProfile = true
-                        }
-                    }) {
-                        Text("Edit Profile")
-                            .font(.subheadline)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 20)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)  // Adjust this value for more or less rounded corners
-                    }
-                    .padding(.bottom, 10)
-                    
-                } else {
-                    FollowButtonView(user: user, currentUser: currentUser)
-                        .padding(.bottom, 10)
-                }
-                Divider()
-            } else {
-                ProgressView()
             }
             
-            
-  
-            if let posts = posts {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(posts) { post in
-                            SubmissionView(submission: post)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Divider()
+            VStack (spacing: 0){
+                
+                if let user = user {
+                    //username
+                    if isCurrentUsersProfile {
+                        Text("My Profile")
+                            .font(.title2)
+                            .padding(.top, 10)
+                    } else {
+                        Text("\(user.name ?? user.username)'s Profile")
+                            .font(.title2)
+                            .padding(.top, 10)
+                    }
+                    
+                }
+                
+                
+                
+                if let user = user {
+                    // profile picture
+                    ProfilePictureView(profilePictureURL: user.profile_picture)
+                        .frame(width: 85, height: 85)
+                        .padding(.vertical, 10)
+                    //username
+                    Text("@\(user.username)")
+                        .font(.headline)
+                        .padding(.bottom, 10)
+                    
+                    // bio
+                    if let bio = user.bio {
+                        Text(bio)
+                            .font(.callout)
+                            .padding(.bottom, 10)
+                    }
+                    
+                    // followers/following
+                    HStack {
+                        Button(action: {
+                            // Action to navigate to FollowersView
+                            followsTab = 0
+                            isViewingFollows = true
+                        }) {
+                            VStack {
+                                Text("\(user.followers_count)")
+                                    .font(.title3)
+                                    .bold()
+                                Text("Followers")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
                         }
+                        .buttonStyle(PlainButtonStyle())
                         
-                            
-                    }
-                    .padding(.bottom, 40)
+                        Divider()
+                            .frame(height: 35)
+                            .padding(.horizontal, 10)
+                        
+                        Button(action: {
+                            // Action to navigate to FollowersView
+                            followsTab = 1
+                            isViewingFollows = true
+                        }) {
+                            VStack {
+                                Text("\(user.following_count)")
+                                    .font(.title3)
+                                    .bold()
+                                Text("Following")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }.padding(.bottom, 10)
                     
-                }.scrollIndicators(.hidden)
-            } else {
-                Spacer()
+                    if isCurrentUsersProfile {
+                        Button(action: {
+                            Task {
+                                isViewingEditProfile = true
+                            }
+                        }) {
+                            Text("Edit Profile")
+                                .font(.subheadline)
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 20)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)  // Adjust this value for more or less rounded corners
+                        }
+                        .padding(.bottom, 10)
+                        
+                    } else {
+                        FollowButtonView(user: user, currentUser: currentUser)
+                            .padding(.bottom, 10)
+                    }
+                    Divider()
+                } else {
+                    ProgressView()
+                }
+                
+                
+                
+                if let posts = posts {
+                    ScrollView {
+                        LazyVStack(spacing: 0) {
+                            ForEach(posts) { post in
+                                SubmissionView(submission: post)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Divider()
+                            }
+                            
+                            
+                        }
+                        .padding(.bottom, 40)
+                        
+                    }.scrollIndicators(.hidden)
+                } else {
+                    Spacer()
+                }
             }
-        }
-        .onAppear {
-            Task {
-                await load()
+            .onAppear {
+                Task {
+                    await load()
+                }
             }
-        }
-        .sheet(isPresented: $isViewingSettings, onDismiss:  {
-            //
-        }) {
-            SettingsView()
-        }
-        .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
-            Task {
-                await load()
+            .sheet(isPresented: $isViewingSettings, onDismiss:  {
+                //
+            }) {
+                SettingsView()
             }
-        }) {
-            EditProfileView()
-        }
-        .sheet(isPresented: $isViewingFollows) {
-            FollowsTabView(selectedTab: followsTab, user: user)
+            .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
+                Task {
+                    await load()
+                }
+            }) {
+                EditProfileView()
+            }
+            .sheet(isPresented: $isViewingFollows) {
+                FollowsTabView(selectedTab: followsTab, user: user)
+            }
         }
     }
     

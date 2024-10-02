@@ -175,7 +175,7 @@ struct CoinShopView: View {
     
     // Fetch products from StoreKit
     func loadProducts() async {
-        let productIDs = Set(["com.yourapp.coins100"])
+        let productIDs = Set(["com.Bopito.coins100"])
         let request = SKProductsRequest(productIdentifiers: productIDs)
         request.delegate = InAppPurchaseManager.shared
         request.start()

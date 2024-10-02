@@ -15,7 +15,7 @@ class InAppPurchaseManager: NSObject, SKProductsRequestDelegate {
     @Published var products: [SKProduct] = []
     
     func fetchProducts() {
-        let productIDs = Set(["com.yourapp.coins100"])
+        let productIDs = Set(["com.Bopito.coins100"])
         
         let request = SKProductsRequest(productIdentifiers: productIDs)
         request.delegate = self
