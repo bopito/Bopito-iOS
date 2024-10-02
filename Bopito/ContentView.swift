@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
+    @EnvironmentObject var notificationManager: NotificationManager
     
     @State private var isOutdated = false
     @State private var latestVersion: String?
@@ -30,9 +31,21 @@ struct ContentView: View {
                         UIApplication.shared.open(url)
                     }
                 }
+                
             } else {
                 if supabaseManager.isAuthenticated {
-                    AppView() // Show app content when authenticated
+                    if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+                        AppView()
+                            .task {
+                                print("In Preview so FCM Push Notifications don't work")
+                            }
+                    }
+                    if let token = notificationManager.fcmToken {
+                        AppView() // Show app content when authenticated
+                            .task {
+                                await supabaseManager.addFirebaseCloudMessengerToken(token:token)
+                            }
+                    }
                 } else {
                     VStack {
                         
@@ -85,10 +98,11 @@ struct ContentView: View {
                 }
             }
             
-           
+            
         }
         .onAppear {
             Task {
+                // Check for Updates
                 await checkForUpdate()
             }
         }
@@ -96,15 +110,17 @@ struct ContentView: View {
     }
     
     
+    
     func checkForUpdate() async {
         let isCurrent = await supabaseManager.appVersionCurrent()
-            if !isCurrent {
-                // Handle the case where the app version is outdated
-                isOutdated = true
-            } else {
-                isOutdated = false
-            }
-
+        
+        if !isCurrent {
+            // Handle the case where the app version is outdated
+            isOutdated = true
+        } else {
+            isOutdated = false
+        }
+        
     }
 }
 
@@ -113,6 +129,7 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(SupabaseManager())
+        .environmentObject(NotificationManager())
     
     
 }

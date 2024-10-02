@@ -20,14 +20,19 @@ struct BopitoApp: App {
     @StateObject private var notificationManager = NotificationManager()
 
     init() {
+            
         InAppPurchaseManager.shared.startObserving()
+        
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(supabaseManager)
-                .environmentObject(notificationManager)
+            
+                ContentView()
+                    .environmentObject(supabaseManager)
+                    .environmentObject(notificationManager)
+                   
+            
         }
     }
 }

@@ -15,14 +15,17 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
     
     @Published var notificationsEnabled: Bool = false
     
+    @Published var fcmToken: String?
+    
+    // Custom initializer to inject SupabaseManager
     override init() {
         super.init()
-        // Configure Firebase
+        // Configure Firebase and FCM
         FirebaseApp.configure()
-        // Set Messaging delegate
         Messaging.messaging().delegate = self
+        
         // Request notification permissions
-        //requestNotificationPermissions()
+        requestNotificationPermissions()
     }
     
     // Request permission to turn notifications on in app Settings for Bopito
@@ -60,6 +63,10 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase token: \(String(describing: fcmToken))")
         // Send this token to your server to associate it with the user
+        if let token = fcmToken {
+            self.fcmToken = token
+        }
+        
     }
     
     // Handle foreground notifications

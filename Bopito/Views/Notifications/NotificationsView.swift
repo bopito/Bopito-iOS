@@ -46,7 +46,7 @@ struct NotificationsView: View {
         notificationsEnabled = notificationManager.notificationsEnabled
         if !notificationsEnabled {
             if let url = URL(string: UIApplication.openSettingsURLString) {
-                await UIApplication.shared.open(url)
+                //await UIApplication.shared.open(url)
             }
         } else {
             notifications = await supabaseManager.getNotifications()

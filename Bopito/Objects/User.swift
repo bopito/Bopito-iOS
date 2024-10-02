@@ -14,6 +14,7 @@ class User: Identifiable, Codable {
     var following_count: Int
     var verified: Bool
     var balance: Int
+    var fcm_token: String?
     
     init(id: String,
          email: String?,
@@ -25,7 +26,8 @@ class User: Identifiable, Codable {
          followers_count: Int,
          following_count: Int,
          verified: Bool,
-         balance: Int
+         balance: Int,
+         fcm_token: String?
     ) {
         self.id = id
         self.email = email
@@ -38,6 +40,7 @@ class User: Identifiable, Codable {
         self.following_count = following_count
         self.verified = verified
         self.balance = balance
+        self.fcm_token = fcm_token
     }
 }
 

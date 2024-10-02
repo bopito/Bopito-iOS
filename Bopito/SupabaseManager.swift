@@ -102,7 +102,8 @@ class SupabaseManager: ObservableObject {
                          followers_count: 0,
                          following_count: 0,
                          verified: false,
-                         balance: 100
+                         balance: 100,
+                         fcm_token: nil
                         )
                 )
                 .execute()
@@ -122,8 +123,27 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func addFirebaseCloudMessengerToken(token: String) async {
+        do {
+            // Assuming the user is already authenticated and you have their ID
+            let currentUser = try await supabase.auth.session.user
+
+            // Update the user's FCM token
+            try await supabase
+                .from("users")
+                .update(["fcm_token": token]) // Update the FCM token
+                .eq("id", value: currentUser.id) // Match by user ID
+                .execute()
+
+            print("FCM token updated successfully.")
+
+        } catch {
+            print("Error updating FCM token: \(error)")
+        }
+    }
+    
     //
-    // Notifications
+    // Supabase Notifications
     //
     func createNotification(recipitentID: String, senderID: String, type: String, submissionID: String?, message: String) async {
         let notification = Notification(id: UUID().uuidString,
@@ -696,7 +716,7 @@ class SupabaseManager: ObservableObject {
     func getAllSubmissions(feedType: String, feedFilter: String) async -> [Submission]? {
         do {
             // let type = // need to check if
-            print(feedType, feedFilter)
+            print("Feed type: ", feedType, "Feed Filter: ", feedFilter)
           
             let submissions: [Submission] = try await supabase
                 .from("submissions")
