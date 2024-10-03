@@ -76,7 +76,7 @@ struct VoteView: View {
             isShowingProfile = true
         }
         .sheet(isPresented: $isShowingProfile) {
-            ProfileView(user: user)
+            ProfileView(user: user, openedFromProfileTab: false)
         }
         .onAppear() {
             Task{

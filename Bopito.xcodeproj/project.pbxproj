@@ -54,6 +54,7 @@
 		E67558A62CAC8EB900B98B5C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E67558A52CAC8EB900B98B5C /* FirebaseMessaging */; };
 		E67558AA2CAC9A9100B98B5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E67558A92CAC9A9100B98B5C /* GoogleService-Info.plist */; };
 		E67558AC2CACA27C00B98B5C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558AB2CACA27C00B98B5C /* NotificationManager.swift */; };
+		E67558AE2CAF42C400B98B5C /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558AD2CAF42C400B98B5C /* Block.swift */; };
 		E694536E2C94AE1600F799E6 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536D2C94AE1600F799E6 /* Notification.swift */; };
 		E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E694536F2C94BF7D00F799E6 /* NotificationView.swift */; };
 		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
@@ -124,6 +125,7 @@
 		E67558A32CAC7EE700B98B5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E67558A92CAC9A9100B98B5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E67558AB2CACA27C00B98B5C /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		E67558AD2CAF42C400B98B5C /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		E694536D2C94AE1600F799E6 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		E694536F2C94BF7D00F799E6 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				E60DDB232C91E45D00FBBD36 /* Follow.swift */,
 				E694536D2C94AE1600F799E6 /* Notification.swift */,
 				E66464842CA4C2240083C1D4 /* Boost.swift */,
+				E67558AD2CAF42C400B98B5C /* Block.swift */,
 				E69453742C9CBB1400F799E6 /* Version.swift */,
 			);
 			path = Objects;
@@ -499,6 +502,7 @@
 				E60DDB272C92988E00FBBD36 /* EarnView.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
 				E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */,
+				E67558AE2CAF42C400B98B5C /* Block.swift in Sources */,
 				E675589D2CA68D9200B98B5C /* CoinShopView.swift in Sources */,
 				E67558952CA53C3700B98B5C /* SharesView.swift in Sources */,
 				E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */,

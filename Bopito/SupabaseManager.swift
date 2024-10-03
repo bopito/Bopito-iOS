@@ -65,6 +65,25 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func addFirebaseCloudMessengerToken(token: String) async {
+        do {
+            // Assuming the user is already authenticated and you have their ID
+            let currentUser = try await supabase.auth.session.user
+
+            // Update the user's FCM token
+            try await supabase
+                .from("users")
+                .update(["fcm_token": token]) // Update the FCM token
+                .eq("id", value: currentUser.id) // Match by user ID
+                .execute()
+
+            print("FCM token updated successfully.")
+
+        } catch {
+            print("Error updating FCM token: \(error)")
+        }
+    }
+    
     func signInAnonymously() async {
         do {
             try await supabase.auth.signInAnonymously()
@@ -123,24 +142,64 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func addFirebaseCloudMessengerToken(token: String) async {
-        do {
-            // Assuming the user is already authenticated and you have their ID
-            let currentUser = try await supabase.auth.session.user
-
-            // Update the user's FCM token
-            try await supabase
-                .from("users")
-                .update(["fcm_token": token]) // Update the FCM token
-                .eq("id", value: currentUser.id) // Match by user ID
-                .execute()
-
-            print("FCM token updated successfully.")
-
-        } catch {
-            print("Error updating FCM token: \(error)")
+    //
+    // Block/Unblock Users
+    //
+    func blockUser(userID: String) async {
+        if let currentUser = await getCurrentUser() {
+            let block = Block(
+                id: UUID().uuidString,
+                created_at: nil,
+                blocker_id: currentUser.id,
+                blocked_id: userID)
+            do {
+                try await supabase
+                    .from("blocks")
+                    .upsert(block)
+                    .execute()
+                print("Blocked '\(userID)'")
+            } catch {
+                print("Failed to block '\(userID)' ... Error: \(error.localizedDescription)")
+            }
         }
     }
+    
+    func unblockUser(userID: String) async {
+        if let currentUser = await getCurrentUser() {
+            do {
+                try await supabase.from("blocks")
+                    .delete()
+                    .eq("blocker_id", value: currentUser.id)
+                    .eq("blocked_id", value: userID)
+                    .execute()
+                print("Unblocked '\(userID)'")
+            } catch {
+                print("Failed to Unblock '\(userID)' ... Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func isUserBlocked(userID: String) async -> Bool {
+        if let currentUser = await getCurrentUser() {
+            do {
+                let block: Block = try await supabase
+                    .from("blocks")
+                    .select()
+                    .eq("blocker_id", value: currentUser.id)
+                    .eq("blocked_id", value: userID)
+                    .single() // Fetch a single row if it exists
+                    .execute()
+                    .value
+                return true
+                
+            } catch {
+                // Handle the case where no block exists or there is an error
+                print("Failed to check block for user '\(userID)' ... Error: \(error.localizedDescription)")
+                return false
+            }
+        }
+        return false    }
+    
     
     //
     // Supabase Notifications
@@ -717,19 +776,40 @@ class SupabaseManager: ObservableObject {
         do {
             // let type = // need to check if
             print("Feed type: ", feedType, "Feed Filter: ", feedFilter)
-          
+            
+            // Get current user ID
+            guard let currentUser = await getCurrentUser() else {
+                print("Failed to get current user.")
+                return nil
+            }
+            
             let submissions: [Submission] = try await supabase
-                .from("submissions")
-                .select()
-                .is("parent_id", value: nil)
-                .order("created_at", ascending: false)
+                .rpc("get_all_submissions", params: [
+                    "blocker_id": currentUser.id
+                ])
                 .execute()
                 .value
+            
+            print("test3")
+            /*
+             let submissions: [Submission] = try await supabase
+             .from("submissions")
+             .select()
+             .is("parent_id", value: nil) // Only root submissions
+             .not("author_id", in: supabase
+             .from("blocks")
+             .select("blocked_id")
+             .eq("blocker_id", currentUser.id)
+             ) // Exclude submissions from blocked users
+             .order("created_at", ascending: false)
+             .execute()
+             .value
+             */
             
             return submissions
             
         } catch {
-            print("Failed to get user by ID. Error: \(error.localizedDescription)")
+            print("Failed to get submissions. Error: \(error.localizedDescription)")
             return nil
         }
     }

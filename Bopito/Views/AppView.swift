@@ -39,7 +39,7 @@ struct AppView: View {
                 .tag(TabSelection.notifications)
             
             
-            ProfileView()
+            ProfileView(openedFromProfileTab: true)
                 .tabItem {
                     Label("", systemImage: "person.fill")
                 }

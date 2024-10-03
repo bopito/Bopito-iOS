@@ -104,7 +104,7 @@ struct SubmissionView: View {
                                     Button(action: {
                                         activeAlert = .delete
                                     }) {
-                                        Label("Delete post", systemImage: "trash")
+                                        Label("Delete Post", systemImage: "trash")
                                             .foregroundColor(.red)
                                     }
                                                                     } else {
@@ -112,7 +112,7 @@ struct SubmissionView: View {
                                     Button(action: {
                                         activeAlert = .report
                                     }) {
-                                        Label("Report post", systemImage: "flag")
+                                        Label("Report Post", systemImage: "flag")
                                             .foregroundColor(.red)
                                     }
                                     
@@ -313,7 +313,7 @@ struct SubmissionView: View {
             case .voters:
                 VotersView(submissionID: submission.id)
             case .profile:
-                ProfileView(user: user)
+                ProfileView(user: user, openedFromProfileTab: false)
             }
         }
         .alert(item: $activeAlert) { alertType in
