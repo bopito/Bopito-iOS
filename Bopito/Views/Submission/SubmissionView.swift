@@ -82,17 +82,19 @@ struct SubmissionView: View {
                             }
                             
                         } else {
-                            Text("@username")
-                            Image(systemName: "checkmark.seal.fill")
-                                .foregroundColor(.blue)
+                            //placeholder
+//                            Text("@username")
+//                            Image(systemName: "checkmark.seal.fill")
+//                                .foregroundColor(.blue)
                         }
                         
                         if let time_since = time_since {
                             Text("\(time_since)")
                                 .font(.subheadline)
                         } else {
-                            Text("?h")
-                                .font(.subheadline)
+                            //placeholder
+//                            Text("?h")
+//                                .font(.subheadline)
                         }
                         
                         Spacer()
@@ -323,8 +325,9 @@ struct SubmissionView: View {
                     title: Text("Delete Post"),
                     message: Text("Are you sure you want to delete this post? This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete"), action: {
-                        // Handle delete action
-                        print("Post deleted")
+                        Task {
+                            await deleteSubmission()
+                        }
                     }),
                     secondaryButton: .cancel()
                 )
@@ -334,8 +337,9 @@ struct SubmissionView: View {
                     title: Text("Report Post"),
                     message: Text("Are you sure you want to report this post?"),
                     primaryButton: .destructive(Text("Report"), action: {
-                        // Handle report action
-                        print("Post reported")
+                        Task {
+                            await reportSubmission()
+                        }
                     }),
                     secondaryButton: .cancel()
                 )
@@ -391,10 +395,8 @@ struct SubmissionView: View {
     }
     
     func reloadSubmission() async {
-        print(submission.likes_count)
         if let updatedPost = await supabaseManager.getSubmission(submissionID: submission.id) {
             submission = updatedPost
-            print(submission.likes_count)
         }
         
     }
@@ -434,12 +436,11 @@ struct SubmissionView: View {
     }
     
     func deleteSubmission() async {
-        print("deleted!")
         await supabaseManager.deleteSubmission(submissionID: submission.id)
     }
     
     func reportSubmission() async {
-        print("reported!")
+        await supabaseManager.reportSubmission(submissionID: submission.id)
     }
 }
 

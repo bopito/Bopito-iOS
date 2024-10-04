@@ -41,6 +41,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
                 UIApplication.shared.registerForRemoteNotifications()
             }
         }
+        checkNotificationSettings()
     }
     
     // Check if allowed in app Settings for Bopito

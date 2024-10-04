@@ -88,11 +88,11 @@ class SupabaseManager: ObservableObject {
         do {
             try await supabase.auth.signInAnonymously()
             print("Signed in anonymously.")
-            // update isAuthenticated
-            await updateAuthenticationState()
             // Store user data in the database
             let user = try await supabase.auth.user()
             await createUserInDatabase(userId: user.id.uuidString)
+            // update isAuthenticated
+            await updateAuthenticationState()
         } catch {
             print("Failed to sign in anonymously. Error: \(error.localizedDescription)")
         }
@@ -411,6 +411,23 @@ class SupabaseManager: ObservableObject {
             }
         } catch {
             print("Failed to delete submission. Error: \(error)")
+        }
+    }
+    
+    func reportSubmission(submissionID: String) async {
+        guard let submission = await getSubmission(submissionID: submissionID) else {
+            print("No submission found in database when trying to report...")
+            return
+        }
+        do {
+            try await supabase
+              .from("submissions")
+              .update(["reports": submission.reports + 1])
+              .eq("id", value: submissionID)
+              .execute()
+            print("Submission reported successfully!")
+        } catch {
+            print("Failed to update submission reports count. Error: \(error)")
         }
     }
     
@@ -783,14 +800,37 @@ class SupabaseManager: ObservableObject {
                 return nil
             }
             
+            if feedType == "All" {
+                // Filter: Most Recent ("New")
+                if feedFilter == "New" {
+                    let submissions: [Submission] = try await supabase
+                        .rpc("get_all_new_submissions", params: [
+                            "blocker_id": currentUser.id
+                        ])
+                        .execute()
+                        .value
+                    return submissions
+                }
+                // Filter: Top Liked Posts ("Top")
+                else if feedFilter == "Top" {
+                    let submissions: [Submission] = try await supabase
+                        .rpc("get_all_top_submissions", params: [
+                            "blocker_id": currentUser.id
+                        ])
+                        .execute()
+                        .value
+                    return submissions
+                }
+            }
+            
+            // DEFAULT CASE
             let submissions: [Submission] = try await supabase
-                .rpc("get_all_submissions", params: [
+                .rpc("get_all_new_submissions", params: [
                     "blocker_id": currentUser.id
                 ])
                 .execute()
                 .value
-            
-            print("test3")
+            return submissions
             /*
              let submissions: [Submission] = try await supabase
              .from("submissions")
@@ -806,7 +846,7 @@ class SupabaseManager: ObservableObject {
              .value
              */
             
-            return submissions
+            
             
         } catch {
             print("Failed to get submissions. Error: \(error.localizedDescription)")

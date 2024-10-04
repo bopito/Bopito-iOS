@@ -14,7 +14,7 @@ struct NotificationsView: View {
     @State var currentUser: User?
     @State var notifications: [Notification]?
     
-    @State var notificationsEnabled: Bool = false
+    @State var notificationsEnabled: Bool?
     
     var body: some View {
         VStack {
@@ -42,15 +42,16 @@ struct NotificationsView: View {
     }
     
     func load() async {
-        notificationManager.checkNotificationSettings()
-        notificationsEnabled = notificationManager.notificationsEnabled
-        if !notificationsEnabled {
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                //await UIApplication.shared.open(url)
-            }
-        } else {
-            notifications = await supabaseManager.getNotifications()
-        }
+        // Get Supabase Notifications
+        notifications = await supabaseManager.getNotifications()
+        
+        // Push Notifications Check
+//        notificationManager.checkNotificationSettings()
+//        if !notificationManager.notificationsEnabled {
+//            if let url = URL(string: UIApplication.openSettingsURLString) {
+//                await UIApplication.shared.open(url)
+//            }
+//        }
     }
 }
 

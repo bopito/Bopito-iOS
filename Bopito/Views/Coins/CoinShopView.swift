@@ -98,6 +98,7 @@ struct CoinShopView: View {
             .cornerRadius(10)
             .padding(10)
             
+            
             VStack (spacing:0){
                 Text("Don't want to pay? Not a problem!")
                     .padding(.top,10)
@@ -116,6 +117,7 @@ struct CoinShopView: View {
             .background()
             .cornerRadius(10)
             .padding(.horizontal, 10)
+             
             
             Spacer()
             
@@ -140,9 +142,11 @@ struct CoinShopView: View {
                 
                 Button(action: {
                     // Trigger the purchase here based on the selected product
+                    
                     if let index = selectedItem {
                         purchaseProduct(products[index])
                     }
+                     
                 }) {
                     HStack {
                         Text("")

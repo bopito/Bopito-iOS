@@ -21,7 +21,8 @@ struct HomeView: View {
     
     
     let feedTypes = ["All", "Following"]
-    let feedFilters = ["New", "Hot", "Top"] // top posts expire after 7 days
+    //let feedFilters = ["New", "Hot", "Top"] // top posts expire after 7 days
+    let feedFilters = ["New", "Top"] // top posts expire after 7 days
     @State private var selectedFeedType = "All"
     @State private var selectedFilterType = "New" // maybe randomize to inspire exploration for now?
     
@@ -36,18 +37,20 @@ struct HomeView: View {
                     .padding()
                 
                 HStack (spacing:0){
+                    /*
                     Picker("Feed Type", selection: $selectedFeedType) {
                         ForEach(feedTypes, id: \.self) { type in
                             Text(type)
                         }
                     }
-                    .pickerStyle(SegmentedPickerStyle())
+                    .pickerStyle((SegmentedPickerStyle()))
                     .padding(.horizontal,10)
                     .onChange(of: selectedFeedType) {
                         Task {
                             await selectionChanged()
                         }
                     }
+                     */
                     
                     Picker("Sort by", selection: $selectedFilterType) {
                         ForEach(feedFilters, id: \.self) { sort in
@@ -55,7 +58,7 @@ struct HomeView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 140)
                     .onChange(of: selectedFilterType) {
                         Task {
                             await selectionChanged()

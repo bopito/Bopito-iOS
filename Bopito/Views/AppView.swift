@@ -24,13 +24,14 @@ struct AppView: View {
                 .padding(5)
                 .tag(TabSelection.home)
             
+            /*
             CoinShopView()
                 .tabItem {
                     Label("", systemImage: "bitcoinsign.circle")
                 }
                 .tag(TabSelection.earn)
                 .badge(0) // Example badge
-             
+             */
             
             NotificationsView()
                 .tabItem {

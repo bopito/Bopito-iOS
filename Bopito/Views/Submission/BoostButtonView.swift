@@ -82,6 +82,7 @@ struct BoostButtonView: View {
     func boostPurchased(price: Int, time: Int, value:Int, category: String) async {
         if let submission = submission, let currentUser = await supabaseManager.getCurrentUser() {
             // Add boost
+            print(currentUser.balance)
             await supabaseManager.applyBoost(
                 price: price,
                 time: time,

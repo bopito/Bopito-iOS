@@ -43,7 +43,10 @@ struct ContentView: View {
                     if let token = notificationManager.fcmToken {
                         AppView() // Show app content when authenticated
                             .task {
+                                print("Trying to upsert FCM Token")
                                 await supabaseManager.addFirebaseCloudMessengerToken(token:token)
+                                print("Checking Notifications Settings")
+                                notificationManager.checkNotificationSettings()
                             }
                     }
                 } else {

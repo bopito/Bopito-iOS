@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
+    @EnvironmentObject var notificationManager: NotificationManager
     
     @State var posts: [Submission]?
     @State var user: User?
@@ -27,11 +28,27 @@ struct ProfileView: View {
                         if let user = user, let currentUser = currentUser {
                             if user.id == currentUser.id {
                                 Button(action: {
+                                    Task {
+                                        print("need to move signout/delete to function")
+                                        await supabaseManager.signOut()
+                                    }
                                 }) {
                                     Label("Delete Account", systemImage: "trash")
                                         .foregroundColor(.red)
                                         .font(.title2)
                                 }
+                                Button(action: {
+                                    Task {
+                                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                                            await UIApplication.shared.open(url)
+                                        }
+                                    }
+                                }) {
+                                    Label("Notifications Settings", systemImage: "bell")
+                                        .foregroundColor(.red)
+                                        .font(.title2)
+                                }
+                                
                             } else {
                                 Button(action: {
                                     Task {
@@ -288,7 +305,7 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView(openedFromProfileTab: false)
+    ProfileView(openedFromProfileTab: true)
         .environmentObject(SupabaseManager())
 }
 
