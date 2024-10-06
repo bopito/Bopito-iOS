@@ -165,22 +165,22 @@ struct BoostsView: View {
             
             BoostButtonView(submission: submission, emoji: "🌟", backgroundColor: .blue, value: 1, time: 10, price: 1, category: "pushes") {
                 Task {
-                    await updateBoostData()
+                    await load()
                 }
             }
             BoostButtonView(submission: submission, emoji: "🚀", backgroundColor: .blue,  value: 2, time: 30, price: 5, category: "pushes") {
                 Task {
-                    await updateBoostData()
+                    await load()
                 }
             }
             BoostButtonView(submission: submission, emoji: "💩", backgroundColor: .red, value: 1, time: 10, price: 1, category: "pulls") {
                 Task {
-                    await updateBoostData()
+                    await load()
                 }
             }
             BoostButtonView(submission: submission, emoji: "💀", backgroundColor: .red, value: 2, time: 30, price: 5, category: "pulls") {
                 Task {
-                    await updateBoostData()
+                    await load()
                 }
             }
            

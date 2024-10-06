@@ -49,6 +49,17 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async { [weak self] in
                 self?.notificationsEnabled = (settings.authorizationStatus == .authorized)
+                
+                if settings.authorizationStatus == .authorized {
+                    print("Notifications already enabled, no need to open settings")
+                } else {
+                    print("Notifications not enabled, trying to open settings")
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        Task {
+                            await UIApplication.shared.open(url)
+                        }
+                    }
+                }
             }
         }
     }

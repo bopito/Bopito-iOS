@@ -47,11 +47,7 @@ struct NotificationsView: View {
         
         // Push Notifications Check
 //        notificationManager.checkNotificationSettings()
-//        if !notificationManager.notificationsEnabled {
-//            if let url = URL(string: UIApplication.openSettingsURLString) {
-//                await UIApplication.shared.open(url)
-//            }
-//        }
+//        
     }
 }
 

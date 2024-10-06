@@ -3,7 +3,6 @@ import SwiftUI
 struct ProfileView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
-    @EnvironmentObject var notificationManager: NotificationManager
     
     @State var posts: [Submission]?
     @State var user: User?

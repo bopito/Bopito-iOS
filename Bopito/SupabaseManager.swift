@@ -620,10 +620,29 @@ class SupabaseManager: ObservableObject {
         do {
             
             print("NOTE - Maybe change to UPSERT so Boost can't be abused by people with more money?")
-            try await supabase
-                .from("boosts")
-                .insert(boost)
+            // Check balance
+            let user: User = try await supabase
+                .from("users")
+                .select()
+                .eq("id", value: userID)
+                .single()
                 .execute()
+                .value
+            
+            if user.balance >= price {
+                // Update balance (subtract price)
+                let newBalance = user.balance - price
+                try await supabase
+                    .from("users")
+                    .update(["balance": newBalance])
+                    .eq("id", value: userID)
+                    .execute()
+                // Put boost in table
+                let boost = try await supabase
+                    .from("boosts")
+                    .insert(boost)
+                    .execute()
+            }
         } catch {
             print("Failed to add Boost: \(error.localizedDescription)")
         }

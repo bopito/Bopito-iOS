@@ -40,13 +40,11 @@ struct ContentView: View {
                                 print("In Preview so FCM Push Notifications don't work")
                             }
                     }
-                    if let token = notificationManager.fcmToken {
+                    else {
                         AppView() // Show app content when authenticated
                             .task {
-                                print("Trying to upsert FCM Token")
-                                await supabaseManager.addFirebaseCloudMessengerToken(token:token)
-                                print("Checking Notifications Settings")
-                                notificationManager.checkNotificationSettings()
+                                //print("Trying to upsert FCM Token")
+                                //await supabaseManager.addFirebaseCloudMessengerToken(token:token)
                             }
                     }
                 } else {
@@ -115,8 +113,9 @@ struct ContentView: View {
     
     
     func checkForUpdate() async {
+        print("test1")
         let isCurrent = await supabaseManager.appVersionCurrent()
-        
+        print("test2")
         if !isCurrent {
             // Handle the case where the app version is outdated
             isOutdated = true
