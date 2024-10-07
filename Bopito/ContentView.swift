@@ -113,9 +113,7 @@ struct ContentView: View {
     
     
     func checkForUpdate() async {
-        print("test1")
         let isCurrent = await supabaseManager.appVersionCurrent()
-        print("test2")
         if !isCurrent {
             // Handle the case where the app version is outdated
             isOutdated = true

@@ -60,12 +60,12 @@ struct BoostsView: View {
                             )
                             .cornerRadius(5)
                             .foregroundStyle(by: .value("Category", item.category))
-                            .annotation(position: .overlay) {
-                                if item.totalValue != 0 {
-                                    Text("\(item.totalValue)")
-                                        .foregroundStyle(.white)
-                                }
-                            }
+//                            .annotation(position: .overlay) {
+//                                if item.totalValue != 0 {
+//                                    Text("\(item.totalValue)")
+//                                        .foregroundStyle(.white)
+//                                }
+//                            }
                         }
                         .scaledToFit()
                         .chartLegend(.hidden)
@@ -96,8 +96,10 @@ struct BoostsView: View {
                                 .frame(width: 80, height: 70)
                                 .cornerRadius(10)
                             VStack {
-                                Text("7")
-                                    .font(.title2)
+                                if !boostData.isEmpty {
+                                    Text("\(boostData[3].totalValue)")
+                                        .font(.title2)
+                                }
                                 Text("Live")
                             }.foregroundColor(.white)
                         }
@@ -107,8 +109,10 @@ struct BoostsView: View {
                                 .frame(width: 80, height: 70)
                                 .cornerRadius(10)
                             VStack {
-                                Text("3")
-                                    .font(.title2)
+                                if !boostData.isEmpty {
+                                    Text("\(boostData[0].totalValue)")
+                                        .font(.title2)
+                                }
                                 Text("Dead")
                             }.foregroundColor(.white)
                         }
@@ -120,8 +124,10 @@ struct BoostsView: View {
                                 .frame(width: 80, height: 70)
                                 .cornerRadius(10)
                             VStack {
-                                Text("7")
-                                    .font(.title2)
+                                if !boostData.isEmpty {
+                                    Text("\(boostData[2].totalValue)")
+                                        .font(.title2)
+                                }
                                 Text("Live")
                             }.foregroundColor(.white)
                         }
@@ -131,8 +137,10 @@ struct BoostsView: View {
                                 .frame(width: 80, height: 70)
                                 .cornerRadius(10)
                             VStack {
-                                Text("3")
-                                    .font(.title2)
+                                if !boostData.isEmpty {
+                                    Text("\(boostData[1].totalValue)")
+                                        .font(.title2)
+                                }
                                 Text("Dead")
                             }.foregroundColor(.white)
                         }
