@@ -132,6 +132,7 @@ struct ContentView: View {
     ContentView()
         .environmentObject(SupabaseManager())
         .environmentObject(NotificationManager())
+        .environmentObject(InAppPurchaseManager())
     
     
 }

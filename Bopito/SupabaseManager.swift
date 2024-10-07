@@ -291,6 +291,28 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func increaseUserBalance(amount: Int) async {
+        do {
+            let currentUser = try await supabase.auth.session.user
+            let user: User = try await supabase
+                        .from("users")
+                        .select()
+                        .eq("id", value: currentUser.id)
+                        .single() // need this if not doing [User] array
+                        .execute()
+                        .value
+            user.balance += amount
+            print(user.balance+amount)
+            try await supabase
+                .from("users")
+                .upsert(user)
+                .execute()
+            print("Balance successfully increased in Supabase")
+        } catch {
+            print("Failed to update balance in Supabase. Error: \(error.localizedDescription)")
+        }
+    }
+    
     
     //
     // Submissions

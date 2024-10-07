@@ -18,21 +18,15 @@ struct BopitoApp: App {
 
     @StateObject private var supabaseManager = SupabaseManager()
     @StateObject private var notificationManager = NotificationManager()
-
-    init() {
-            
-        InAppPurchaseManager.shared.startObserving()
-        
-    }
-
+    @StateObject var inAppPurchaseManager = InAppPurchaseManager()
+    
     var body: some Scene {
         WindowGroup {
-            
                 ContentView()
+                    .environmentObject(inAppPurchaseManager)
                     .environmentObject(supabaseManager)
                     .environmentObject(notificationManager)
-                   
-            
+                    
         }
     }
 }

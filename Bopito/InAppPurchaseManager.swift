@@ -6,96 +6,115 @@
 //
 
 import StoreKit
+import SwiftUI
 
-class InAppPurchaseManager: NSObject, SKProductsRequestDelegate {
+class InAppPurchaseManager: NSObject, ObservableObject {
     
-    static let shared = InAppPurchaseManager()
-
-    // Store the products fetched from the App Store
     @Published var products: [SKProduct] = []
+    @Published var transactionState: SKPaymentTransactionState? // Track transaction state
     
+    // Fetch products from the App Store
     func fetchProducts() {
-        let productIDs = Set(["com.Bopito.coins100"])
-        
+        let productIDs = Set(["100coins"])  // Add more IDs as needed
         let request = SKProductsRequest(productIdentifiers: productIDs)
         request.delegate = self
         request.start()  // Initiates the request to fetch products
     }
     
-    // SKProductsRequestDelegate - This method is called when the product info is received
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        DispatchQueue.main.async {
-                    self.products = response.products
-                    
-                    // Debugging: Check if products are loaded
-                    print("Loaded products: \(self.products)")
-                }
-                
-                if !response.invalidProductIdentifiers.isEmpty {
-                    print("Invalid product identifiers: \(response.invalidProductIdentifiers)")
-                }
+    // Purchase a product
+    func purchaseProduct(_ product: SKProduct, completion: @escaping (Int?) -> Void) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+        
+        self.purchaseCompletionHandler = completion // Store the completion handler to call after transaction completion
     }
     
-    // Handle errors
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        print("Failed to load products: \(error.localizedDescription)")
-    }
-}
-
-extension SKProduct {
-    func localizedPrice() -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = self.priceLocale
-        return formatter.string(from: self.price) ?? "$\(self.price)"
-    }
-}
-
-extension InAppPurchaseManager: SKPaymentTransactionObserver {
+    private var purchaseCompletionHandler: ((Int?) -> Void)?
     
+    // Complete a transaction (this handles adding coins and updating the user's balance)
+    private func completeTransaction(_ transaction: SKPaymentTransaction) {
+        // Unlock the purchased content
+        let productID = transaction.payment.productIdentifier
+        var coinsPurchased = 0
+        
+        if productID == "100coins" {
+            coinsPurchased = 100
+            print("test")
+        }
+        
+        print("Successfully purchased \(coinsPurchased) coins!")
+        purchaseCompletionHandler?(coinsPurchased) // Notify success
+        
+        SKPaymentQueue.default().finishTransaction(transaction)  // Finish transaction
+    }
+    
+    // Handle a failed transaction
+    private func failedTransaction(_ transaction: SKPaymentTransaction) {
+        if let error = transaction.error as? SKError {
+            print("Transaction failed: \(error.localizedDescription)")
+        }
+        SKPaymentQueue.default().finishTransaction(transaction)
+    }
+    
+    // Handle a restored transaction (if needed)
+    private func restoreTransaction(_ transaction: SKPaymentTransaction) {
+        print("Restored purchase: \(transaction.payment.productIdentifier)")
+        SKPaymentQueue.default().finishTransaction(transaction)
+    }
+    
+    // Start observing payment transactions
     func startObserving() {
         SKPaymentQueue.default().add(self)
     }
     
+    // Stop observing payment transactions
     func stopObserving() {
         SKPaymentQueue.default().remove(self)
     }
+}
 
+// MARK: - SKProductsRequestDelegate
+extension InAppPurchaseManager: SKProductsRequestDelegate {
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        DispatchQueue.main.async {
+            self.products = response.products  // Update the list of products
+            if !response.invalidProductIdentifiers.isEmpty {
+                print("Invalid product IDs: \(response.invalidProductIdentifiers)")
+            } else {
+                print(response.products)
+            }
+        }
+    }
+    
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        print("Failed to fetch products: \(error.localizedDescription)")
+    }
+}
+
+// MARK: - SKPaymentTransactionObserver
+extension InAppPurchaseManager: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased:
-                // Handle successful purchase
-                complete(transaction: transaction)
+                completeTransaction(transaction)  // Handle successful purchase
             case .failed:
-                // Handle failed purchase
-                failed(transaction: transaction)
+                failedTransaction(transaction)  // Handle failure
             case .restored:
-                // Handle restoring purchases
-                restore(transaction: transaction)
+                restoreTransaction(transaction)  // Handle restored purchase
             default:
                 break
             }
         }
     }
-    
-    func complete(transaction: SKPaymentTransaction) {
-        // Unlock the purchased content for the user
-        print("Purchase successful!")
-        SKPaymentQueue.default().finishTransaction(transaction)
-    }
+}
 
-    func failed(transaction: SKPaymentTransaction) {
-        // Handle a failed transaction
-        if let error = transaction.error as? SKError {
-            print("Failed to purchase: \(error.localizedDescription)")
-        }
-        SKPaymentQueue.default().finishTransaction(transaction)
-    }
-
-    func restore(transaction: SKPaymentTransaction) {
-        // Handle a restored purchase
-        print("Restored purchase: \(transaction.payment.productIdentifier)")
-        SKPaymentQueue.default().finishTransaction(transaction)
+// MARK: - SKProduct Price Formatter
+extension SKProduct {
+    func localizedPrice() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = self.priceLocale
+        return formatter.string(from: self.price) ?? "\(self.price)"
     }
 }

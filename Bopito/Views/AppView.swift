@@ -31,7 +31,6 @@ struct AppView: View {
                 }
                 .tag(TabSelection.earn)
                 .badge(0) // Example badge
-             
             
             NotificationsView()
                 .tabItem {
@@ -45,6 +44,7 @@ struct AppView: View {
                     Label("", systemImage: "person.fill")
                 }
                 .tag(TabSelection.profile)
+             
         }
         .accentColor(.blue)
         
@@ -63,5 +63,6 @@ struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         AppView()
             .environmentObject(SupabaseManager())
+            .environmentObject(InAppPurchaseManager())
     }
 }
