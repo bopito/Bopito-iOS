@@ -39,7 +39,6 @@ class InAppPurchaseManager: NSObject, ObservableObject {
         
         if productID == "100coins" {
             coinsPurchased = 100
-            print("test")
         }
         
         print("Successfully purchased \(coinsPurchased) coins!")
@@ -79,9 +78,11 @@ extension InAppPurchaseManager: SKProductsRequestDelegate {
         DispatchQueue.main.async {
             self.products = response.products  // Update the list of products
             if !response.invalidProductIdentifiers.isEmpty {
+                // Print out the products with invalid ids / not found
                 print("Invalid product IDs: \(response.invalidProductIdentifiers)")
             } else {
-                print(response.products)
+                // Print out the products found
+                //print(response.products)
             }
         }
     }

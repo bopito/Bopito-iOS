@@ -39,7 +39,7 @@ class SupabaseManager: ObservableObject {
                 
                 print(latestVersion.version)
                 
-                if currentVersion == latestVersion.version {
+                if currentVersion >= latestVersion.version {
                     return true
                 } else {
                     return false
@@ -896,6 +896,46 @@ class SupabaseManager: ObservableObject {
     }
     
     
+    //
+    // Search
+    //
+    func searchForUsers(query: String) async -> [User] {
+        guard !query.isEmpty else {
+            return [] // Return an empty array if the search query is empty
+        }
+        
+        do {
+            let users: [User] = try await supabase
+                .from("users") // Replace with your actual users table name
+                .select()
+                .ilike("username", pattern: "%\(query)%")
+                .execute()
+                .value
+            return users
+        } catch {
+            print("Error searching for users: \(error)")
+            return []
+        }
     
+    }
+    
+    func searchForSubmissions(query: String) async -> [Submission] {
+        guard !query.isEmpty else {
+            return [] // Return an empty array if the search query is empty
+        }
+        
+        do {
+            let submissions: [Submission] = try await supabase
+                .from("submissions") // Replace with your actual users table name
+                .select()
+                .ilike("text", pattern: "%\(query)%")
+                .execute()
+                .value
+            return submissions
+        } catch {
+            print("Error searching for submissions: \(error)")
+            return []
+        }
+    }
     
 }

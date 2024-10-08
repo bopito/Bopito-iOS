@@ -28,24 +28,26 @@ struct CoinShopView: View {
     var body: some View {
         VStack (spacing:0){
             HStack {
-                Text("Get Coins")
+                Text("Coins")
                     .font(.title2)
                     .padding(10)
             }
             .frame(maxWidth: .infinity)
             .background()
             
-            HStack {
-                Image(systemName: "checkmark.shield.fill")
-                    .foregroundStyle(.green)
-                    .bold()
-                Text("Secure Payment")
-                    .foregroundStyle(.green)
-                    .bold()
+            VStack {
+                HStack {
+                    Image(systemName: "checkmark.shield.fill")
+                        .foregroundStyle(Color(hue: 0.4, saturation: 0.9, brightness: 0.45))
+                        .bold()
+                    Text("Secure Payment")
+                        .foregroundStyle(Color(hue: 0.4, saturation: 0.9, brightness: 0.45))
+                        .bold()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(10)
+                .background(Color(hue: 0.4, saturation: 0.5, brightness: 0.8))
             }
-            .frame(maxWidth: .infinity)
-            .padding(10)
-            .background(.green.quaternary)
             
             VStack (spacing:0) {
                 HStack {
@@ -93,7 +95,7 @@ struct CoinShopView: View {
                                 }
                                 .padding(.vertical,10)
                                 .frame(maxWidth: .infinity, minHeight: 70)
-                                .background(selectedItem == index ? Color.blue : .secondary)
+                                .background(selectedItem == index ? Color.blue : Color.secondary)
                                 .cornerRadius(10)
                             }
                         }
@@ -105,7 +107,7 @@ struct CoinShopView: View {
             .cornerRadius(10)
             .padding(10)
             
-            /*
+            
             VStack (spacing:0){
                 Text("Don't want to pay? Not a problem!")
                     .padding(.top,10)
@@ -124,7 +126,6 @@ struct CoinShopView: View {
             .background()
             .cornerRadius(10)
             .padding(.horizontal, 10)
-             */
             
             Spacer()
             
@@ -136,6 +137,7 @@ struct CoinShopView: View {
                 .foregroundStyle(.secondary)
 
             Spacer()
+            
             
             VStack (spacing:0){
                 HStack {
@@ -153,7 +155,9 @@ struct CoinShopView: View {
                     }
                 }) {
                     HStack {
-                        Text("")
+                        Image("coin")
+                            .resizable()
+                            .frame(width: 20, height: 20)
                         Text("Recharge")
                     }
                     .font(.headline)

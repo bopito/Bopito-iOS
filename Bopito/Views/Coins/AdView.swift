@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct EarnView: View {
+struct AdView: View {
     var body: some View {
         Text("Advertisement")
     }
 }
 
 #Preview {
-    EarnView()
+    AdView()
 }

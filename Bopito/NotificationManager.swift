@@ -24,6 +24,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
         
+        UNUserNotificationCenter.current().delegate = self
+        
         // Request notification permissions
         requestNotificationPermissions()
     }
@@ -35,13 +37,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
             if let error = error {
                 print("Error requesting notification permissions: \(error)")
             }
-            print("Notification permission granted: \(granted)")
-            // Register for remote notifications
-            DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
+            if granted {
+                print("Notification permission granted: \(granted)")
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
             }
+            self.checkNotificationSettings()
         }
-        checkNotificationSettings()
     }
     
     // Check if allowed in app Settings for Bopito
@@ -64,12 +67,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
         }
     }
     
-    // Handle APNs device token
-    func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("Received APNs device token: \(token)")
-        // Send this token to your server to associate it with the user
-    }
+   
     
     // Handle Firebase Messaging token
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
@@ -83,7 +81,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
     
     // Handle foreground notifications
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .sound])
+        completionHandler([.banner, .sound, .badge])
     }
     
     // Handle notification responses

@@ -24,6 +24,12 @@ struct AppView: View {
                 .padding(5)
                 .tag(TabSelection.home)
             
+            SearchView()
+                .tabItem {
+                    Label("", systemImage: "magnifyingglass")
+                }
+                .tag(TabSelection.search)
+                .badge(0) // Example badge
             
             CoinShopView()
                 .tabItem {
@@ -54,6 +60,7 @@ struct AppView: View {
 
 enum TabSelection {
     case home
+    case search
     case earn
     case notifications
     case profile

@@ -17,8 +17,11 @@ import SwiftData
 struct BopitoApp: App {
 
     @StateObject private var supabaseManager = SupabaseManager()
-    @StateObject private var notificationManager = NotificationManager()
+    
     @StateObject var inAppPurchaseManager = InAppPurchaseManager()
+    
+    @StateObject private var notificationManager = NotificationManager()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {

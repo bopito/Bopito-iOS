@@ -36,7 +36,7 @@
 		E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */; };
 		E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */; };
 		E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB232C91E45D00FBBD36 /* Follow.swift */; };
-		E60DDB272C92988E00FBBD36 /* EarnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB262C92988E00FBBD36 /* EarnView.swift */; };
+		E60DDB272C92988E00FBBD36 /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB262C92988E00FBBD36 /* AdView.swift */; };
 		E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */; };
 		E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */; };
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
@@ -60,6 +60,9 @@
 		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
 		E69453752C9CBB1400F799E6 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453742C9CBB1400F799E6 /* Version.swift */; };
 		E69453782CA338F300F799E6 /* BoostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453772CA338F300F799E6 /* BoostsView.swift */; };
+		E6FE7C242CB5AD9C00919DCB /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = E6FE7C232CB5AD9C00919DCB /* GoogleMobileAds */; };
+		E6FE7C272CB5B9B500919DCB /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C262CB5B9B500919DCB /* SearchView.swift */; };
+		E6FE7C292CB5D35600919DCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C282CB5D35600919DCB /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,7 +109,7 @@
 		E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTool.swift; sourceTree = "<group>"; };
 		E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomGeneratorTool.swift; sourceTree = "<group>"; };
 		E60DDB232C91E45D00FBBD36 /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
-		E60DDB262C92988E00FBBD36 /* EarnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnView.swift; sourceTree = "<group>"; };
+		E60DDB262C92988E00FBBD36 /* AdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsTabView.swift; sourceTree = "<group>"; };
 		E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
@@ -131,6 +134,8 @@
 		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
 		E69453742C9CBB1400F799E6 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		E69453772CA338F300F799E6 /* BoostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostsView.swift; sourceTree = "<group>"; };
+		E6FE7C262CB5B9B500919DCB /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		E6FE7C282CB5D35600919DCB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +146,7 @@
 				E67558A62CAC8EB900B98B5C /* FirebaseMessaging in Frameworks */,
 				E60DDAF82C8A491F00FBBD36 /* PostgREST in Frameworks */,
 				E675589F2CAC74F800B98B5C /* StoreKit.framework in Frameworks */,
+				E6FE7C242CB5AD9C00919DCB /* GoogleMobileAds in Frameworks */,
 				E60DDAF62C8A491F00FBBD36 /* Functions in Frameworks */,
 				E60DDAFF2C8A4AE300FBBD36 /* Supabase in Frameworks */,
 				E60DDAF42C8A491F00FBBD36 /* Auth in Frameworks */,
@@ -194,6 +200,7 @@
 				E67558A32CAC7EE700B98B5C /* Info.plist */,
 				E67558A22CAC7ECC00B98B5C /* Bopito.entitlements */,
 				E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */,
+				E6FE7C282CB5D35600919DCB /* AppDelegate.swift */,
 				E60DDAC62C8A48D000FBBD36 /* ContentView.swift */,
 				E60DDAF02C8A48F900FBBD36 /* SupabaseManager.swift */,
 				E67558A02CAC754800B98B5C /* InAppPurchaseManager.swift */,
@@ -247,6 +254,7 @@
 				E60DDB252C92559A00FBBD36 /* Auth */,
 				E67558992CA5E64500B98B5C /* Coins */,
 				E67558982CA5E62E00B98B5C /* Home  */,
+				E6FE7C252CB5B99C00919DCB /* Search */,
 				E664647D2CA3EAA20083C1D4 /* Submission */,
 				E69453712C94BF8100F799E6 /* Notifications */,
 				E60DDB2A2C935FE600FBBD36 /* Profile */,
@@ -329,7 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				E675589C2CA68D9200B98B5C /* CoinShopView.swift */,
-				E60DDB262C92988E00FBBD36 /* EarnView.swift */,
+				E60DDB262C92988E00FBBD36 /* AdView.swift */,
 			);
 			path = Coins;
 			sourceTree = "<group>";
@@ -341,6 +349,14 @@
 				E694536F2C94BF7D00F799E6 /* NotificationView.swift */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		E6FE7C252CB5B99C00919DCB /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E6FE7C262CB5B9B500919DCB /* SearchView.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -367,6 +383,7 @@
 				E60DDAFB2C8A491F00FBBD36 /* Storage */,
 				E60DDAFE2C8A4AE300FBBD36 /* Supabase */,
 				E67558A52CAC8EB900B98B5C /* FirebaseMessaging */,
+				E6FE7C232CB5AD9C00919DCB /* GoogleMobileAds */,
 			);
 			productName = Bopito;
 			productReference = E60DDAC12C8A48D000FBBD36 /* Bopito.app */;
@@ -443,6 +460,7 @@
 			packageReferences = (
 				E60DDAF22C8A491F00FBBD36 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				E67558A42CAC8EB900B98B5C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E6FE7C222CB5AD9C00919DCB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = E60DDAC22C8A48D000FBBD36 /* Products */;
 			projectDirPath = "";
@@ -491,6 +509,7 @@
 				E66464832CA4889D0083C1D4 /* FollowButtonView.swift in Sources */,
 				E664647F2CA480AE0083C1D4 /* VotersView.swift in Sources */,
 				E69453752C9CBB1400F799E6 /* Version.swift in Sources */,
+				E6FE7C292CB5D35600919DCB /* AppDelegate.swift in Sources */,
 				E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */,
 				E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */,
 				E66464852CA4C2240083C1D4 /* Boost.swift in Sources */,
@@ -499,7 +518,7 @@
 				E675589B2CA6558200B98B5C /* BoostButtonView.swift in Sources */,
 				E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */,
 				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
-				E60DDB272C92988E00FBBD36 /* EarnView.swift in Sources */,
+				E60DDB272C92988E00FBBD36 /* AdView.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
 				E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */,
 				E67558AE2CAF42C400B98B5C /* Block.swift in Sources */,
@@ -507,6 +526,7 @@
 				E67558952CA53C3700B98B5C /* SharesView.swift in Sources */,
 				E60DDB0C2C8A4B8E00FBBD36 /* HomeView.swift in Sources */,
 				E69453782CA338F300F799E6 /* BoostsView.swift in Sources */,
+				E6FE7C272CB5B9B500919DCB /* SearchView.swift in Sources */,
 				E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */,
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
@@ -706,7 +726,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -740,7 +760,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -883,6 +903,14 @@
 				minimumVersion = 11.3.0;
 			};
 		};
+		E6FE7C222CB5AD9C00919DCB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.10.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -920,6 +948,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E67558A42CAC8EB900B98B5C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		E6FE7C232CB5AD9C00919DCB /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6FE7C222CB5AD9C00919DCB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
