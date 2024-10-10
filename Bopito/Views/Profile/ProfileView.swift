@@ -32,7 +32,7 @@ struct ProfileView: View {
                                         await supabaseManager.signOut()
                                     }
                                 }) {
-                                    Label("Delete Account", systemImage: "trash")
+                                    Label("Abandon Account", systemImage: "trash")
                                         .foregroundColor(.red)
                                         .font(.title2)
                                 }

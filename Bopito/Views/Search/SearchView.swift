@@ -66,8 +66,8 @@ struct SearchView: View {
             if searchOption == .users {
                 // Show User Results
                 if users.isEmpty {
-                    Text("* *crickets chirping* *")
-                        .padding()
+//                    Text("* *crickets chirping* *")
+//                        .padding()
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 10) {
@@ -83,8 +83,8 @@ struct SearchView: View {
             } else {
                 // Show Post Results
                 if submissions.isEmpty {
-                    Text("* *crickets chirping* *")
-                        .padding()
+//                    Text("* *crickets chirping* *")
+//                        .padding()
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 10) {

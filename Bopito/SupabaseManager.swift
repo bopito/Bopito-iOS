@@ -53,7 +53,7 @@ class SupabaseManager: ObservableObject {
     
     func updateAuthenticationState() async {
         do {
-            _ = try await supabase.auth.user()
+            let user = try await supabase.auth.user()
             DispatchQueue.main.async {
                 self.isAuthenticated = true
             }
@@ -837,7 +837,7 @@ class SupabaseManager: ObservableObject {
             
             // Get current user ID
             guard let currentUser = await getCurrentUser() else {
-                print("Failed to get current user.")
+                print("Failed to get current user for getting all submissions.")
                 return nil
             }
             

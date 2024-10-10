@@ -46,15 +46,16 @@ struct CoinShopView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(10)
-                .background(Color(hue: 0.4, saturation: 0.5, brightness: 0.8))
+                .background(Color(hue: 0.4, saturation: 0.4, brightness: 0.85))
             }
             
             VStack (spacing:0) {
-                HStack {
+                HStack (spacing:0) {
                     Text("Balance:")
                     Image("coin")
                         .resizable()
-                        .frame(width: 25, height: 25)
+                        .frame(width: 22, height: 22)
+                        .padding(.leading, 5)
                     
                     if let currentUser = currentUser {
                         Text("\(currentUser.balance)")
@@ -79,10 +80,10 @@ struct CoinShopView: View {
                                 selectedItem = index
                             }) {
                                 VStack {
-                                    HStack {
+                                    HStack (spacing:1) {
                                         Image("coin")
                                             .resizable()
-                                            .frame(width: 25, height: 25)
+                                            .frame(width: 22, height: 22)
                                         Text(product.localizedTitle)
                                             .font(.title3)
                                             .bold()
@@ -108,12 +109,49 @@ struct CoinShopView: View {
             .padding(10)
             
             
-            VStack (spacing:0){
+            VStack(spacing: 0) {
                 Text("Don't want to pay? Not a problem!")
+                    .padding(.top, 10)
+                Button {
+                    // Action to be performed when the button is tapped
+                    print("Watch and Earn tapped")
+                } label: {
+                    HStack {
+                        Image(systemName: "play.fill")
+                        Text("Watch and Earn")
+                    }
+                    .bold()
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(10)
+                    .background(Color.purple)
+                    .cornerRadius(10)
+                }
+                .padding(10)
+            }
+            .background() // Optional: Adds a background to the entire VStack
+            .cornerRadius(10)
+            .padding(.horizontal, 10)
+            
+            /*
+            VStack (spacing:0){
+                Text("Referral Code: X2H74F9")
                     .padding(.top,10)
+                    .font(.title3)
+                    .bold()
+                HStack (spacing:0) {
+                    Text("You both earn")
+                    Image("coin")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .padding(.leading, 4)
+                    Text("500 if they sign up!")
+                }
+                .padding(.top, 10)
+                
                 HStack {
-                    Image(systemName: "play")
-                    Text("Earn for Free")
+                    Image(systemName: "person")
+                    Text("Invite a Friend")
                 }
                 .bold()
                 .foregroundStyle(.white)
@@ -126,9 +164,12 @@ struct CoinShopView: View {
             .background()
             .cornerRadius(10)
             .padding(.horizontal, 10)
+            .padding(.top, 10)
+             */
             
             Spacer()
             
+            /*
             Image("bopito-logo-gray")
                 .resizable()
                 .frame(width: 48, height: 40)
@@ -137,7 +178,7 @@ struct CoinShopView: View {
                 .foregroundStyle(.secondary)
 
             Spacer()
-            
+            */
             
             VStack (spacing:0){
                 HStack {

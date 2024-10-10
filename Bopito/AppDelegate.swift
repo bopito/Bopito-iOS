@@ -7,14 +7,16 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        //FirebaseApp.configure()
-
-        // Register for remote notifications
-        UIApplication.shared.registerForRemoteNotifications()
+        
+        UIApplication.shared.registerForRemoteNotifications() // Register for remote notifications
+        
+        GADMobileAds.sharedInstance().start(completionHandler: nil) // Connect to Google Ads
+       
         return true
     }
 

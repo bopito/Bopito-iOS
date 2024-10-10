@@ -87,7 +87,12 @@ struct HomeView: View {
                             }
                         }
                         .padding(.bottom, 100) // Adding some space at the bottom
-                    }.scrollIndicators(.hidden)
+                        
+                    }
+                    .scrollIndicators(.hidden)
+                    .refreshable {
+                        await loadPosts()
+                    }
                 }
                 Spacer()
             }

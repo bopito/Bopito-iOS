@@ -30,6 +30,8 @@ struct NotificationsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Divider()
                         }
+                    } else {
+                        // show something?
                     }
                 }
                 .padding(.bottom, 100) // Adding some space at the bottom

@@ -15,7 +15,7 @@ class InAppPurchaseManager: NSObject, ObservableObject {
     
     // Fetch products from the App Store
     func fetchProducts() {
-        let productIDs = Set(["100coins"])  // Add more IDs as needed
+        let productIDs = Set(["100coins", "250coins", "500coins", "1000coins", "2500coins", "5000coins"])  // Add more IDs as needed
         let request = SKProductsRequest(productIdentifiers: productIDs)
         request.delegate = self
         request.start()  // Initiates the request to fetch products
@@ -39,6 +39,21 @@ class InAppPurchaseManager: NSObject, ObservableObject {
         
         if productID == "100coins" {
             coinsPurchased = 100
+        }
+        if productID == "250coins" {
+            coinsPurchased = 250
+        }
+        if productID == "500coins" {
+            coinsPurchased = 500
+        }
+        if productID == "1000coins" {
+            coinsPurchased = 1000
+        }
+        if productID == "2500coins" {
+            coinsPurchased = 2500
+        }
+        if productID == "5000coins" {
+            coinsPurchased = 5000
         }
         
         print("Successfully purchased \(coinsPurchased) coins!")
@@ -74,9 +89,19 @@ class InAppPurchaseManager: NSObject, ObservableObject {
 
 // MARK: - SKProductsRequestDelegate
 extension InAppPurchaseManager: SKProductsRequestDelegate {
+    
+    func getNumericPrefix(from identifier: String) -> Int {
+        let numberString = identifier.prefix { $0.isNumber } // Extracts numeric prefix
+        return Int(numberString) ?? 0  // Converts the prefix to Int, defaults to 0 if not found
+    }
+    
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         DispatchQueue.main.async {
-            self.products = response.products  // Update the list of products
+            
+            self.products = response.products.sorted {
+                self.getNumericPrefix(from: $0.productIdentifier) < self.getNumericPrefix(from: $1.productIdentifier)
+            }
+            
             if !response.invalidProductIdentifiers.isEmpty {
                 // Print out the products with invalid ids / not found
                 print("Invalid product IDs: \(response.invalidProductIdentifiers)")
