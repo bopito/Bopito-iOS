@@ -84,12 +84,9 @@ struct ProfileView: View {
             }
             
             VStack (spacing: 0){
-                
                 if let user = user {
-                    //username
-                    
                     if openedFromProfileTab {
-                        Text("\(user.name ?? user.username)'s Profile")
+                        Text("\(user.name)'s Profile")
                             .font(.title2)
                             .padding(.top, 10)
                     } else {
@@ -98,16 +95,11 @@ struct ProfileView: View {
                             .opacity(0.5)
                             .frame(width: 50, height: 5)
                             .padding(.top, 20)
-                        Text("\(user.name ?? user.username)'s Profile")
+                        Text("\(user.name)'s Profile")
                             .font(.title2)
                             .padding(.top, 10)
                     }
-                    
-                    
-                    
                 }
-                
-                
                 
                 if let user = user {
                     // profile picture

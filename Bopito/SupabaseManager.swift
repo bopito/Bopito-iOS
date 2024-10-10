@@ -111,19 +111,20 @@ class SupabaseManager: ObservableObject {
             try await supabase
                 .from("users")
                 .upsert(
-                    User(id: userId,
-                         email: nil,
-                         phone: nil,
-                         username: randomUsername,
-                         bio: nil,
-                         profile_picture: "https://api.dicebear.com/9.x/bottts-neutral/jpeg?seed=\(RandomGeneratorTool.shared.randomAlphaNumericString(length: 5))",
-                         name: nil,
-                         followers_count: 0,
-                         following_count: 0,
-                         verified: false,
-                         balance: 100,
-                         fcm_token: nil
-                        )
+                    User(
+                        id: userId,
+                        email: nil,
+                        phone: nil,
+                        username: randomUsername,
+                        bio: nil,
+                        profile_picture: "https://api.dicebear.com/9.x/bottts-neutral/jpeg?seed=\(RandomGeneratorTool.shared.randomAlphaNumericString(length: 5))",
+                        name: randomUsername,
+                        followers_count: 0,
+                        following_count: 0,
+                        verified: false,
+                        balance: 100,
+                        fcm_token: nil
+                    )
                 )
                 .execute()
         } catch {
@@ -310,6 +311,30 @@ class SupabaseManager: ObservableObject {
             print("Balance successfully increased in Supabase")
         } catch {
             print("Failed to update balance in Supabase. Error: \(error.localizedDescription)")
+        }
+    }
+    
+    func usernameAvailable(username: String) async -> Bool {
+        do {
+            // Fetch users with the given username
+            let users: [User] = try await supabase
+                .from("users")
+                .select()
+                .eq("username", value: username)  // Use the provided username instead of a hardcoded value
+                .execute()
+                .value
+            
+            // If the array is empty, the username is available
+            if users.isEmpty {
+                return true
+            } else {
+                // Username already exists
+                print("Username is already taken: \(users.first?.username ?? "")")
+                return false
+            }
+        } catch {
+            print("Error checking username availability: \(error)")
+            return false
         }
     }
     

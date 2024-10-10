@@ -19,8 +19,9 @@ struct BopitoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @StateObject private var supabaseManager = SupabaseManager()
-    @StateObject var inAppPurchaseManager = InAppPurchaseManager()
+    @StateObject private var inAppPurchaseManager = InAppPurchaseManager()
     @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var admobManager = AdmobManager()
     
     var body: some Scene {
         WindowGroup {
@@ -28,6 +29,7 @@ struct BopitoApp: App {
                     .environmentObject(inAppPurchaseManager)
                     .environmentObject(supabaseManager)
                     .environmentObject(notificationManager)
+                    .environmentObject(admobManager)
                     
         }
     }

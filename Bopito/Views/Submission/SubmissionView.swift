@@ -69,69 +69,73 @@ struct SubmissionView: View {
                         .foregroundStyle(.background, .secondary) // First color for the icon, second for the background
                         .frame(width: 35, height: 35)
                 }
-                VStack {
-                    HStack {
-                        if let user = user {
-                            Text("@\(user.username)")
-                                .onTapGesture {
-                                    activeSheet = .profile
-                                }
-                            if user.verified == true {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .foregroundColor(.blue)
+                HStack (spacing:0) {
+                    if let user = user {
+                        Text("@\(user.username)")
+                            .onTapGesture {
+                                activeSheet = .profile
                             }
-                            
-                        } else {
-                            //placeholder
-//                            Text("@username")
-//                            Image(systemName: "checkmark.seal.fill")
-//                                .foregroundColor(.blue)
+                            .padding(.leading, 10)
+                        if user.verified == true {
+                            Image(systemName: "checkmark.seal.fill")
+                                .foregroundColor(.blue)
+                                .padding(.leading, 7)
                         }
                         
-                        if let time_since = time_since {
-                            Text("\(time_since)")
-                                .font(.subheadline)
-                        } else {
-                            //placeholder
-//                            Text("?h")
-//                                .font(.subheadline)
-                        }
-                        
-                        Spacer()
-                        
-                        Menu {
-                            if let user = user, let currentUser = currentUser {
-                                if user.id == currentUser.id {
-                                    // Delete option
-                                    Button(action: {
-                                        activeAlert = .delete
-                                    }) {
-                                        Label("Delete Post", systemImage: "trash")
-                                            .foregroundColor(.red)
-                                    }
-                                                                    } else {
-                                    // Report option
-                                    Button(action: {
-                                        activeAlert = .report
-                                    }) {
-                                        Label("Report Post", systemImage: "flag")
-                                            .foregroundColor(.red)
-                                    }
-                                    
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .padding(.leading, 20)
-                                .padding(.vertical, 10)
-                                .background()
-                        }
-                        .contentShape(Rectangle()) // Make the entire area tappable
-                        
+                    } else {
+                        //placeholder
+                        /*
+                        Text("@username")
+                            .padding(.leading, 10)
+                        Image(systemName: "checkmark.seal.fill")
+                            .foregroundColor(.blue)
+                            .padding(.leading, 7)
+                         */
                     }
+                    
+                    if let time_since = time_since {
+                        Text("\(time_since)")
+                            .font(.subheadline)
+                            .padding(.leading, 10)
+                    } else {
+                        //placeholder
+                        //Text("?h")
+                         //   .font(.subheadline)
+                    }
+                    
+                    Spacer()
+                    
+                    Menu {
+                        if let user = user, let currentUser = currentUser {
+                            if user.id == currentUser.id {
+                                // Delete option
+                                Button(action: {
+                                    activeAlert = .delete
+                                }) {
+                                    Label("Delete Post", systemImage: "trash")
+                                        .foregroundColor(.red)
+                                }
+                            } else {
+                                // Report option
+                                Button(action: {
+                                    activeAlert = .report
+                                }) {
+                                    Label("Report Post", systemImage: "flag")
+                                        .foregroundColor(.red)
+                                }
+                                
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .padding(.leading, 20)
+                            .padding(.vertical, 10)
+                            .background()
+                            .foregroundColor(.secondary)
+                    }
+                    .contentShape(Rectangle()) // Make the entire area tappable
+                    
                 }
-                .padding(.leading, 10)
-                
             }.padding(10)
             
             // Submission Text

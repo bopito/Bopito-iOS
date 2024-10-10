@@ -34,7 +34,7 @@ struct HomeView: View {
                 Image("bopito-logo")
                     .resizable()
                     .frame(width: 30, height: 30)
-                    .padding()
+                    .padding(.bottom, 10)
                 
                 HStack (spacing:0){
                     /*
@@ -70,6 +70,7 @@ struct HomeView: View {
                 
                 if isLoading {
                     ProgressView()
+                        .padding(.top, 20)
                 } else if let error = error {
                     Text("Error: \(error)")
                         .foregroundColor(.red)

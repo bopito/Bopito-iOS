@@ -20,6 +20,8 @@ struct EditProfileView: View {
     @State var username: String = ""
     @State var bio: String = ""
     
+    @State var errorMessage: String?
+    
     var body: some View {
         VStack (spacing:10) {
             Text("Edit Profile")
@@ -82,12 +84,17 @@ struct EditProfileView: View {
                         .frame(maxWidth: 200)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
+                
+                if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                        .foregroundStyle(.red)
+                }
+                
             }
             
             Button(action: {
                 Task {
                     await saveChangesPressed()
-                    presentationMode.wrappedValue.dismiss()
                 }
             }) {
                 Text("Save Changes")
@@ -98,7 +105,7 @@ struct EditProfileView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)  // Adjust this value for more or less rounded corners
             }
-            .padding(20)
+            .padding(0)
             
             
             Spacer()
@@ -109,9 +116,12 @@ struct EditProfileView: View {
                 user = await supabaseManager.getCurrentUser()
                 if let user = user {
                     // Initialize the fields with the current user info
-                    name = user.name ?? ""
+                    name = user.name
+                    
                     username = user.username
                     bio = user.bio ?? ""
+                    
+                    if name == username { name = ""}
                 }
             }
         }
@@ -125,10 +135,18 @@ struct EditProfileView: View {
     
     func saveChangesPressed() async {
         if let user = user {
-            user.name = name
+            if username != user.username {
+                guard await supabaseManager.usernameAvailable(username: username) else {
+                    errorMessage = "Error: username taken"
+                    return
+                }
+            }
             user.username = username
+            user.name = name
             user.bio = bio
+            
             await supabaseManager.updateUser(user: user)
+            presentationMode.wrappedValue.dismiss()
         }
         
     }

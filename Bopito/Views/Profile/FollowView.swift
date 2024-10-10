@@ -32,9 +32,6 @@ struct FollowView: View {
             VStack {
                 if let user = user {
                     Text("\(user.username)")
-                    if let name = user.name {
-                        Text("\(name)")
-                    }
                     
                 } else {
                     Text("@placeholder")

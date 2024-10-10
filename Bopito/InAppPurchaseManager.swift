@@ -78,6 +78,7 @@ class InAppPurchaseManager: NSObject, ObservableObject {
     
     // Start observing payment transactions
     func startObserving() {
+        stopObserving()
         SKPaymentQueue.default().add(self)
     }
     

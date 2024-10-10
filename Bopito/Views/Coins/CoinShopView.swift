@@ -12,6 +12,7 @@ struct CoinShopView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     @EnvironmentObject var inAppPurchaseManager: InAppPurchaseManager
+    @EnvironmentObject var admobManager: AdmobManager
     
     @State var currentUser: User?
     
@@ -113,8 +114,11 @@ struct CoinShopView: View {
                 Text("Don't want to pay? Not a problem!")
                     .padding(.top, 10)
                 Button {
-                    // Action to be performed when the button is tapped
-                    print("Watch and Earn tapped")
+                    Task {
+                        await admobManager.loadAd()
+                        admobManager.showAd()
+                    }
+                    
                 } label: {
                     HStack {
                         Image(systemName: "play.fill")
@@ -223,6 +227,13 @@ struct CoinShopView: View {
         .onDisappear {
             inAppPurchaseManager.stopObserving()  // Stop observing transactions
         }
+        .onChange(of: admobManager.coins, {
+            Task {
+                await supabaseManager.increaseUserBalance(amount: admobManager.coins)
+                admobManager.coins = 0
+                await load()
+            }
+        })
     }
     
     // Fetch current user data
@@ -256,4 +267,5 @@ struct CoinShopView: View {
     CoinShopView()
         .environmentObject(SupabaseManager())
         .environmentObject(InAppPurchaseManager())
+        .environmentObject(AdmobManager())
 }

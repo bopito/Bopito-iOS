@@ -22,15 +22,29 @@ struct ContentView: View {
         
         VStack {
             if isOutdated {
-                Text("A new version is available! Please update the app.")
-                    .foregroundColor(.red)
-                    .padding()
-                Button("Update Now") {
-                    // Open App Store for updating
-                    if let url = URL(string: "itms-apps://itunes.apple.com/app/id{your_app_id}") {
-                        UIApplication.shared.open(url)
+                VStack (spacing: 20) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 40))
+                    Text("A new version of Bopito is available")
+                        .foregroundColor(.primary)
+                    
+                    Button {
+                        if let url = URL(string: "itms-apps://apps.apple.com/us/app/bopito/id6714448198") {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        HStack {
+                            Image(systemName: "arrow.2.circlepath")
+                            Text("Update")
+                        }
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.blue)
+                        .cornerRadius(10)
                     }
                 }
+                
                 
             } else {
                 if supabaseManager.isAuthenticated {
@@ -133,6 +147,6 @@ struct ContentView: View {
         .environmentObject(SupabaseManager())
         .environmentObject(NotificationManager())
         .environmentObject(InAppPurchaseManager())
-    
+        .environmentObject(AdmobManager())
     
 }

@@ -9,7 +9,7 @@ class User: Identifiable, Codable {
     var username: String
     var bio: String?
     var profile_picture: String
-    var name: String?
+    var name: String
     var followers_count: Int
     var following_count: Int
     var verified: Bool
@@ -22,7 +22,7 @@ class User: Identifiable, Codable {
          username: String,
          bio: String?,
          profile_picture: String,
-         name: String?,
+         name: String,
          followers_count: Int,
          following_count: Int,
          verified: Bool,
