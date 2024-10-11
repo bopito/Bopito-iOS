@@ -78,10 +78,14 @@ struct HomeView: View {
                     ScrollView {
                         
                         LazyVStack(spacing: 0) {
-                            if let submissions = submissions {
+                            if var submissions = submissions {
                                 ForEach(submissions) { submission in
-                                    SubmissionView(submission: submission)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    SubmissionView(submission: submission, onDelete: { deletedPostID in
+                                        print("deleting:", submission.id)
+                                        submissions.removeAll { $0.id == deletedPostID }
+                                    })
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    
                                     Divider()
                                     
                                 }

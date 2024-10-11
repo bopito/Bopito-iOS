@@ -33,11 +33,15 @@ struct RepliesView: View {
 
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        if let replies = replies {
+                        if var replies = replies {
                             ForEach(replies) { reply in
-                                SubmissionView(submission: reply)
+                                SubmissionView(submission: reply, onDelete: { deletedPostID in
+                                    replies.removeAll { $0.id == deletedPostID }
+                                })
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Divider()
                             }
-                            Divider()
                         }
                     }
                     .padding(.bottom, 100) // Adding some space at the bottom

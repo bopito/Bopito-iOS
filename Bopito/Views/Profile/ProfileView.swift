@@ -202,12 +202,15 @@ struct ProfileView: View {
                 
                 
                 
-                if let posts = posts {
+                if var posts = posts {
                     ScrollView {
                         LazyVStack(spacing: 0) {
                             ForEach(posts) { post in
-                                SubmissionView(submission: post)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                SubmissionView(submission: post, onDelete: { deletedPostID in
+                                    posts.removeAll { $0.id == deletedPostID }
+                                })
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
                                 Divider()
                             }
                             

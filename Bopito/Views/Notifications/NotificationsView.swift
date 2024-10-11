@@ -17,10 +17,12 @@ struct NotificationsView: View {
     @State var notificationsEnabled: Bool?
     
     var body: some View {
-        VStack {
+        VStack (spacing:0) {
             Text("Notifications")
                 .font(.title2)
-                .padding(.top, 10)
+                .padding(10)
+            
+            Divider()
             
             ScrollView {
                 LazyVStack(spacing: 0) {

@@ -50,6 +50,7 @@ struct VoteView: View {
                     .resizable()
                     .frame(width: 19, height: 19)
                     .foregroundColor(vote.value > 0 ? .blue : .red)
+                    .rotationEffect(vote.value < 0 ? .degrees(180) : .degrees(0))
             } else {
                 // placeholder
                 Image("thumb")

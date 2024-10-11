@@ -24,7 +24,7 @@ struct SearchView: View {
     
     
     var body: some View {
-        VStack {
+        VStack (spacing:0){
             HStack {
                 Text("Find")
                     .font(.title2)
@@ -62,6 +62,8 @@ struct SearchView: View {
 
             }
             
+            Divider()
+                .padding(.top, 10)
             // Display the search results
             if searchOption == .users {
                 // Show User Results
@@ -90,7 +92,10 @@ struct SearchView: View {
                         LazyVStack(spacing: 10) {
                             ForEach(submissions, id: \.id) { submission in
                                 VStack(alignment: .leading) {
-                                    SubmissionView(submission: submission)
+                                    SubmissionView(submission: submission, onDelete: { deletedPostID in
+                                        submissions.removeAll { $0.id == deletedPostID }
+                                    })
+                                    
                                     Divider()
                                 }
                             }

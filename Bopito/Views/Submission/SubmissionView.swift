@@ -47,6 +47,8 @@ struct SubmissionView: View {
     @State private var activeSheet: ActiveSheet?
     @State private var activeAlert: ActiveAlert?
     
+    var onDelete: (String) -> Void // Callback for removing post in parent view when deleted
+    
     
     var body: some View {
         
@@ -240,10 +242,10 @@ struct SubmissionView: View {
                             // Short press (tap) action for voting
                             Task {
                                 if (voteValue >= 0) {
-                                    dislikesCount += 1
+                                    //dislikesCount += 1
                                     await votePressed(value: -1)
                                 } else {
-                                    dislikesCount -= 1
+                                    //dislikesCount -= 1
                                     await votePressed(value: 0)
                                 }
                             }
@@ -279,10 +281,10 @@ struct SubmissionView: View {
                             // Short press (tap) action for voting
                             Task {
                                 if (voteValue <= 0) {
-                                    likesCount += 1
+                                    //likesCount += 1
                                     await votePressed(value: 1)
                                 } else {
-                                    likesCount -= 1
+                                    //likesCount -= 1
                                     await votePressed(value: 0)
                                 }
                             }
@@ -436,11 +438,14 @@ struct SubmissionView: View {
             )
             
             await reloadSubmission()
+            likesCount = submission.likes_count
+            dislikesCount = submission.dislikes_count
         }
     }
     
     func deleteSubmission() async {
         await supabaseManager.deleteSubmission(submissionID: submission.id)
+        onDelete(submission.id)
     }
     
     func reportSubmission() async {
@@ -465,7 +470,7 @@ struct PostView2_Previews: PreviewProvider {
                            replies_count: 0,
                            score: 0,
                            reports: 0
-                          )
+                          ), onDelete: {deletedPostID in }
         )
         .environmentObject(SupabaseManager())
     }

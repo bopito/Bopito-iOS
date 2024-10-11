@@ -36,7 +36,6 @@ struct ComposePostView: View {
                 Button(action: {
                     Task {
                         await submit()
-                        presentationMode.wrappedValue.dismiss()
                     }
                 }) {
                     Text("Post")
@@ -72,15 +71,29 @@ struct ComposePostView: View {
     }
     
     func submit() async {
+        // Trim white spaces and new lines from the postText
+        let trimmedText = postText.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if let user = user { // if logged in
-            let authorID = user.id
-            await supabaseManager.postSubmission(
-                author_id: authorID,
-                parent_id: nil,
-                image: nil,
-                text: postText)
-            postText = "" // Clear the text editor on success
+        // Check if postText is not just empty space or a completely empty string
+        if !trimmedText.isEmpty {
+            if let user = user { // Check if the user is logged in
+                let authorID = user.id
+                // Call the postSubmission function in your supabase manager
+                await supabaseManager.postSubmission(
+                    author_id: authorID,
+                    parent_id: nil,
+                    image: nil,
+                    text: postText)
+                postText = "" // Clear the text editor on success
+                
+                presentationMode.wrappedValue.dismiss()
+                
+            } else {
+                print("User is not logged in.")
+                presentationMode.wrappedValue.dismiss()
+            }
+        } else {
+            print("Post text cannot be empty.")
         }
     }
     
