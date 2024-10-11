@@ -15,7 +15,9 @@ class AdmobManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
   func loadAd() async {
     do {
       rewardedAd = try await GADRewardedAd.load(
-        withAdUnitID: "ca-app-pub-5387496707984386/1714082165", request: GADRequest())
+        withAdUnitID: "ca-app-pub-5387496707984386/1714082165", 
+        request: GADRequest()
+      )
       // [START set_the_delegate]
       rewardedAd?.fullScreenContentDelegate = self
       // [END set_the_delegate]

@@ -20,6 +20,8 @@ struct CoinShopView: View {
     
     @State private var selectedItem: Int? = nil  // Tracks the selected product
     
+    @State var loadingAd: Bool = false
+    
     let columns = [
         GridItem(.flexible(), spacing: 10),
         GridItem(.flexible(), spacing: 10),
@@ -111,25 +113,38 @@ struct CoinShopView: View {
             
             
             VStack(spacing: 0) {
+                
                 Text("Don't want to pay? Not a problem!")
                     .padding(.top, 10)
+                
                 Button {
                     Task {
+                        loadingAd = true
                         await admobManager.loadAd()
                         admobManager.showAd()
+                        loadingAd = false
                     }
                     
                 } label: {
-                    HStack {
-                        Image(systemName: "play.fill")
-                        Text("Watch and Earn")
+                    if !loadingAd {
+                        HStack {
+                            Image(systemName: "play.fill")
+                            Text("Watch and Earn")
+                        }
+                        .bold()
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(10)
+                        .background(Color.purple)
+                        .cornerRadius(10)
                     }
-                    .bold()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(10)
-                    .background(Color.purple)
-                    .cornerRadius(10)
+                    else {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding(10)
+                            .background(Color.purple)
+                            .cornerRadius(10)
+                    }
                 }
                 .padding(10)
             }
@@ -239,8 +254,8 @@ struct CoinShopView: View {
     // Fetch current user data
     func load() async {
         currentUser = await supabaseManager.getCurrentUser()
-            inAppPurchaseManager.fetchProducts()
-            inAppPurchaseManager.startObserving()  // Start observing transactions
+        inAppPurchaseManager.fetchProducts()
+        inAppPurchaseManager.startObserving()  // Start observing transactions
     }
     
     func purchase() async {
