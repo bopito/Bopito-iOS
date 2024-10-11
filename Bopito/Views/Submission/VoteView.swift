@@ -11,7 +11,7 @@ struct VoteView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
-    @State var vote: Like?
+    @State var vote: Vote?
     @State var user: User?
     @State var currentUser: User?
     
@@ -87,7 +87,7 @@ struct VoteView: View {
     func load() async {
         // if vote get user
         if let vote = vote {
-            user = await supabaseManager.getUserByID(id: vote.liker_id)
+            user = await supabaseManager.getUserByID(id: vote.voter_id)
             currentUser = await supabaseManager.getCurrentUser()
         }
     }

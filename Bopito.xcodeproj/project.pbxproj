@@ -31,7 +31,7 @@
 		E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB132C8A4C5600FBBD36 /* Submission.swift */; };
 		E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB162C8A4C7C00FBBD36 /* User.swift */; };
 		E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */; };
-		E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1A2C8BE66400FBBD36 /* Like.swift */; };
+		E60DDB1B2C8BE66400FBBD36 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1A2C8BE66400FBBD36 /* Vote.swift */; };
 		E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */; };
 		E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */; };
 		E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */; };
@@ -105,7 +105,7 @@
 		E60DDB132C8A4C5600FBBD36 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		E60DDB162C8A4C7C00FBBD36 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
-		E60DDB1A2C8BE66400FBBD36 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
+		E60DDB1A2C8BE66400FBBD36 /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTool.swift; sourceTree = "<group>"; };
 		E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomGeneratorTool.swift; sourceTree = "<group>"; };
@@ -271,7 +271,7 @@
 			children = (
 				E60DDB132C8A4C5600FBBD36 /* Submission.swift */,
 				E60DDB162C8A4C7C00FBBD36 /* User.swift */,
-				E60DDB1A2C8BE66400FBBD36 /* Like.swift */,
+				E60DDB1A2C8BE66400FBBD36 /* Vote.swift */,
 				E60DDB232C91E45D00FBBD36 /* Follow.swift */,
 				E694536D2C94AE1600F799E6 /* Notification.swift */,
 				E66464842CA4C2240083C1D4 /* Boost.swift */,
@@ -538,7 +538,7 @@
 				E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */,
 				E60DDB0E2C8A4B8E00FBBD36 /* RepliesView.swift in Sources */,
 				E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */,
-				E60DDB1B2C8BE66400FBBD36 /* Like.swift in Sources */,
+				E60DDB1B2C8BE66400FBBD36 /* Vote.swift in Sources */,
 				E67558972CA53E6900B98B5C /* BoostersView.swift in Sources */,
 				E67558AC2CACA27C00B98B5C /* NotificationManager.swift in Sources */,
 				E66464812CA481CC0083C1D4 /* VoteView.swift in Sources */,

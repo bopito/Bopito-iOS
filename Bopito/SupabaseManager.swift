@@ -25,6 +25,7 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    
     func appVersionCurrent() async -> Bool {
         // Get the current version of the app from the Info.plist
         if let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -481,7 +482,7 @@ class SupabaseManager: ObservableObject {
     func updateLikesCount(submissionID: String) async {
         do {
             let response = try await supabase
-                .from("likes")
+                .from("votes")
                 .select(count: .exact)
                 .eq("submission_id", value: submissionID)
                 .eq("value", value: 1)
@@ -503,7 +504,7 @@ class SupabaseManager: ObservableObject {
     func updateDislikesCount(submissionID: String) async {
         do {
             let response = try await supabase
-                .from("likes")
+                .from("votes")
                 .select(count: .exact)
                 .eq("submission_id", value: submissionID)
                 .eq("value", value: -1)
@@ -558,10 +559,10 @@ class SupabaseManager: ObservableObject {
                   .eq("id", value: submissionID)
                   .execute()
             } else {
-                print("error getting likes count")
+                print("error getting boosts count")
             }
         } catch {
-            print("Failed to get likes or update submission likes_count. Error: \(error)")
+            print("Failed to get likes or update submission boosts_count. Error: \(error)")
         }
     }
 
@@ -569,12 +570,12 @@ class SupabaseManager: ObservableObject {
     //
     // Voting
     //
-    func castVote(submissionID: String, likerID: String, receiverID: String, value: Int) async {
+    func castVote(submissionID: String, voterID: String, receiverID: String, value: Int) async {
         do {
-            let vote: Like = try await supabase
-                .from("likes")
+            let vote: Vote = try await supabase
+                .from("votes")
                 .select()
-                .eq("liker_id", value: likerID)
+                .eq("voter_id", value: voterID)
                 .eq("submission_id", value: submissionID)
                 .single()
                 .execute()
@@ -584,7 +585,7 @@ class SupabaseManager: ObservableObject {
             print("new vote value: \(vote.value)")
             do {
                 try await supabase
-                    .from("likes")
+                    .from("votes")
                     .upsert(vote)
                     .execute()
             } catch {
@@ -593,16 +594,16 @@ class SupabaseManager: ObservableObject {
         } catch {
             print("Vote not found: \(error.localizedDescription)")
             print("Creating new Vote")
-            let vote = Like(
+            let vote = Vote(
                 id: UUID().uuidString,
                 submission_id: submissionID,
-                liker_id: likerID,
+                voter_id: voterID,
                 receiver_id: receiverID,
                 value: value)
             print("creating new vote with: \(vote.value)")
             do {
                 try await supabase
-                    .from("likes")
+                    .from("votes")
                     .upsert(vote)
                     .execute()
             } catch {
@@ -614,11 +615,11 @@ class SupabaseManager: ObservableObject {
  
     func getUserVote(submissionID: String, userID: String) async -> Int {
         do {
-            let vote: Like = try await supabase
-                .from("likes")
+            let vote: Vote = try await supabase
+                .from("votes")
                 .select()
                 .eq("submission_id", value: submissionID)
-                .eq("liker_id", value: userID)
+                .eq("voter_id", value: userID)
                 .single()
                 .execute()
                 .value
@@ -628,10 +629,10 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func getSubmissionVotes(parentID: String) async -> [Like]? {
+    func getSubmissionVotes(parentID: String) async -> [Vote]? {
         do {
-            let votes: [Like] = try await supabase
-                .from("likes")
+            let votes: [Vote] = try await supabase
+                .from("votes")
                 .select()
                 .eq("submission_id", value: parentID)
                 .neq("value", value: 0)
@@ -962,5 +963,49 @@ class SupabaseManager: ObservableObject {
             return []
         }
     }
+    
+    
+    //
+    // Edge Functions
+    //
+    
+    func verifyReceipt() async {
+        // Get the receipt from the app bundle
+        guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+              let receiptData = try? Data(contentsOf: appStoreReceiptURL) else {
+            print("No receipt data found.")
+            return
+        }
+        let receiptString = receiptData.base64EncodedString()
+        
+        guard let currentUser = await getCurrentUser() else {
+            return
+        }
+        
+        print("UPDATE FOR PRODUCTION BEFORE DEPLOYING!")
+        do {
+            let response = try await supabase.functions
+                .invoke(
+                    "verify-receipt",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "userId": currentUser.id,
+                            "receipt": receiptString,
+                            "environment": "development" //"production"
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
+            print(type(of: response)) // String?
+        }
+        catch {
+            print("Error:", error.localizedDescription)
+        }
+        
+    }
+    
     
 }

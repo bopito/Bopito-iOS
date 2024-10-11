@@ -56,12 +56,14 @@ class InAppPurchaseManager: NSObject, ObservableObject {
             coinsPurchased = 5000
         }
         
-        print("Successfully purchased \(coinsPurchased) coins!")
+        //print("Successfully purchased \(coinsPurchased) coins!")
         purchaseCompletionHandler?(coinsPurchased) // Notify success
         
         SKPaymentQueue.default().finishTransaction(transaction)  // Finish transaction
     }
     
+    
+       
     // Handle a failed transaction
     private func failedTransaction(_ transaction: SKPaymentTransaction) {
         if let error = transaction.error as? SKError {

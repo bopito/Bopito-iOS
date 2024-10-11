@@ -63,17 +63,13 @@ struct FollowButtonView: View {
     }
     
     func followPressed() async {
-        // get current user
         if let userToFollow = user {
             if let currentUser = await supabaseManager.getCurrentUser() {
-                // update @State for isLiked
                 isFollowing = await supabaseManager.isFollowing(userID: userToFollow.id, followerID: currentUser.id)
-                // check if liked
                 if !isFollowing {
                     // follow
                     await supabaseManager.followUser(userID: userToFollow.id)
                     // Create Notification in DB
-       
                     let message = "started following you!"
                     let type = "follow"
                     await supabaseManager.createNotification(

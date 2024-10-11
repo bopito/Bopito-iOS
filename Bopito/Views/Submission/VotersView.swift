@@ -13,7 +13,7 @@ struct VotersView: View {
     
     @State var submissionID: String?
     
-    @State var votes: [Like]?
+    @State var votes: [Vote]?
     
     var body: some View {
         

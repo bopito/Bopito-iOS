@@ -111,7 +111,7 @@ struct CoinShopView: View {
             .cornerRadius(10)
             .padding(10)
             
-            
+            /*
             VStack(spacing: 0) {
                 
                 Text("Don't want to pay? Not a problem!")
@@ -151,6 +151,7 @@ struct CoinShopView: View {
             .background() // Optional: Adds a background to the entire VStack
             .cornerRadius(10)
             .padding(.horizontal, 10)
+            */
             
             /*
             VStack (spacing:0){
@@ -188,7 +189,7 @@ struct CoinShopView: View {
             
             Spacer()
             
-            /*
+            
             Image("bopito-logo-gray")
                 .resizable()
                 .frame(width: 48, height: 40)
@@ -197,7 +198,7 @@ struct CoinShopView: View {
                 .foregroundStyle(.secondary)
 
             Spacer()
-            */
+            
             
             VStack (spacing:0){
                 HStack {
@@ -259,7 +260,7 @@ struct CoinShopView: View {
     }
     
     func purchase() async {
-        if let selectedIndex = selectedItem {
+        if let currentUser = currentUser, let selectedIndex = selectedItem {
             let selectedProduct = inAppPurchaseManager.products[selectedIndex]
             inAppPurchaseManager.purchaseProduct(selectedProduct) { coinsPurchased in
                 guard let amount = coinsPurchased else {
@@ -267,7 +268,7 @@ struct CoinShopView: View {
                     return
                 }
                 Task {
-                    await supabaseManager.increaseUserBalance(amount: amount) // Add purchased amount to supabase
+                    await supabaseManager.verifyReceipt()
                     await load() // Reload currentUser to show new balance
                 }
             }

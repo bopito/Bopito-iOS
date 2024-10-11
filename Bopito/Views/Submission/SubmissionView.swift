@@ -414,7 +414,7 @@ struct SubmissionView: View {
             // cast vote
             await supabaseManager.castVote(
                 submissionID: submission.id,
-                likerID: currentUser.id,
+                voterID: currentUser.id,
                 receiverID: submission.author_id,
                 value: value)
             // Update local value for thumb color

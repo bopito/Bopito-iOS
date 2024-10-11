@@ -63,23 +63,7 @@ struct NotificationView: View {
         //.background()
         
         .contentShape(Rectangle()) // Ensures the entire area responds to taps
-        //        .onTapGesture {
-        //            if let notificationType = notificationType {
-        //                if type == "like" || type == "comment" {
-        //
-        //                }
-        //            }
-        //            //isShowingReplies = true
-        //        }
-        //        .sheet(isPresented: $sheetToPresent) { item in
-        //            PostRepliesView(post: post)
-        //            switch item {
-        //            case .first:
-        //                PostRepliesView(post: <#T##Submission#>)
-        //            case .second:
-        //                ProfileView(user: <#T##User?#>)
-        //            }
-        //        }
+    
         .onAppear() {
             Task{
                 await load()
