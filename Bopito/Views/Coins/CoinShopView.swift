@@ -190,12 +190,9 @@ struct CoinShopView: View {
             Spacer()
             
             
-            Image("bopito-logo-gray")
+            Image("bopito-logo")
                 .resizable()
-                .frame(width: 48, height: 40)
-            Text("Bopito")
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .frame(width: 80, height: 80)
 
             Spacer()
             

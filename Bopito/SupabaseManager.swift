@@ -982,7 +982,7 @@ class SupabaseManager: ObservableObject {
             return
         }
         
-        print("UPDATE FOR PRODUCTION BEFORE DEPLOYING!")
+        print("UPDATE SupabaseManager.verifyReceipt() for PRODUCTION")
         do {
             let response = try await supabase.functions
                 .invoke(
@@ -991,7 +991,7 @@ class SupabaseManager: ObservableObject {
                         body: [
                             "userId": currentUser.id,
                             "receipt": receiptString,
-                            "environment": "development" //"production"
+                            "environment": "production" //"production"
                         ]
                     ),
                     decode: { data, response in
