@@ -13,18 +13,20 @@ struct BoostButtonView: View {
     
     @State var submission: Submission?
     
+    let name: String
     let emoji: String
     let backgroundColor: Color
-    let value: Int
-    let time: Int
-    let price: Int
-    let category: String
+    
+    let value: Int = 0
+    let time: Int = 0
+    let price: Int = 0
+    
     let action: () -> Void // Action closure when the button is tapped
     
     var body: some View {
         Button(action: {
             Task {
-                await boostPurchased(price: price, time: time ,value: value, category: category)
+                await boostPurchased()
                 action()
             }
             
@@ -79,27 +81,34 @@ struct BoostButtonView: View {
     }
     
     
-    func boostPurchased(price: Int, time: Int, value:Int, category: String) async {
-        if let submission = submission, let currentUser = await supabaseManager.getCurrentUser() {
-            // Add boost
-            print(currentUser.balance)
-            await supabaseManager.applyBoost(
-                price: price,
-                time: time,
-                value: value,
-                category: category,
-                submissionID: submission.id,
-                userID: currentUser.id
-            )
-            
+//    func boostPurchased(price: Int, time: Int, value:Int, category: String) async {
+//        if let submission = submission, let currentUser = await supabaseManager.getCurrentUser() {
+//            // Add boost
+//            print(currentUser.balance)
+//            await supabaseManager.applyBoost(
+//                price: price,
+//                time: time,
+//                value: value,
+//                category: category,
+//                submissionID: submission.id,
+//                userID: currentUser.id
+//            )
+//            
+//        }
+//        
+//    }
+    func boostPurchased() async {
+        if let submission = submission {
+            await supabaseManager.purchaseBoost(
+                boostName: self.name,
+                submissionID: submission.id)
         }
-        
     }
 }
 
 
 #Preview {
-    BoostButtonView(emoji: "🐲", backgroundColor: .blue, value: 100, time: 60, price: 999, category: "pushes") {
+    BoostButtonView(name:"dragon", emoji: "🐲", backgroundColor: .blue) {
         print("Executing Boost Action")
     }
 }

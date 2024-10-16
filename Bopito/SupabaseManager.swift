@@ -649,6 +649,28 @@ class SupabaseManager: ObservableObject {
     //
     // Boosts
     //
+    func purchaseBoost(boostName: String, submissionID: String) async {
+        do {
+            let response = try await supabase.functions
+                .invoke(
+                    "purchase-boost",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "boostName": boostName,
+                            "submissionID": submissionID
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
+        }
+        catch {
+            print("Error:", error.localizedDescription)
+        }
+    }
+    
     func applyBoost(price: Int, time: Int, value:Int, category: String, submissionID: String, userID: String) async {
         // Add the time (in seconds) to the current date
         let expirationDate = DateTimeTool.shared.convertSwiftDateToSupabaseString(
@@ -729,6 +751,44 @@ class SupabaseManager: ObservableObject {
             return 0
         }
     }
+    
+    func verifyReceiptAndAddToBalance() async {
+        // Get the receipt from the app bundle
+        guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+              let receiptData = try? Data(contentsOf: appStoreReceiptURL) else {
+            print("No receipt data found.")
+            return
+        }
+        let receiptString = receiptData.base64EncodedString()
+        
+        guard let currentUser = await getCurrentUser() else {
+            return
+        }
+        
+        print("UPDATE SupabaseManager.verifyReceipt() for PRODUCTION")
+        do {
+            let response = try await supabase.functions
+                .invoke(
+                    "verify-receipt",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "userId": currentUser.id,
+                            "receipt": receiptString,
+                            "environment": "production" //"production"
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
+            print(type(of: response)) // String?
+        }
+        catch {
+            print("Error:", error.localizedDescription)
+        }
+        
+    }   // edge done
     
     
     //
@@ -964,48 +1024,8 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+
     
-    //
-    // Edge Functions
-    //
-    
-    func verifyReceipt() async {
-        // Get the receipt from the app bundle
-        guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
-              let receiptData = try? Data(contentsOf: appStoreReceiptURL) else {
-            print("No receipt data found.")
-            return
-        }
-        let receiptString = receiptData.base64EncodedString()
-        
-        guard let currentUser = await getCurrentUser() else {
-            return
-        }
-        
-        print("UPDATE SupabaseManager.verifyReceipt() for PRODUCTION")
-        do {
-            let response = try await supabase.functions
-                .invoke(
-                    "verify-receipt",
-                    options: FunctionInvokeOptions(
-                        body: [
-                            "userId": currentUser.id,
-                            "receipt": receiptString,
-                            "environment": "production" //"production"
-                        ]
-                    ),
-                    decode: { data, response in
-                        String(data: data, encoding: .utf8)
-                    }
-                )
-            print(response ?? "")
-            print(type(of: response)) // String?
-        }
-        catch {
-            print("Error:", error.localizedDescription)
-        }
-        
-    }
     
     
 }

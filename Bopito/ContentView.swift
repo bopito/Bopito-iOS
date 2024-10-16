@@ -129,6 +129,8 @@ struct ContentView: View {
     
     
     func checkForUpdate() async {
+        await supabaseManager.purchaseBoost(boostName: "star", submissionID: "1bdba0a3-ce45-408c-adf6-22c38d568498")
+        
         let isCurrent = await supabaseManager.appVersionCurrent()
         if !isCurrent {
             // Handle the case where the app version is outdated

@@ -265,7 +265,7 @@ struct CoinShopView: View {
                     return
                 }
                 Task {
-                    await supabaseManager.verifyReceipt()
+                    await supabaseManager.verifyReceiptAndAddToBalance()
                     await load() // Reload currentUser to show new balance
                 }
             }

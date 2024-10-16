@@ -127,36 +127,38 @@ struct RepliesView: View {
     }
     
     func sendReply() async {
-        // todo
-        // update auth status
-        // if authorized check if allowed to take action
+        let trimmedText = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if let currentUser = currentUser, let user = user {
-            // Create Submission in DB
-            await supabaseManager.postSubmission(
-                author_id: currentUser.id,
-                parent_id: submission.id,
-                image: nil,
-                text: replyText)
+        // Check if postText is not just empty space or a completely empty string
+        if !trimmedText.isEmpty {
             
-            // Update Replies Count for Submission
-            await supabaseManager.updateRepliesCount(parentID: submission.id)
-            
-            // Create Notification in DB
-            let isPost = submission.parent_id == nil
-            let message = "replied to your \(isPost ? "post" : "comment")!"
-            let type = "comment"
-            await supabaseManager.createNotification(
-                recipitentID: user.id,
-                senderID: currentUser.id,
-                type: type,
-                submissionID: submission.id,
-                message: message
-            )
-            
-            replyText = "" // Clear the text editor on success
+            if let currentUser = currentUser, let user = user {
+                // Create Submission in DB
+                await supabaseManager.postSubmission(
+                    author_id: currentUser.id,
+                    parent_id: submission.id,
+                    image: nil,
+                    text: replyText)
+                
+                // Update Replies Count for Submission
+                await supabaseManager.updateRepliesCount(parentID: submission.id)
+                
+                // Create Notification in DB
+                let isPost = submission.parent_id == nil
+                let message = "replied to your \(isPost ? "post" : "comment")!"
+                let type = "comment"
+                await supabaseManager.createNotification(
+                    recipitentID: user.id,
+                    senderID: currentUser.id,
+                    type: type,
+                    submissionID: submission.id,
+                    message: message
+                )
+                
+                replyText = "" // Clear the text editor on success
+            }
+            isTextFieldFocused = false
         }
-        isTextFieldFocused = false
     }
     
     func reloadSubmission() async {
