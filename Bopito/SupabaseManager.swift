@@ -15,6 +15,8 @@ class SupabaseManager: ObservableObject {
     
     @Published var isAuthenticated: Bool = false // Published property
     
+    @Published var boosts: [Boost] = []
+    
     init() {
         supabase = SupabaseClient(
             supabaseURL: URL(string:"https://lqqhpvlxroqfqyfrpaio.supabase.co")!,
@@ -669,9 +671,9 @@ class SupabaseManager: ObservableObject {
         catch {
             print("Error:", error.localizedDescription)
         }
-    }
+    } // edge done
     
-    func applyBoost(price: Int, time: Int, value:Int, category: String, submissionID: String, userID: String) async {
+    /* func applyBoost(price: Int, time: Int, value:Int, category: String, submissionID: String, userID: String) async {
         // Add the time (in seconds) to the current date
         let expirationDate = DateTimeTool.shared.convertSwiftDateToSupabaseString(
             date: Date().addingTimeInterval(TimeInterval(time))
@@ -716,13 +718,31 @@ class SupabaseManager: ObservableObject {
         } catch {
             print("Failed to add Boost: \(error.localizedDescription)")
         }
+    } */ // replaced by edge
+    
+    func getBoostInfo(boostName: String) async -> BoostInfo? {
+        do {
+            let boostInfo: BoostInfo = try await supabase
+                .from("boost_info")
+                .select()
+                .eq("name", value: boostName)
+                .single()
+                .execute()
+                .value
+            return boostInfo
+        } catch {
+            print("Failure - Could not get info for boost with name \(boostName) ... Error: \(error.localizedDescription)")
+            return nil  // Return nil if there's an error
+        }
     }
     
-    func getBoosts(submissionID: String) async -> [Boost]? {
+    
+    func getLiveBoosts(submissionID: String) async -> [Boost]? {
         do {
             let boosts: [Boost] = try await supabase
                 .from("boosts")
                 .select()
+                .eq("live", value: "true")
                 .eq("submission_id", value: submissionID)
                 .order("created_at", ascending: false)
                 .execute()
@@ -789,6 +809,43 @@ class SupabaseManager: ObservableObject {
         }
         
     }   // edge done
+    
+    func subscribeToBoostsRealtime(submissionID: String) async {
+        
+        let myChannel = supabase.channel("boost-changes")
+
+        let changes = myChannel.postgresChange(
+          AnyAction.self,
+          schema: "public",
+          table: "boosts"
+          //filter: "id=eq.1"
+        )
+
+        await myChannel.subscribe()
+        
+        // Get existing boosts that are live
+        guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
+            print("Error fetching live boosts")
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.boosts = liveBoosts
+        }
+        
+        // Add new boosts as they go live in the "boosts" table
+        for await _ in changes {
+            guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
+                print("error getting boosts")
+                return
+            }
+            DispatchQueue.main.async {
+                self.boosts = liveBoosts
+            }
+            
+        }
+ 
+    }
     
     
     //

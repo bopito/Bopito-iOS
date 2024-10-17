@@ -64,6 +64,7 @@
 		E6FE7C272CB5B9B500919DCB /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C262CB5B9B500919DCB /* SearchView.swift */; };
 		E6FE7C292CB5D35600919DCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C282CB5D35600919DCB /* AppDelegate.swift */; };
 		E6FE7C2B2CB86DDE00919DCB /* AdmobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C2A2CB86DDE00919DCB /* AdmobManager.swift */; };
+		E6FE7C2D2CC1A17600919DCB /* BoostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C2C2CC1A17600919DCB /* BoostInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,7 @@
 		E6FE7C262CB5B9B500919DCB /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E6FE7C282CB5D35600919DCB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6FE7C2A2CB86DDE00919DCB /* AdmobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdmobManager.swift; sourceTree = "<group>"; };
+		E6FE7C2C2CC1A17600919DCB /* BoostInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +277,7 @@
 				E60DDB232C91E45D00FBBD36 /* Follow.swift */,
 				E694536D2C94AE1600F799E6 /* Notification.swift */,
 				E66464842CA4C2240083C1D4 /* Boost.swift */,
+				E6FE7C2C2CC1A17600919DCB /* BoostInfo.swift */,
 				E67558AD2CAF42C400B98B5C /* Block.swift */,
 				E69453742C9CBB1400F799E6 /* Version.swift */,
 			);
@@ -520,6 +523,7 @@
 				E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */,
 				E675589B2CA6558200B98B5C /* BoostButtonView.swift in Sources */,
 				E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */,
+				E6FE7C2D2CC1A17600919DCB /* BoostInfo.swift in Sources */,
 				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
 				E60DDB272C92988E00FBBD36 /* AdView.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,

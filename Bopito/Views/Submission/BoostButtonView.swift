@@ -13,13 +13,15 @@ struct BoostButtonView: View {
     
     @State var submission: Submission?
     
+    @State var boostInfo: BoostInfo?
+    
     let name: String
     let emoji: String
     let backgroundColor: Color
     
-    let value: Int = 0
-    let time: Int = 0
-    let price: Int = 0
+    @State var power: Int = 0
+    @State var time: Int = 0
+    @State var price: Int = 0
     
     let action: () -> Void // Action closure when the button is tapped
     
@@ -31,20 +33,18 @@ struct BoostButtonView: View {
             }
             
         }) {
-            HStack(spacing: 0) {
+            VStack(spacing: 10) {
                 HStack {
                     Spacer()
                     Text(emoji)
                         .font(.title2)
-                    Text("\(value)")
+                    Text("\(power)")
                         .font(.title2)
                     Spacer()
                 }
                 .padding(5)
                 .background(.secondary)
                 .cornerRadius(10)
-                
-                Spacer()
                 
                 HStack {
                     Spacer()
@@ -56,8 +56,6 @@ struct BoostButtonView: View {
                 .padding(5)
                 .background(.secondary)
                 .cornerRadius(10)
-                
-                Spacer()
                 
                 HStack {
                     Spacer()
@@ -77,26 +75,26 @@ struct BoostButtonView: View {
         .foregroundColor(.white)
         .background(backgroundColor)
         .cornerRadius(10)
-        .padding(.horizontal)
+        .frame(maxWidth: 200)
+        .task {
+            await load()
+        }
+    }
+    
+    func load() async {
+        guard let submission else {
+            return
+        }
+        guard let boostInfo = await supabaseManager.getBoostInfo(boostName: name) else {
+            return
+        }
+        price = boostInfo.price
+        power = boostInfo.power
+        time = boostInfo.time
+    
     }
     
     
-//    func boostPurchased(price: Int, time: Int, value:Int, category: String) async {
-//        if let submission = submission, let currentUser = await supabaseManager.getCurrentUser() {
-//            // Add boost
-//            print(currentUser.balance)
-//            await supabaseManager.applyBoost(
-//                price: price,
-//                time: time,
-//                value: value,
-//                category: category,
-//                submissionID: submission.id,
-//                userID: currentUser.id
-//            )
-//            
-//        }
-//        
-//    }
     func boostPurchased() async {
         if let submission = submission {
             await supabaseManager.purchaseBoost(
@@ -108,7 +106,7 @@ struct BoostButtonView: View {
 
 
 #Preview {
-    BoostButtonView(name:"dragon", emoji: "🐲", backgroundColor: .blue) {
+    BoostButtonView(name:"star", emoji: "🐲", backgroundColor: .blue) {
         print("Executing Boost Action")
     }
 }
