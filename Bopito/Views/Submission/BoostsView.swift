@@ -20,7 +20,7 @@ struct BoostsView: View {
     
     
     var body: some View {
-        VStack {
+        VStack (spacing:0) {
             Capsule()
                     .fill(Color.secondary)
                     .opacity(0.5)
@@ -29,6 +29,97 @@ struct BoostsView: View {
             
             Text("Battle")
                 .font(.title2)
+                .padding(.vertical, 10)
+            
+            Divider()
+            
+            ZStack {
+//                Rectangle()
+//                    .foregroundColor(Color.primary)
+//                    .frame(height: 70)
+                HStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.red.tertiary)
+                        .frame(height:50)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20) // Same corner radius for the outline
+                                .stroke(Color.red, lineWidth: 2) // Outline color and width
+                        )
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.blue.quaternary)
+                        .frame(height:50)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20) // Same corner radius for the outline
+                                .stroke(Color.blue, lineWidth: 2) // Outline color and width
+                        )
+                }
+                .padding(.horizontal, 10)
+                
+                HStack {
+                    Spacer()
+                    Text("0")
+                        .bold()
+                        .foregroundStyle(Color(.systemBackground))
+                        .shadow(color:.red, radius: 7)
+                    Spacer()
+                    Spacer()
+                    Text("0")
+                        .bold()
+                        .foregroundStyle(Color(.systemBackground))
+                        .shadow(color:.blue, radius: 7)
+                    Spacer()
+                }
+                
+                Circle()
+                    .foregroundColor(Color(.systemBackground))
+                    .frame(height: 50)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.yellow, lineWidth: 3) // Yellow stroke with specified line width
+                           
+                    )
+                    .overlay(
+                        Image("boost")
+                            .renderingMode(.template)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.yellow)
+                            
+                    )
+            }
+            .padding(.vertical, 10)
+            
+            Divider()
+            
+            
+            Spacer()
+            
+            
+            
+            VStack {
+                if supabaseManager.boosts.isEmpty {
+                    Text("Fire in ze hole!")
+                        //.background(.secondary)
+                } else {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 10) {
+                            ForEach(supabaseManager.boosts, id: \.id) { boost in
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text("\(boost.name) power:\(boost.power) price:\(boost.price) time:\(boost.time)")
+                                }
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .shadow(radius: 2)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            }
+            
+            
+            Spacer()
             
             Divider()
             
@@ -43,13 +134,17 @@ struct BoostsView: View {
                                 .frame(width: 25, height: 25)
                             Text("\(currentUser.balance)")
                                 .bold()
+                                //.foregroundStyle(Color(.systemBackground))
                         }
                         Text(currentUser.username)
                             .padding(.leading, 2)
+                            //.foregroundStyle(Color(.systemBackground))
                     }
                 }
-                
             }
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity)
+            //.background(.primary)
             
             HStack (spacing:10) {
                 Spacer()
@@ -77,33 +172,10 @@ struct BoostsView: View {
                     }
                 Spacer()
             }
-            
-            VStack {
-                if supabaseManager.boosts.isEmpty {
-                    Text("No boosts available")
-                } else {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 10) {
-                            ForEach(supabaseManager.boosts, id: \.id) { boost in
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text("\(boost.name) power:\(boost.power) price:\(boost.price) time:\(boost.time)")
-                                }
-                                .padding()
-                                .background(Color(.systemGray6))
-                                .cornerRadius(8)
-                                .shadow(radius: 2)
-                            }
-                        }
-                        .padding()
-                    }
-                }
-            }
+            //.background(.primary)
             
             
             
-           
-            
-            Spacer()
         }
         .onAppear() {
             Task {
