@@ -785,7 +785,10 @@ class SupabaseManager: ObservableObject {
             return
         }
         
-        print("UPDATE SupabaseManager.verifyReceipt() for PRODUCTION")
+        var environment = "production"
+        if ProcessInfo.processInfo.environment["APP_SANDBOX_CONTAINER_ID"] == nil {
+            environment = "development"
+        }
         do {
             let response = try await supabase.functions
                 .invoke(
@@ -794,7 +797,7 @@ class SupabaseManager: ObservableObject {
                         body: [
                             "userId": currentUser.id,
                             "receipt": receiptString,
-                            "environment": "production" //"production"
+                            "environment": environment
                         ]
                     ),
                     decode: { data, response in

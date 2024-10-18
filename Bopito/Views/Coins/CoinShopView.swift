@@ -260,7 +260,7 @@ struct CoinShopView: View {
         if let currentUser = currentUser, let selectedIndex = selectedItem {
             let selectedProduct = inAppPurchaseManager.products[selectedIndex]
             inAppPurchaseManager.purchaseProduct(selectedProduct) { coinsPurchased in
-                guard let amount = coinsPurchased else {
+                guard let coinsPurchased else {
                     print("Purchase failed or no coins added.")
                     return
                 }
