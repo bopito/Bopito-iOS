@@ -120,6 +120,11 @@ struct RepliesView: View {
                 await loadData()
             }
         }
+        .onDisappear() {
+            Task {
+                await supabaseManager.updateRepliesCount(parentID: submission.id)
+            }
+        }
     }
 
     func loadData() async {
@@ -162,13 +167,6 @@ struct RepliesView: View {
             isTextFieldFocused = false
         }
     }
-    
-    func reloadSubmission() async {
-        if let updatedPost = await supabaseManager.getSubmission(submissionID: submission.id) {
-            submission = updatedPost
-        }
-    }
-    
     
     
 }

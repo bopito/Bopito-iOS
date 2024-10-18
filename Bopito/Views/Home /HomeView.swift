@@ -113,7 +113,7 @@ struct HomeView: View {
                             // Background Circle
                             Circle()
                                 .fill(Color.blue) // Color of the circle
-                                .strokeBorder(Color.white, lineWidth: 3) // Gray outline
+                               // .strokeBorder(Color.white, lineWidth: 3) // Gray outline
                                 .frame(width: 60, height: 60) // Size of the circle
                             // Plus Symbol
                             Image(systemName: "plus")

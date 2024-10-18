@@ -36,7 +36,7 @@ struct SubmissionView: View {
     @State var likesCount: Int = 0
     @State var dislikesCount: Int = 0
     @State var boostsCount: Int = 0
-    @State var commentsCount: Int = 0
+    @State var repliesCount: Int = 0
     @State var sharesCount: Int = 0
     
     @State var flagged: Bool = false
@@ -185,8 +185,8 @@ struct SubmissionView: View {
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 18, height: 18)
-                            .foregroundColor(commentsCount > 0 ? .green : .secondary)
-                        Text("\(commentsCount)")
+                            .foregroundColor(repliesCount > 0 ? .green : .secondary)
+                        Text("\(repliesCount)")
                             .foregroundColor(.primary)
                     }
                 }
@@ -212,13 +212,13 @@ struct SubmissionView: View {
                             activeSheet = .boosts
                         }
                 )
-                .simultaneousGesture(
-                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
-                        .onEnded { _ in
-                            // Long press action to open the sheet
-                            activeSheet = .boosters
-                        }
-                )
+//                .simultaneousGesture(
+//                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
+//                        .onEnded { _ in
+//                            // Long press action to open the sheet
+//                            activeSheet = .boosters
+//                        }
+//                )
                 
                 
                 Spacer()
@@ -251,13 +251,13 @@ struct SubmissionView: View {
                             }
                         }
                 )
-                .simultaneousGesture(
-                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
-                        .onEnded { _ in
-                            // Long press action to open the sheet
-                            activeSheet = .voters
-                        }
-                )
+//                .simultaneousGesture(
+//                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
+//                        .onEnded { _ in
+//                            // Long press action to open the sheet
+//                            activeSheet = .voters
+//                        }
+//                )
                 
                 Spacer()
                 
@@ -291,7 +291,7 @@ struct SubmissionView: View {
                         }
                 )
                 .simultaneousGesture(
-                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
+                    LongPressGesture(minimumDuration: 0.15) // Adjust duration as needed
                         .onEnded { _ in
                             // Long press action to open the sheet
                             activeSheet = .voters
@@ -384,10 +384,10 @@ struct SubmissionView: View {
         dislikesCount = submission.dislikes_count
         
         // Get Comments Count
-        commentsCount = submission.replies_count
+        repliesCount = submission.replies_count
         
         // Get Boosts Count
-        boostsCount = submission.boosts_count
+        boostsCount = await supabaseManager.getBoostsCount(submissionID: submission.id)//submission.boosts_count
         
         
         // set time_since based on post created_at timestamp
@@ -401,10 +401,11 @@ struct SubmissionView: View {
     }
     
     func reloadSubmission() async {
-        if let updatedPost = await supabaseManager.getSubmission(submissionID: submission.id) {
-            submission = updatedPost
-        }
-        
+        self.submission = await supabaseManager.getSubmission(submissionID: submission.id)! 
+        likesCount = submission.likes_count
+        dislikesCount = submission.dislikes_count
+        repliesCount = submission.replies_count
+        boostsCount = await supabaseManager.getBoostsCount(submissionID: submission.id)
     }
     
     func votePressed(value: Int) async {

@@ -27,9 +27,9 @@ struct BoostsView: View {
                     .frame(width: 50, height: 5)
                     .padding(.top, 20)
             
-//            Text("Battle")
-//                .font(.title2)
-//                .padding(.top, 10)
+            Text("Battle")
+                .font(.title2)
+                .padding(.top, 10)
             
             ZStack {
 //                Rectangle()
@@ -37,14 +37,14 @@ struct BoostsView: View {
 //                    .frame(height: 70)
                 HStack {
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(.red.tertiary)
+                        .fill(.red)//.tertiary)
                         .frame(height:50)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20) // Same corner radius for the outline
                                 .stroke(Color.red, lineWidth: 2) // Outline color and width
                         )
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(.blue.quaternary)
+                        .fill(.blue)//.quaternary)
                         .frame(height:50)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20) // Same corner radius for the outline
@@ -55,14 +55,22 @@ struct BoostsView: View {
                 
                 HStack {
                     Spacer()
-                    Text("0")
+                    let negativePowerTotal = supabaseManager.boosts
+                            .filter { $0.power < 0 }
+                            .reduce(0) { $0 + $1.power }
+                    Text("\(negativePowerTotal)")
                         .bold()
+                        .font(.title2)
                         .foregroundStyle(.white)
                         .shadow(color:.red, radius: 7)
                     Spacer()
                     Spacer()
-                    Text("0")
+                    let positivePowerTotal = supabaseManager.boosts
+                            .filter { $0.power > 0 }
+                            .reduce(0) { $0 + $1.power }
+                    Text("\(positivePowerTotal)")
                         .bold()
+                        .font(.title2)
                         .foregroundStyle(.white)
                         .shadow(color:.blue, radius: 7)
                     Spacer()
