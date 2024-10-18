@@ -30,6 +30,8 @@ struct RepliesView: View {
                 
                 Text("Replies")
                     .font(.title2)
+                
+                Divider()
 
                 ScrollView {
                     LazyVStack(spacing: 0) {

@@ -16,12 +16,11 @@ struct BoostButtonView: View {
     @State var boostInfo: BoostInfo?
     
     let name: String
-    let emoji: String
-    let backgroundColor: Color
     
     @State var power: Int = 0
     @State var time: Int = 0
     @State var price: Int = 0
+    @State var icon: String = ""
     
     let action: () -> Void // Action closure when the button is tapped
     
@@ -33,47 +32,27 @@ struct BoostButtonView: View {
             }
             
         }) {
-            VStack(spacing: 10) {
-                HStack {
+            
+            HStack(spacing:2) {
+                    Text(icon)
+                Text("\(abs(power))")
+                    
                     Spacer()
-                    Text(emoji)
-                        .font(.title2)
-                    Text("\(power)")
-                        .font(.title2)
-                    Spacer()
-                }
-                .padding(5)
-                .background(.secondary)
-                .cornerRadius(10)
-                
-                HStack {
-                    Spacer()
+                    
                     Text("⏱️")
                     Text("\(time)")
+                    
                     Spacer()
-                }
-                .font(.title2)
-                .padding(5)
-                .background(.secondary)
-                .cornerRadius(10)
-                
-                HStack {
-                    Spacer()
+                    
                     Image("coin")
                         .resizable()
-                        .frame(width: 25, height: 25)
+                        .frame(width: 20, height: 20)
                     Text("\(price)")
-                    Spacer()
-                }
-                .font(.title2)
-                .padding(5)
-                .background(.secondary)
-                .cornerRadius(10)
             }
             .padding(8)
         }
         .foregroundColor(.white)
-        .background(backgroundColor)
+        .background(power < 0 ? .red : .blue)
         .cornerRadius(10)
         .frame(maxWidth: 200)
         .task {
@@ -91,6 +70,7 @@ struct BoostButtonView: View {
         price = boostInfo.price
         power = boostInfo.power
         time = boostInfo.time
+        icon = boostInfo.icon
     
     }
     
@@ -106,7 +86,7 @@ struct BoostButtonView: View {
 
 
 #Preview {
-    BoostButtonView(name:"star", emoji: "🐲", backgroundColor: .blue) {
+    BoostButtonView(name:"star") {
         print("Executing Boost Action")
     }
 }

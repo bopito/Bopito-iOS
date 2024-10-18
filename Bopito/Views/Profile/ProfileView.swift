@@ -86,16 +86,18 @@ struct ProfileView: View {
             VStack (spacing: 0){
                 if let user = user {
                     if openedFromProfileTab {
-                        Text("\(user.name)'s Profile")
-                            .font(.title2)
-                            .padding(.top, 10)
-                    } else {
                         Capsule()
                             .fill(Color.secondary)
                             .opacity(0.5)
                             .frame(width: 50, height: 5)
                             .padding(.top, 20)
+                    }
+                    if user.name != "" {
                         Text("\(user.name)'s Profile")
+                            .font(.title2)
+                            .padding(.top, 10)
+                    } else {
+                        Text("\(user.username)'s Profile")
                             .font(.title2)
                             .padding(.top, 10)
                     }

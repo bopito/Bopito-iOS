@@ -18,4 +18,5 @@ struct Boost: Identifiable, Codable {
     var price: Int
     var time: Int
     var name: String
+    var icon: String
 }
