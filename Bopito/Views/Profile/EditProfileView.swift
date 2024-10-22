@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditProfileView: View {
     
@@ -22,26 +23,55 @@ struct EditProfileView: View {
     
     @State var errorMessage: String?
     
+    @State var isEditingProfilePicture: Bool = false
+    
+    @State var selection: PhotosPickerItem? = nil
+    
     var body: some View {
         VStack (spacing:10) {
             Text("Edit Profile")
-                .font(.title)
+                .font(.title2)
+                .padding(.top, 10)
+            Divider()
             
             if let user = user {
                 // Profile picture
-                ProfilePictureView(profilePictureURL: user.profile_picture)
-                    .frame(width: 100, height: 100)
+                ZStack {
+                    ProfilePictureView(profilePictureURL: user.profile_picture)
+                        .frame(width: 100, height: 100)
+//                        .overlay(alignment: .bottomTrailing) {
+//                                
+//                                    Image(systemName: "pencil.circle.fill")
+//                                        .symbolRenderingMode(.multicolor)
+//                                        .font(.system(size: 30))
+//                                        .foregroundColor(.accentColor)
+//                                
+//                                .buttonStyle(.borderless)
+//                            }
+                    Circle()
+                        .frame(width: 100, height: 100)
+                        .foregroundColor(Color(hue: 0, saturation: 0, brightness: 0, opacity: 0.4))
+                    Button(action: {
+                        isEditingProfilePicture = true
+                    }) {
+                        Image(systemName: "camera")
+                            .resizable()
+                            .frame(width: 30, height: 24)
+                            .foregroundColor(.white)
+                            //.bold()
+                    }
                     
-                Button(action: {
-                    // Handle edit picture action
-                }) {
-                    /*
-                    Text("Change Picture")
-                        .font(.headline)
-                     */
                 }
                 
-                Divider()
+                    
+                Button(action: {
+                    isEditingProfilePicture = true
+                }) {
+                    Text("Change Image")
+                        .font(.callout)
+                }
+                
+                //Divider()
                 
                 HStack {
                     Text("Name")
@@ -91,7 +121,7 @@ struct EditProfileView: View {
                 }
                 
             }
-            
+            Spacer()
             Button(action: {
                 Task {
                     await saveChangesPressed()
@@ -105,14 +135,11 @@ struct EditProfileView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)  // Adjust this value for more or less rounded corners
             }
-            .padding(0)
             
-            
-            Spacer()
         }
-        .padding()
         .onAppear {
             Task {
+                print(isEditingProfilePicture)
                 user = await supabaseManager.getCurrentUser()
                 if let user = user {
                     // Initialize the fields with the current user info
@@ -123,6 +150,13 @@ struct EditProfileView: View {
                     
                     if name == username { name = ""}
                 }
+            }
+        }
+        .sheet(isPresented: $isEditingProfilePicture, onDismiss: {
+            print("dismissed")
+        }) {
+            NavigationStack {
+                EditProfilePictureView()
             }
         }
     }

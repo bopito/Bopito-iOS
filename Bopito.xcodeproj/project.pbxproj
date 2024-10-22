@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E607D4732CC72ACA00D448FB /* EditProfilePictureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607D4722CC72ACA00D448FB /* EditProfilePictureViewModel.swift */; };
 		E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */; };
 		E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC62C8A48D000FBBD36 /* ContentView.swift */; };
 		E60DDACB2C8A48D100FBBD36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E60DDACA2C8A48D100FBBD36 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		E6FE7C2B2CB86DDE00919DCB /* AdmobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C2A2CB86DDE00919DCB /* AdmobManager.swift */; };
 		E6FE7C2D2CC1A17600919DCB /* BoostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C2C2CC1A17600919DCB /* BoostInfo.swift */; };
 		E6FE7C2F2CC2E3C000919DCB /* BoostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C2E2CC2E3C000919DCB /* BoostView.swift */; };
+		E6FE7C312CC6DE8600919DCB /* EditProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C302CC6DE8600919DCB /* EditProfilePictureView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E607D4722CC72ACA00D448FB /* EditProfilePictureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePictureViewModel.swift; sourceTree = "<group>"; };
 		E60DDAC12C8A48D000FBBD36 /* Bopito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bopito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BopitoApp.swift; sourceTree = "<group>"; };
 		E60DDAC62C8A48D000FBBD36 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -142,6 +145,7 @@
 		E6FE7C2A2CB86DDE00919DCB /* AdmobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdmobManager.swift; sourceTree = "<group>"; };
 		E6FE7C2C2CC1A17600919DCB /* BoostInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostInfo.swift; sourceTree = "<group>"; };
 		E6FE7C2E2CC2E3C000919DCB /* BoostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostView.swift; sourceTree = "<group>"; };
+		E6FE7C302CC6DE8600919DCB /* EditProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePictureView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,6 +315,8 @@
 				E60DDB2F2C93635C00FBBD36 /* FollowView.swift */,
 				E66464822CA4889D0083C1D4 /* FollowButtonView.swift */,
 				E60DDB1C2C90DF3D00FBBD36 /* EditProfileView.swift */,
+				E6FE7C302CC6DE8600919DCB /* EditProfilePictureView.swift */,
+				E607D4722CC72ACA00D448FB /* EditProfilePictureViewModel.swift */,
 				E60DDB182C8B7F7300FBBD36 /* ProfilePictureView.swift */,
 				E60DDB082C8A4B8E00FBBD36 /* SettingsView.swift */,
 			);
@@ -529,6 +535,7 @@
 				E6FE7C2D2CC1A17600919DCB /* BoostInfo.swift in Sources */,
 				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
 				E60DDB272C92988E00FBBD36 /* AdView.swift in Sources */,
+				E607D4732CC72ACA00D448FB /* EditProfilePictureViewModel.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
 				E6FE7C2F2CC2E3C000919DCB /* BoostView.swift in Sources */,
 				E69453702C94BF7D00F799E6 /* NotificationView.swift in Sources */,
@@ -557,6 +564,7 @@
 				E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */,
 				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,
 				E66464872CA52AD00083C1D4 /* TermsOfServiceView.swift in Sources */,
+				E6FE7C312CC6DE8600919DCB /* EditProfilePictureView.swift in Sources */,
 				E67558A12CAC754800B98B5C /* InAppPurchaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
