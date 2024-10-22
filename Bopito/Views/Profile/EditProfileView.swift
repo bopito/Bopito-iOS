@@ -39,15 +39,15 @@ struct EditProfileView: View {
                 ZStack {
                     ProfilePictureView(profilePictureURL: user.profile_picture)
                         .frame(width: 100, height: 100)
-//                        .overlay(alignment: .bottomTrailing) {
-//                                
-//                                    Image(systemName: "pencil.circle.fill")
-//                                        .symbolRenderingMode(.multicolor)
-//                                        .font(.system(size: 30))
-//                                        .foregroundColor(.accentColor)
-//                                
-//                                .buttonStyle(.borderless)
-//                            }
+                    //                        .overlay(alignment: .bottomTrailing) {
+                    //                                
+                    //                                    Image(systemName: "pencil.circle.fill")
+                    //                                        .symbolRenderingMode(.multicolor)
+                    //                                        .font(.system(size: 30))
+                    //                                        .foregroundColor(.accentColor)
+                    //                                
+                    //                                .buttonStyle(.borderless)
+                    //                            }
                     Circle()
                         .frame(width: 100, height: 100)
                         .foregroundColor(Color(hue: 0, saturation: 0, brightness: 0, opacity: 0.4))
@@ -58,12 +58,12 @@ struct EditProfileView: View {
                             .resizable()
                             .frame(width: 30, height: 24)
                             .foregroundColor(.white)
-                            //.bold()
+                        //.bold()
                     }
                     
                 }
                 
-                    
+                
                 Button(action: {
                     isEditingProfilePicture = true
                 }) {
@@ -152,12 +152,11 @@ struct EditProfileView: View {
                 }
             }
         }
-        .sheet(isPresented: $isEditingProfilePicture, onDismiss: {
+        .fullScreenCover(isPresented: $isEditingProfilePicture, onDismiss: {
             print("dismissed")
         }) {
-            NavigationStack {
-                EditProfilePictureView()
-            }
+            EditProfilePictureView()
+            
         }
     }
     
