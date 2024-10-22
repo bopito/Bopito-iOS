@@ -341,6 +341,39 @@ class SupabaseManager: ObservableObject {
         }
     }
     
+    func updateProfilePicture(imageData: Data) async {
+        
+        do {
+            let response = try await supabase.functions
+                .invoke(
+                    "update-profile-picture",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "imageData": imageData
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "No Response from update-profile-picture()")
+        }
+        catch {
+            print("Error:", error.localizedDescription)
+        }
+        
+       
+            
+        
+          //  let profilePictureURL = "https://lqqhpvlxroqfqyfrpaio.supabase.co/storage/v1/object/public/profile_pictures/\(currentUser.id).jpg"
+//            try await supabase
+//                .from("users")
+//                .update(["profile_picture": profilePictureURL])
+//                .eq("id", value: currentUser.id) // Match by user ID
+//                .execute()
+//
+    }
+    
     
     //
     // Submissions
