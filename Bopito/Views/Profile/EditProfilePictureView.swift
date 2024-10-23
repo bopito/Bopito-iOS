@@ -26,40 +26,43 @@ struct EditProfilePictureView: View {
         NavigationStack {
             VStack (spacing:0){
                 // Display the selected image or a placeholder
-                ZStack {
-                    HStack {
-                        Spacer()
-                        Text("Library")
-                            .font(.title2)
-                        Spacer()
+                VStack {
+                    ZStack {
+                        HStack {
+                            Spacer()
+                            Text("Library")
+                                .font(.title2)
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Button(action: {
+                                
+                            }, label: {
+                                Text("Cancel")
+                            })
+                            Spacer()
+                            Button(action: {
+                                Task {
+                                    await doneButtonPressed()
+                                }
+                            }, label: {
+                                Text("Done")
+                            })
+                        }
                     }
-                    
-                    HStack {
-                        Button(action: {
-                            
-                        }, label: {
-                            Text("Cancel")
-                        })
-                        Spacer()
-                        Button(action: {
-                            Task {
-                                await doneButtonPressed()
-                            }
-                        }, label: {
-                            Text("Done")
-                        })
-                    }
+                    .padding(.horizontal, 10)
+                    .padding(.top, 0)
+                    .padding(.bottom, 5)
+               
                 }
-                .padding(.horizontal, 10)
-                .padding(.top, 65)
-                .padding(.bottom, 5)
-                    
+                
                 ZStack {
                     // Display the selected image or a placeholder
                     if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .scaledToFill()
+                            .scaledToFit()
                             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
                             .scaleEffect(scale)
                             .offset(x: offset.width, y: offset.height)
@@ -73,8 +76,8 @@ struct EditProfilePictureView: View {
                                     }
                                     .onEnded { _ in
                                         // Calculate the new offset with boundaries
-                                        let widthBound = (UIScreen.main.bounds.width / 2) * scale
-                                        let heightBound = (UIScreen.main.bounds.width / 2) * scale
+                                        let widthBound = (UIScreen.main.bounds.width/2) * scale
+                                        let heightBound = (UIScreen.main.bounds.width/2) * scale
                                         
                                         // Snap back to screen edges
                                         if offset.width < -widthBound {
@@ -119,12 +122,12 @@ struct EditProfilePictureView: View {
                             )
                             .compositingGroup() // Needed for proper blending
                             .allowsHitTesting(false)
-                    
+                        
                     } else {
                         // Placeholder for when no image is selected
                         ZStack {
                             Rectangle()
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.white)
                                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
                             Image(systemName: "person.fill")
                                 .foregroundColor(.secondary)
@@ -143,11 +146,42 @@ struct EditProfilePictureView: View {
                             .compositingGroup() // Needed for proper blending
                             .allowsHitTesting(false)
                     }
+                    
+                    Group {
+                        HStack {
+                            Spacer()
+                            Rectangle()
+                                .fill(Color(hue: 0, saturation: 0, brightness: 1.5, opacity: 0.3))
+                                .frame(width: 1)
+                                .shadow(color: .black.opacity(1), radius: 2, x: 0, y: 2)
+                            Spacer()
+                            Rectangle()
+                                .fill(Color(hue: 0, saturation: 0, brightness: 1.5, opacity: 0.3))
+                                .frame(width: 1)
+                                .shadow(color: .black.opacity(1), radius: 2, x: 0, y: 2)
+                            Spacer()
+                        }
+                        VStack {
+                            Spacer()
+                            Rectangle()
+                                .fill(Color(hue: 0, saturation: 0, brightness: 1.5, opacity: 0.3))
+                                .frame(height: 1)
+                                .shadow(color: .black.opacity(1), radius: 2, x: 0, y: 2)
+                            Spacer()
+                            Rectangle()
+                                .fill(Color(hue: 0, saturation: 0, brightness: 1.5, opacity: 0.3))
+                                .frame(height: 1)
+                                .shadow(color: .black.opacity(1), radius: 2, x: 0, y: 2)
+                            Spacer()
+                        }
+                    }
+                    
+                    
                 }
-                .ignoresSafeArea() // Ensure the ZStack covers the whole screen
+                //.ignoresSafeArea() // Ensure the ZStack covers the whole screen
                 .padding(.bottom, 2)
                 
-               
+                
                 PhotosPicker(
                     selection: $viewModel.selection,
                     maxSelectionCount: 1,
@@ -159,7 +193,7 @@ struct EditProfilePictureView: View {
                 ) {
                     Text("Select Photos")
                 }
-                .frame(height: 400)
+                //.frame(height: 400)
                 // Configure a half-height Photos picker.
                 .photosPickerStyle(.inline)
                 
@@ -182,8 +216,13 @@ struct EditProfilePictureView: View {
                         lastOffset = .zero
                     }
                 }
+                
+                
+                Spacer()
+                
             }
         }
+        
     }
     
     func doneButtonPressed() async {
@@ -195,13 +234,31 @@ struct EditProfilePictureView: View {
             print("Couldn't turn selectedImageData into a UIImage")
             return
         }
+        
         let size = image.size
+        let imageWidth = size.width
+        let imageHeight = size.height
+        
+        // Calculate the crop rectangle
+        let cropWidth = UIScreen.main.bounds.width * scale
+        let cropHeight = UIScreen.main.bounds.width * scale
+        
+        // Calculate the center of the original image
+        let centerX = imageWidth / 2
+        let centerY = imageHeight / 2
+        
+        // Calculate the crop rectangle's origin
+        let cropX = (centerX - (cropWidth / 2)) + offset.width
+        let cropY = (centerY - (cropHeight / 2)) + offset.height
+        
+        // Make sure the crop rectangle is within the image bounds
         let cropRect = CGRect(
-            x: (size.width / 2) - (UIScreen.main.bounds.width / 2) * scale + offset.width,
-            y: (size.height / 2) - (UIScreen.main.bounds.width / 2) * scale + offset.height,
-            width: UIScreen.main.bounds.width * scale,
-            height: UIScreen.main.bounds.width * scale
+            x: max(0, cropX),
+            y: max(0, cropY),
+            width: min(cropWidth, imageWidth - cropX),
+            height: min(cropHeight, imageHeight - cropY)
         )
+        
         // Create a CGImage from the original UIImage
         guard let cgImage = image.cgImage?.cropping(to: cropRect) else {
             print("Could not crop image.")
@@ -210,10 +267,13 @@ struct EditProfilePictureView: View {
         
         let croppedImage = UIImage(cgImage: cgImage)
         
-        guard let imageData = croppedImage.jpegData(compressionQuality: 0.8) else {
+        guard let jpegData = croppedImage.jpegData(compressionQuality: 0.8) else {
             print("Could not convert cropped image to data.")
             return
         }
+        
+        let imageData = jpegData.base64EncodedString()
+        
         print("Trying to upload to Supabase")
         await supabaseManager.updateProfilePicture(imageData: imageData)
     }
