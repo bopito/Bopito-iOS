@@ -9,28 +9,33 @@ import SwiftUI
 struct ProfilePictureView: View {
     
     @State var profilePictureURL: String?
-
+    @State var refreshedURL: URL?
+    
+    
     var body: some View {
         ZStack {
-            if let urlString = profilePictureURL, let url = URL(string: urlString) {
-                AsyncImage(url: url) { phase in
+            if let refreshedURL = refreshedURL {
+                AsyncImage(url: refreshedURL) { phase in
                     switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .clipShape(Circle())
-                    case .failure:
-                        placeholderImage
-                    @unknown default:
-                        placeholderImage
+                        case .empty:
+                            ProgressView()
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(Circle())
+                        case .failure:
+                            placeholderImage
+                        @unknown default:
+                            placeholderImage
                     }
                 }
             } else {
                 placeholderImage
             }
+        }
+        .task {
+            await reloadURL()
         }
     }
 
@@ -40,6 +45,12 @@ struct ProfilePictureView: View {
             .scaledToFill()
             .clipShape(Circle())
             .foregroundColor(.gray)
+    }
+    
+    func reloadURL() async {
+        if let profilePictureURL {
+            refreshedURL = URL(string: "\(profilePictureURL)?timestamp=\(Date().timeIntervalSince1970)")
+        }
     }
 }
 

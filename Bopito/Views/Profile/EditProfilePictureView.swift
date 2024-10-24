@@ -26,43 +26,44 @@ struct EditProfilePictureView: View {
         NavigationStack {
             VStack (spacing:0){
                 // Display the selected image or a placeholder
-                VStack {
-                    ZStack {
-                        HStack {
-                            Spacer()
-                            Text("Library")
-                                .font(.title2)
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Button(action: {
-                                
-                            }, label: {
-                                Text("Cancel")
-                            })
-                            Spacer()
-                            Button(action: {
-                                Task {
-                                    await doneButtonPressed()
-                                }
-                            }, label: {
-                                Text("Done")
-                            })
-                        }
+                
+                ZStack {
+                    HStack {
+                        Spacer()
+                        Text("Library")
+                            .font(.title2)
+                        Spacer()
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.top, 0)
-                    .padding(.bottom, 5)
-               
+                    
+                    HStack {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }, label: {
+                            Text("Cancel")
+                        })
+                        Spacer()
+                        Button(action: {
+                            Task {
+                                await doneButtonPressed()
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }, label: {
+                            Text("Done")
+                        })
+                    }
                 }
+                .padding(.horizontal, 10)
+                .padding(.top, 0)
+                .padding(.bottom, 5)
+                .zIndex(1.0)
+                
                 
                 ZStack {
                     // Display the selected image or a placeholder
                     if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
                             .scaleEffect(scale)
                             .offset(x: offset.width, y: offset.height)
@@ -177,6 +178,7 @@ struct EditProfilePictureView: View {
                     }
                     
                     
+                    
                 }
                 //.ignoresSafeArea() // Ensure the ZStack covers the whole screen
                 .padding(.bottom, 2)
@@ -235,39 +237,7 @@ struct EditProfilePictureView: View {
             return
         }
         
-        let size = image.size
-        let imageWidth = size.width
-        let imageHeight = size.height
-        
-        // Calculate the crop rectangle
-        let cropWidth = UIScreen.main.bounds.width * scale
-        let cropHeight = UIScreen.main.bounds.width * scale
-        
-        // Calculate the center of the original image
-        let centerX = imageWidth / 2
-        let centerY = imageHeight / 2
-        
-        // Calculate the crop rectangle's origin
-        let cropX = (centerX - (cropWidth / 2)) + offset.width
-        let cropY = (centerY - (cropHeight / 2)) + offset.height
-        
-        // Make sure the crop rectangle is within the image bounds
-        let cropRect = CGRect(
-            x: max(0, cropX),
-            y: max(0, cropY),
-            width: min(cropWidth, imageWidth - cropX),
-            height: min(cropHeight, imageHeight - cropY)
-        )
-        
-        // Create a CGImage from the original UIImage
-        guard let cgImage = image.cgImage?.cropping(to: cropRect) else {
-            print("Could not crop image.")
-            return
-        }
-        
-        let croppedImage = UIImage(cgImage: cgImage)
-        
-        guard let jpegData = croppedImage.jpegData(compressionQuality: 0.8) else {
+        guard let jpegData = image.jpegData(compressionQuality: 0.1) else {
             print("Could not convert cropped image to data.")
             return
         }

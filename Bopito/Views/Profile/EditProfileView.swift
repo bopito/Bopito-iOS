@@ -39,6 +39,7 @@ struct EditProfileView: View {
                 ZStack {
                     ProfilePictureView(profilePictureURL: user.profile_picture)
                         .frame(width: 100, height: 100)
+                        .id(UUID())
                     Circle()
                         .frame(width: 100, height: 100)
                         .foregroundColor(Color(hue: 0, saturation: 0, brightness: 0, opacity: 0.4))
@@ -112,7 +113,7 @@ struct EditProfileView: View {
                 }
                 
             }
-            Spacer()
+            
             Button(action: {
                 Task {
                     await saveChangesPressed()
@@ -126,28 +127,36 @@ struct EditProfileView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)  // Adjust this value for more or less rounded corners
             }
+            .padding(.top, 20)
+            
+            Spacer()
             
         }
         .onAppear {
             Task {
-                print(isEditingProfilePicture)
-                user = await supabaseManager.getCurrentUser()
-                if let user = user {
-                    // Initialize the fields with the current user info
-                    name = user.name
-                    
-                    username = user.username
-                    bio = user.bio ?? ""
-                    
-                    if name == username { name = ""}
-                }
+                await load()
             }
         }
         .fullScreenCover(isPresented: $isEditingProfilePicture, onDismiss: {
-            print("dismissed")
+            Task {
+                await load()
+            }
         }) {
             EditProfilePictureView()
             
+        }
+    }
+    
+    func load() async {
+        user = await supabaseManager.getCurrentUser()
+        if let user = user {
+            // Initialize the fields with the current user info
+            name = user.name
+            
+            username = user.username
+            bio = user.bio ?? ""
+            
+            if name == username { name = ""}
         }
     }
     

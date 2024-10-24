@@ -85,7 +85,7 @@ struct ProfileView: View {
             
             VStack (spacing: 0){
                 if let user = user {
-                    if openedFromProfileTab {
+                    if !openedFromProfileTab {
                         Capsule()
                             .fill(Color.secondary)
                             .opacity(0.5)
@@ -108,6 +108,23 @@ struct ProfileView: View {
                     ProfilePictureView(profilePictureURL: user.profile_picture)
                         .frame(width: 85, height: 85)
                         .padding(.vertical, 10)
+                        .id(UUID())
+                    
+//                    AsyncImage(url: URL(string: "\(user.profile_picture)?timestamp=\(Date().timeIntervalSince1970)")) { phase in
+//                        switch phase {
+//                        case .empty:
+//                            ProgressView()
+//                        case .success(let image):
+//                            image.resizable()
+//                            image.imageScale(.small)
+//                        case .failure(let error):
+//                            ProgressView()
+//                        @unknown default:
+//                            ProgressView()
+//                        }
+//                        
+//                    }
+                        
                     //username
                     Text("@\(user.username)")
                         .font(.headline)
