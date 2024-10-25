@@ -446,7 +446,7 @@ struct SubmissionView: View {
     }
     
     func deleteSubmission() async {
-        await supabaseManager.deleteSubmission(submissionID: submission.id)
+        await supabaseManager.deleteSubmissionAndReplies(submissionID: submission.id)
         onDelete(submission.id)
     }
     

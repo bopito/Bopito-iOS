@@ -122,7 +122,7 @@ struct RepliesView: View {
         }
         .onDisappear() {
             Task {
-                await supabaseManager.updateRepliesCount(parentID: submission.id)
+               //
             }
         }
     }

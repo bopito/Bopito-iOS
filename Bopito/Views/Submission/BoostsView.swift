@@ -100,8 +100,8 @@ struct BoostsView: View {
             
             VStack (spacing:0) {
                 if supabaseManager.boosts.isEmpty {
-                    Text("Fire in ze hole!")
-                        //.background(.secondary)
+                    Image(systemName: "bolt.slash")
+                        .font(.system(size: 90))
                 } else {
                     ScrollView {
                         VStack(spacing:0) {
@@ -114,7 +114,7 @@ struct BoostsView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.quinary)
+            .background()//(.quinary)
             
             
             Divider()
@@ -125,7 +125,6 @@ struct BoostsView: View {
                         Spacer()
                         ProfilePictureView(profilePictureURL: currentUser.profile_picture)
                             .frame(width: 50, height: 50)
-                            .padding(.trailing, 10)
                         Spacer()
                     }
                     
@@ -223,7 +222,7 @@ struct BoostsView: View {
                         .bold()
                     Spacer()
                 }
-                .padding(.bottom, -15)
+                .padding(.bottom, -10)
                 .padding(.top, 5)
             }
             

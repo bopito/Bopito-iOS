@@ -387,16 +387,6 @@ class SupabaseManager: ObservableObject {
                 .from("submissions")
                 .insert(submission)
                 .execute()
-            // make sure can get submission to like it
-            if let parent_id = parent_id {
-                if let parentSubmission = await getSubmission(submissionID: parent_id) {
-                    try await supabase
-                        .from("submissions")
-                        .upsert(parentSubmission)
-                        .execute()
-                    print("Success - Submission posted!")
-                }
-            }
         } catch {
             print(error)
         }
@@ -455,35 +445,32 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func deleteSubmission(submissionID: String) async {
+    func deleteSubmissionAndReplies(submissionID: String) async {
         do {
-            // Fetch the submission to check if it has a parent
-            if let submissionToDelete = await getSubmission(submissionID: submissionID) {
-                // If the submission has a parent, reduce the replies_count on it
-                if let parentID = submissionToDelete.parent_id {
-                    if let parentSubmission = await getSubmission(submissionID: parentID) {
-                        // Update the parent submission
-                        try await supabase
-                            .from("submissions")
-                            .upsert(parentSubmission)
-                            .execute()
-                    }
+            // Recursively delete replies
+            if let replies = await getReplies(parentID: submissionID) {
+                for submission in replies {
+                    await deleteSubmissionAndReplies(submissionID: submission.id)
                 }
-                // Now delete the submission
-                try await supabase
-                    .from("submissions")
-                    .delete()
-                    .eq("id", value: submissionID)
-                    .execute()
-                
-                print("Submission deleted successfully!")
-            } else {
-                print("Submission not found.")
             }
+            // Delete the submission
+            try await supabase
+                .from("submissions")
+                .delete()
+                .eq("id", value: submissionID)
+                .execute()
         } catch {
-            print("Failed to delete submission. Error: \(error)")
+            print("Failed while trying to delete submission. Error: \(error)")
         }
-    }
+        
+        // Update replies_count on parentSubmission
+        guard let submission = await getSubmission(submissionID: submissionID) else {
+            return
+        }
+        if let parent_id = submission.parent_id{
+            await updateRepliesCount(parentID: parent_id)
+        }
+    } // NEED TO REWRITE WITH RECURSIVE DELETE REPLIES
     
     func reportSubmission(submissionID: String) async {
         guard let submission = await getSubmission(submissionID: submissionID) else {
