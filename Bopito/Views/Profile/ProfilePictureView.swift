@@ -48,8 +48,12 @@ struct ProfilePictureView: View {
     }
     
     func reloadURL() async {
-        if let profilePictureURL {
-            refreshedURL = URL(string: "\(profilePictureURL)?timestamp=\(Date().timeIntervalSince1970)")
+        if let StringURL = profilePictureURL {
+            if StringURL.contains("dicebear") {
+                refreshedURL = URL(string: StringURL)
+            } else {
+                refreshedURL = URL(string: "\(StringURL)?timestamp=\(Date().timeIntervalSince1970)")
+            }
         }
     }
 }

@@ -22,6 +22,9 @@ struct EditProfilePictureView: View {
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
     
+    @State var donePressed: Bool = false
+    
+    
     var body: some View {
         NavigationStack {
             VStack (spacing:0){
@@ -42,14 +45,21 @@ struct EditProfilePictureView: View {
                             Text("Cancel")
                         })
                         Spacer()
-                        Button(action: {
-                            Task {
-                                await doneButtonPressed()
-                                presentationMode.wrappedValue.dismiss()
-                            }
-                        }, label: {
-                            Text("Done")
-                        })
+                        if !donePressed {
+                            Button(action: {
+                                Task {
+                                    if selectedImageData != nil {
+                                        donePressed = true
+                                        await doneButtonPressed()
+                                        presentationMode.wrappedValue.dismiss()
+                                    }
+                                }
+                            }, label: {
+                                Text("Done")
+                            })
+                        } else {
+                            ProgressView()
+                        }
                     }
                 }
                 .padding(.horizontal, 10)

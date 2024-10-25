@@ -302,6 +302,9 @@ struct SubmissionView: View {
             }
             .padding(10)
             
+            Divider()
+            
+            
         }
         .sheet(item: $activeSheet, onDismiss: {
             Task {
@@ -332,6 +335,7 @@ struct SubmissionView: View {
                     message: Text("Are you sure you want to delete this post? This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete"), action: {
                         Task {
+                            submission.text = "[Marked for Deletion]"
                             await deleteSubmission()
                         }
                     }),
@@ -350,14 +354,11 @@ struct SubmissionView: View {
                     secondaryButton: .cancel()
                 )
             }
+            
         }
         .task {
             await load()
         }
-        
-        
-        
-        
         
     }
     

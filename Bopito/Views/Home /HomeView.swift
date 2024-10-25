@@ -22,7 +22,7 @@ struct HomeView: View {
     
     let feedTypes = ["All", "Following"]
     //let feedFilters = ["New", "Hot", "Top"] // top posts expire after 7 days
-    let feedFilters = ["New", "Top"] // top posts expire after 7 days
+    let feedFilters = ["New", "Hot", "Top"] // top posts expire after 7 days
     @State private var selectedFeedType = "All"
     @State private var selectedFilterType = "New" // maybe randomize to inspire exploration for now?
     
@@ -58,7 +58,7 @@ struct HomeView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal, 140)
+                    .padding(.horizontal, 125)
                     .onChange(of: selectedFilterType) {
                         Task {
                             await selectionChanged()
@@ -81,12 +81,10 @@ struct HomeView: View {
                             if var submissions = submissions {
                                 ForEach(submissions) { submission in
                                     SubmissionView(submission: submission, onDelete: { deletedPostID in
-                                        print("deleting:", submission.id)
-                                        submissions.removeAll { $0.id == deletedPostID }
+                                       // print("deleting:", submission.id)
+                                       // submissions.removeAll { $0.id == deletedPostID }
                                     })
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                    Divider()
                                     
                                 }
                             }

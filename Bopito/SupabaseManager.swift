@@ -61,7 +61,7 @@ class SupabaseManager: ObservableObject {
                 self.isAuthenticated = true
             }
         } catch {
-            print("Error checking user status: \(error.localizedDescription)")
+            print("Error in supabase.updateAuthenticationState(): \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.isAuthenticated = false
             }
@@ -1021,6 +1021,16 @@ class SupabaseManager: ObservableObject {
                 }
                 // Filter: Top Liked Posts ("Top")
                 else if feedFilter == "Top" {
+                    let submissions: [Submission] = try await supabase
+                        .rpc("get_all_top_submissions", params: [
+                            "blocker_id": currentUser.id
+                        ])
+                        .execute()
+                        .value
+                    return submissions
+                }
+                // Filter: Sort by Boost Score ("Hot")
+                else if feedFilter == "Hot" {
                     let submissions: [Submission] = try await supabase
                         .rpc("get_all_top_submissions", params: [
                             "blocker_id": currentUser.id

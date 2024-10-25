@@ -27,6 +27,8 @@ struct EditProfileView: View {
     
     @State var selection: PhotosPickerItem? = nil
     
+    @State var profilePictureRefreshID: UUID = UUID()
+    
     var body: some View {
         VStack (spacing:10) {
             Text("Edit Profile")
@@ -39,7 +41,7 @@ struct EditProfileView: View {
                 ZStack {
                     ProfilePictureView(profilePictureURL: user.profile_picture)
                         .frame(width: 100, height: 100)
-                        .id(UUID())
+                        .id(profilePictureRefreshID)
                     Circle()
                         .frame(width: 100, height: 100)
                         .foregroundColor(Color(hue: 0, saturation: 0, brightness: 0, opacity: 0.4))
@@ -140,6 +142,7 @@ struct EditProfileView: View {
         .fullScreenCover(isPresented: $isEditingProfilePicture, onDismiss: {
             Task {
                 await load()
+                profilePictureRefreshID = UUID()
             }
         }) {
             EditProfilePictureView()

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E607D4732CC72ACA00D448FB /* EditProfilePictureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607D4722CC72ACA00D448FB /* EditProfilePictureViewModel.swift */; };
+		E607D4772CCB187F00D448FB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607D4762CCB187F00D448FB /* HomeViewModel.swift */; };
 		E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */; };
 		E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDAC62C8A48D000FBBD36 /* ContentView.swift */; };
 		E60DDACB2C8A48D100FBBD36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E60DDACA2C8A48D100FBBD36 /* Assets.xcassets */; };
@@ -89,6 +90,7 @@
 
 /* Begin PBXFileReference section */
 		E607D4722CC72ACA00D448FB /* EditProfilePictureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePictureViewModel.swift; sourceTree = "<group>"; };
+		E607D4762CCB187F00D448FB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E60DDAC12C8A48D000FBBD36 /* Bopito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bopito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E60DDAC42C8A48D000FBBD36 /* BopitoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BopitoApp.swift; sourceTree = "<group>"; };
 		E60DDAC62C8A48D000FBBD36 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				E60DDB042C8A4B8E00FBBD36 /* HomeView.swift */,
+				E607D4762CCB187F00D448FB /* HomeViewModel.swift */,
 			);
 			path = "Home ";
 			sourceTree = "<group>";
@@ -562,6 +565,7 @@
 				E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */,
 				E694536E2C94AE1600F799E6 /* Notification.swift in Sources */,
 				E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */,
+				E607D4772CCB187F00D448FB /* HomeViewModel.swift in Sources */,
 				E60DDB172C8A4C7C00FBBD36 /* User.swift in Sources */,
 				E66464872CA52AD00083C1D4 /* TermsOfServiceView.swift in Sources */,
 				E6FE7C312CC6DE8600919DCB /* EditProfilePictureView.swift in Sources */,

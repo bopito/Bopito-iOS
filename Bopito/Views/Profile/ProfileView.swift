@@ -17,6 +17,8 @@ struct ProfileView: View {
     @State var isViewingSettings: Bool = false
     @State var isViewingFollows: Bool = false
     @State var followsTab: Int = 0
+    
+    @State var profilePictureRefreshID: UUID = UUID()
 
     var body: some View {
         ZStack {
@@ -108,30 +110,15 @@ struct ProfileView: View {
                     ProfilePictureView(profilePictureURL: user.profile_picture)
                         .frame(width: 85, height: 85)
                         .padding(.vertical, 10)
-                        .id(UUID())
-                    
-//                    AsyncImage(url: URL(string: "\(user.profile_picture)?timestamp=\(Date().timeIntervalSince1970)")) { phase in
-//                        switch phase {
-//                        case .empty:
-//                            ProgressView()
-//                        case .success(let image):
-//                            image.resizable()
-//                            image.imageScale(.small)
-//                        case .failure(let error):
-//                            ProgressView()
-//                        @unknown default:
-//                            ProgressView()
-//                        }
-//                        
-//                    }
+                        .id(profilePictureRefreshID)
                         
                     //username
                     Text("@\(user.username)")
-                        .font(.headline)
+                        .font(.callout)
                         .padding(.bottom, 10)
                     
                     // bio
-                    if let bio = user.bio {
+                    if let bio = user.bio, !bio.isEmpty {
                         Text(bio)
                             .font(.callout)
                             .padding(.bottom, 10)
@@ -255,6 +242,7 @@ struct ProfileView: View {
             .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
                 Task {
                     await load()
+                    profilePictureRefreshID = UUID()
                 }
             }) {
                 EditProfileView()
