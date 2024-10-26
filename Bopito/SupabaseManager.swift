@@ -564,6 +564,28 @@ class SupabaseManager: ObservableObject {
             print("Failed to update submission.score - Error: \(error)")
         }
     }
+    
+    func getScore(submissionID: String) async -> Int {
+        
+        guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
+            print("Error fetching live boosts")
+            return 0
+        }
+        
+        var positive = 0
+        var negative = 0
+        for boost in liveBoosts {
+            if boost.power > 0 {
+                positive += boost.power
+            }
+            else if boost.power < 0 {
+                negative += boost.power
+            }
+        }
+        let score = positive - negative
+        
+        return score
+    }
 
     
     //
@@ -670,53 +692,6 @@ class SupabaseManager: ObservableObject {
         }
     } // edge done
     
-    /* func applyBoost(price: Int, time: Int, value:Int, category: String, submissionID: String, userID: String) async {
-        // Add the time (in seconds) to the current date
-        let expirationDate = DateTimeTool.shared.convertSwiftDateToSupabaseString(
-            date: Date().addingTimeInterval(TimeInterval(time))
-        )
-        let boost: Boost = Boost(
-            id: UUID().uuidString,
-            expires_at: expirationDate,
-            value: value,
-            submission_id: submissionID,
-            user_id: userID,
-            live: true,
-            price: price,
-            time: time,
-            category: category
-        )
-        do {
-            
-            print("NOTE - Maybe change to UPSERT so Boost can't be abused by people with more money?")
-            // Check balance
-            let user: User = try await supabase
-                .from("users")
-                .select()
-                .eq("id", value: userID)
-                .single()
-                .execute()
-                .value
-            
-            if user.balance >= price {
-                // Update balance (subtract price)
-                let newBalance = user.balance - price
-                try await supabase
-                    .from("users")
-                    .update(["balance": newBalance])
-                    .eq("id", value: userID)
-                    .execute()
-                // Put boost in table
-                let boost = try await supabase
-                    .from("boosts")
-                    .insert(boost)
-                    .execute()
-            }
-        } catch {
-            print("Failed to add Boost: \(error.localizedDescription)")
-        }
-    } */ // replaced by edge
-    
     func getBoostInfo(boostName: String) async -> BoostInfo? {
         do {
             let boostInfo: BoostInfo = try await supabase
@@ -732,7 +707,6 @@ class SupabaseManager: ObservableObject {
             return nil  // Return nil if there's an error
         }
     }
-    
     
     func getLiveBoosts(submissionID: String) async -> [Boost]? {
         do {
@@ -750,24 +724,6 @@ class SupabaseManager: ObservableObject {
             return nil
         }
     }
-    
-    /* func getBoostsCount(submissionID: String) async -> Int {
-        do {
-            let response = try await supabase
-                .from("boosts")
-                .select(count: .exact)
-                .eq("submission_id", value: submissionID)
-                .eq("live", value: true)
-                .execute()
-            if let count = response.count {
-                return count
-            } else {
-                return 0
-            }
-        } catch {
-            return 0
-        }
-    } */
     
     func verifyReceiptAndAddToBalance() async {
         // Get the receipt from the app bundle
@@ -832,19 +788,6 @@ class SupabaseManager: ObservableObject {
             self.boosts = liveBoosts
         }
         
-        // Calculate and update value of score for submission
-        var positive = 0
-        var negative = 0
-        for boost in liveBoosts {
-            if boost.power > 0 {
-                positive += boost.power
-            }
-            else if boost.power < 0 {
-                negative += boost.power
-            }
-        }
-        let score = positive - negative
-        await updateScore(submissionID: submissionID, value: score)
 
         
         // Add new boosts as they go live in the "boosts" table

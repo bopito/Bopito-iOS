@@ -16,7 +16,7 @@ struct BoostsView: View {
     @State var submission: Submission?
     @State var currentUser: User?
     
-    //@State var boosts: [Boost]?
+    @State var loading: Bool = true
     
     
     var body: some View {
@@ -101,7 +101,7 @@ struct BoostsView: View {
             VStack (spacing:0) {
                 if supabaseManager.boosts.isEmpty {
                     Image(systemName: "bolt.slash")
-                        .font(.system(size: 90))
+                        .font(.system(size: 70))
                 } else {
                     ScrollView {
                         VStack(spacing:0) {
@@ -211,6 +211,7 @@ struct BoostsView: View {
             }
             .padding(.horizontal, 10)
             
+            
             if let currentUser = currentUser {
                 HStack (spacing:0) {
                     Spacer()
@@ -237,11 +238,14 @@ struct BoostsView: View {
     }
     
     func load() async {
+        
+        
         currentUser = await supabaseManager.getCurrentUser()
     
         guard let submission else {
             return
         }
+  
         await supabaseManager.subscribeToBoostsRealtime(submissionID: submission.id)
     }
     

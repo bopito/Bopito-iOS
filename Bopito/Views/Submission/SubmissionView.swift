@@ -386,7 +386,7 @@ struct SubmissionView: View {
         repliesCount = submission.replies_count
         
         // Get Score
-        score = 0//await supabaseManager.getBoostsCount(submissionID: submission.id)
+        score = await supabaseManager.getScore(submissionID: submission.id)
         
         
         // set time_since based on post created_at timestamp
@@ -404,7 +404,7 @@ struct SubmissionView: View {
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
         repliesCount = submission.replies_count
-        score = submission.score
+        score = await supabaseManager.getScore(submissionID: submission.id)
     }
     
     func votePressed(value: Int) async {
