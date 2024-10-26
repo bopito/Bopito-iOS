@@ -377,7 +377,6 @@ class SupabaseManager: ObservableObject {
             edited_at: nil,
             likes_count: 0,
             dislikes_count: 0,
-            boosts_count: 0,
             replies_count: 0,
             score: 0,
             reports: 0
@@ -554,25 +553,15 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func updateBoostsCount(submissionID: String) async {
+    func updateScore(submissionID: String, value: Int) async {
         do {
-            let response = try await supabase
-                .from("boosts")
-                .select(count: .exact)
-                .eq("submission_id", value: submissionID)
-                .is("live", value: true)
-                .execute()
-            if let count = response.count {
-                try await supabase
-                  .from("submissions")
-                  .update(["boosts_count": count])
-                  .eq("id", value: submissionID)
-                  .execute()
-            } else {
-                print("error getting boosts count")
-            }
+            try await supabase
+              .from("submissions")
+              .update(["score": value])
+              .execute()
+            
         } catch {
-            print("Failed to get likes or update submission boosts_count. Error: \(error)")
+            print("Failed to update submission.score - Error: \(error)")
         }
     }
 
@@ -762,7 +751,7 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func getBoostsCount(submissionID: String) async -> Int {
+    /* func getBoostsCount(submissionID: String) async -> Int {
         do {
             let response = try await supabase
                 .from("boosts")
@@ -778,7 +767,7 @@ class SupabaseManager: ObservableObject {
         } catch {
             return 0
         }
-    }
+    } */
     
     func verifyReceiptAndAddToBalance() async {
         // Get the receipt from the app bundle
@@ -823,6 +812,7 @@ class SupabaseManager: ObservableObject {
     
     func subscribeToBoostsRealtime(submissionID: String) async {
         
+        // Subscribe to Channel
         let myChannel = supabase.channel("boost-changes")
 
         let changes = myChannel.postgresChange(
@@ -831,7 +821,6 @@ class SupabaseManager: ObservableObject {
           table: "boosts"
           //filter: "id=eq.1"
         )
-
         await myChannel.subscribe()
         
         // Get existing boosts that are live
@@ -839,10 +828,24 @@ class SupabaseManager: ObservableObject {
             print("Error fetching live boosts")
             return
         }
-        
         DispatchQueue.main.async {
             self.boosts = liveBoosts
         }
+        
+        // Calculate and update value of score for submission
+        var positive = 0
+        var negative = 0
+        for boost in liveBoosts {
+            if boost.power > 0 {
+                positive += boost.power
+            }
+            else if boost.power < 0 {
+                negative += boost.power
+            }
+        }
+        let score = positive - negative
+        await updateScore(submissionID: submissionID, value: score)
+
         
         // Add new boosts as they go live in the "boosts" table
         for await _ in changes {
@@ -985,6 +988,40 @@ class SupabaseManager: ObservableObject {
     // Feeds
     //
     func getAllSubmissions(feedType: String, feedFilter: String) async -> [Submission]? {
+        
+        struct SubmissionsResponse: Codable {
+            let data: [Submission]
+            let message: String
+        }
+        
+        var submissions: [Submission]? = nil
+        
+        do {
+            // Invoke the Supabase function
+            let response = try await supabase.functions
+                .invoke(
+                    "get_feed",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "feedType": feedType,
+                            "feedFilter": feedFilter
+                        ]
+                    ),
+                    decode: { data, response in
+                        return try JSONDecoder().decode(SubmissionsResponse.self, from: data)
+                    }
+                )
+            
+            
+            return response.data
+            
+            
+        } catch {
+            // Print the error if the invocation fails
+            print("Error:", error.localizedDescription)
+            return nil // Ensure nil is returned on error
+        }
+        /*
         do {
             // let type = // need to check if
             print("Feed type: ", feedType, "Feed Filter: ", feedFilter)
@@ -994,17 +1031,12 @@ class SupabaseManager: ObservableObject {
                 print("Failed to get current user for getting all submissions.")
                 return nil
             }
+           
             
             if feedType == "All" {
                 // Filter: Most Recent ("New")
                 if feedFilter == "New" {
-                    let submissions: [Submission] = try await supabase
-                        .rpc("get_all_new_submissions", params: [
-                            "blocker_id": currentUser.id
-                        ])
-                        .execute()
-                        .value
-                    return submissions
+                 
                 }
                 // Filter: Top Liked Posts ("Top")
                 else if feedFilter == "Top" {
@@ -1036,27 +1068,13 @@ class SupabaseManager: ObservableObject {
                 .execute()
                 .value
             return submissions
-            /*
-             let submissions: [Submission] = try await supabase
-             .from("submissions")
-             .select()
-             .is("parent_id", value: nil) // Only root submissions
-             .not("author_id", in: supabase
-             .from("blocks")
-             .select("blocked_id")
-             .eq("blocker_id", currentUser.id)
-             ) // Exclude submissions from blocked users
-             .order("created_at", ascending: false)
-             .execute()
-             .value
-             */
-            
             
             
         } catch {
             print("Failed to get submissions. Error: \(error.localizedDescription)")
             return nil
         }
+         */
     }
     
     

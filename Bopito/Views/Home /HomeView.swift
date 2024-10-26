@@ -149,7 +149,6 @@ struct HomeView: View {
     }
     
     func selectionChanged() async {
-        print(selectedFeedType, selectedFilterType)
         isLoading = true
         submissions = await supabaseManager.getAllSubmissions(feedType: selectedFeedType, feedFilter: selectedFilterType)
         isLoading = false

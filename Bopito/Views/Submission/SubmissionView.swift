@@ -35,7 +35,6 @@ struct SubmissionView: View {
     
     @State var likesCount: Int = 0
     @State var dislikesCount: Int = 0
-    @State var boostsCount: Int = 0
     @State var repliesCount: Int = 0
     @State var sharesCount: Int = 0
     
@@ -202,8 +201,8 @@ struct SubmissionView: View {
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 19, height: 19)
-                        .foregroundColor(boostsCount > 0 ? .yellow : .secondary)
-                    Text("\(boostsCount)")
+                        .foregroundColor(score > 0 ? .yellow : .secondary)
+                    Text("\(score)")
                         .foregroundColor(.primary)
                 }
                 .simultaneousGesture(
@@ -308,7 +307,6 @@ struct SubmissionView: View {
         }
         .sheet(item: $activeSheet, onDismiss: {
             Task {
-                print("reload not working on sheet (boosts, replies, etc) dismissal for submission view")
                 await reloadSubmission()
             }
         }) { sheet in
@@ -387,8 +385,8 @@ struct SubmissionView: View {
         // Get Comments Count
         repliesCount = submission.replies_count
         
-        // Get Boosts Count
-        boostsCount = await supabaseManager.getBoostsCount(submissionID: submission.id)//submission.boosts_count
+        // Get Score
+        score = 0//await supabaseManager.getBoostsCount(submissionID: submission.id)
         
         
         // set time_since based on post created_at timestamp
@@ -406,7 +404,7 @@ struct SubmissionView: View {
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
         repliesCount = submission.replies_count
-        boostsCount = await supabaseManager.getBoostsCount(submissionID: submission.id)
+        score = submission.score
     }
     
     func votePressed(value: Int) async {
@@ -468,7 +466,6 @@ struct PostView2_Previews: PreviewProvider {
                            edited_at: Date().formatted(),
                            likes_count: 0,
                            dislikes_count: 0,
-                           boosts_count: 0,
                            replies_count: 0,
                            score: 0,
                            reports: 0

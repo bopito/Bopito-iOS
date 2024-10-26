@@ -183,7 +183,6 @@ struct RepliesView: View {
                        edited_at: Date().formatted(.dateTime.year().month().day().hour().minute().second()),
                        likes_count: 0,
                        dislikes_count: 0,
-                       boosts_count: 0,
                        replies_count: 0,
                        score: 0,
                        reports: 0
