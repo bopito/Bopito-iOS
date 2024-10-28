@@ -16,6 +16,7 @@ class SupabaseManager: ObservableObject {
     @Published var isAuthenticated: Bool = false // Published property
     
     @Published var boosts: [Boost] = []
+    @Published var currentRealtimeSubmissionID: String?
     
     init() {
         supabase = SupabaseClient(
@@ -24,6 +25,7 @@ class SupabaseManager: ObservableObject {
         )
         Task {
             await updateAuthenticationState() // Check auth status on init
+            await subscribeToBoostsRealtime()
         }
     }
     
@@ -194,6 +196,9 @@ class SupabaseManager: ObservableObject {
                     .single() // Fetch a single row if it exists
                     .execute()
                     .value
+                
+                print(block)
+                
                 return true
                 
             } catch {
@@ -553,18 +558,6 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func updateScore(submissionID: String, value: Int) async {
-        do {
-            try await supabase
-              .from("submissions")
-              .update(["score": value])
-              .execute()
-            
-        } catch {
-            print("Failed to update submission.score - Error: \(error)")
-        }
-    }
-    
     func getScore(submissionID: String) async -> Int {
         
         guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
@@ -766,7 +759,7 @@ class SupabaseManager: ObservableObject {
         
     }   // edge done
     
-    func subscribeToBoostsRealtime(submissionID: String) async {
+    func subscribeToBoostsRealtime() async {
         
         // Subscribe to Channel
         let myChannel = supabase.channel("boost-changes")
@@ -775,24 +768,25 @@ class SupabaseManager: ObservableObject {
           AnyAction.self,
           schema: "public",
           table: "boosts"
-          //filter: "id=eq.1"
         )
         await myChannel.subscribe()
         
         // Get existing boosts that are live
-        guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
-            print("Error fetching live boosts")
-            return
-        }
-        DispatchQueue.main.async {
-            self.boosts = liveBoosts
-        }
-        
-
+//        guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
+//            print("Error fetching live boosts")
+//            return
+//        }
+//        
+//        DispatchQueue.main.async {
+//            self.boosts = liveBoosts
+//        }
         
         // Add new boosts as they go live in the "boosts" table
         for await _ in changes {
-            guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
+            guard let currentRealtimeSubmissionID else {
+                return
+            }
+            guard let liveBoosts = await getLiveBoosts(submissionID: currentRealtimeSubmissionID) else {
                 print("error getting boosts")
                 return
             }
@@ -937,8 +931,6 @@ class SupabaseManager: ObservableObject {
             let message: String
         }
         
-        var submissions: [Submission]? = nil
-        
         do {
             // Invoke the Supabase function
             let response = try await supabase.functions
@@ -954,8 +946,6 @@ class SupabaseManager: ObservableObject {
                         return try JSONDecoder().decode(SubmissionsResponse.self, from: data)
                     }
                 )
-            
-            
             return response.data
             
             
@@ -964,60 +954,7 @@ class SupabaseManager: ObservableObject {
             print("Error:", error.localizedDescription)
             return nil // Ensure nil is returned on error
         }
-        /*
-        do {
-            // let type = // need to check if
-            print("Feed type: ", feedType, "Feed Filter: ", feedFilter)
-            
-            // Get current user ID
-            guard let currentUser = await getCurrentUser() else {
-                print("Failed to get current user for getting all submissions.")
-                return nil
-            }
-           
-            
-            if feedType == "All" {
-                // Filter: Most Recent ("New")
-                if feedFilter == "New" {
-                 
-                }
-                // Filter: Top Liked Posts ("Top")
-                else if feedFilter == "Top" {
-                    let submissions: [Submission] = try await supabase
-                        .rpc("get_all_top_submissions", params: [
-                            "blocker_id": currentUser.id
-                        ])
-                        .execute()
-                        .value
-                    return submissions
-                }
-                // Filter: Sort by Boost Score ("Hot")
-                else if feedFilter == "Hot" {
-                    let submissions: [Submission] = try await supabase
-                        .rpc("get_all_top_submissions", params: [
-                            "blocker_id": currentUser.id
-                        ])
-                        .execute()
-                        .value
-                    return submissions
-                }
-            }
-            
-            // DEFAULT CASE
-            let submissions: [Submission] = try await supabase
-                .rpc("get_all_new_submissions", params: [
-                    "blocker_id": currentUser.id
-                ])
-                .execute()
-                .value
-            return submissions
-            
-            
-        } catch {
-            print("Failed to get submissions. Error: \(error.localizedDescription)")
-            return nil
-        }
-         */
+        
     }
     
     

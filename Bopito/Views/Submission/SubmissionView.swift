@@ -201,7 +201,7 @@ struct SubmissionView: View {
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 19, height: 19)
-                        .foregroundColor(score > 0 ? .yellow : .secondary)
+                        .foregroundColor(score != 0 ? .yellow : .secondary)
                     Text("\(score)")
                         .foregroundColor(.primary)
                 }
@@ -386,7 +386,8 @@ struct SubmissionView: View {
         repliesCount = submission.replies_count
         
         // Get Score
-        score = await supabaseManager.getScore(submissionID: submission.id)
+        score = submission.score
+        
         
         
         // set time_since based on post created_at timestamp
@@ -404,7 +405,7 @@ struct SubmissionView: View {
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
         repliesCount = submission.replies_count
-        score = await supabaseManager.getScore(submissionID: submission.id)
+        score = submission.score
     }
     
     func votePressed(value: Int) async {

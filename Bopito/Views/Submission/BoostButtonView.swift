@@ -56,31 +56,33 @@ struct BoostButtonView: View {
         .cornerRadius(10)
         .frame(maxWidth: 200)
         .task {
-            await load()
+            Task.detached {
+                    await load()
+                }
         }
     }
     
     func load() async {
-        guard let submission else {
-            return
-        }
         guard let boostInfo = await supabaseManager.getBoostInfo(boostName: name) else {
             return
         }
+        
         price = boostInfo.price
         power = boostInfo.power
         time = boostInfo.time
         icon = boostInfo.icon
-    
+        
     }
     
     
     func boostPurchased() async {
-        if let submission = submission {
-            await supabaseManager.purchaseBoost(
-                boostName: self.name,
-                submissionID: submission.id)
+        guard let submission else {
+            return
         }
+        await supabaseManager.purchaseBoost(
+            boostName: self.name,
+            submissionID: submission.id)
+        
     }
 }
 
