@@ -38,7 +38,6 @@
 		E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */; };
 		E60DDB222C91278100FBBD36 /* RandomGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */; };
 		E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB232C91E45D00FBBD36 /* Follow.swift */; };
-		E60DDB272C92988E00FBBD36 /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB262C92988E00FBBD36 /* AdView.swift */; };
 		E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */; };
 		E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */; };
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
@@ -117,7 +116,6 @@
 		E60DDB1F2C90E9E300FBBD36 /* DateTimeTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeTool.swift; sourceTree = "<group>"; };
 		E60DDB212C91278100FBBD36 /* RandomGeneratorTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomGeneratorTool.swift; sourceTree = "<group>"; };
 		E60DDB232C91E45D00FBBD36 /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
-		E60DDB262C92988E00FBBD36 /* AdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsTabView.swift; sourceTree = "<group>"; };
 		E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
@@ -355,7 +353,6 @@
 			isa = PBXGroup;
 			children = (
 				E675589C2CA68D9200B98B5C /* CoinShopView.swift */,
-				E60DDB262C92988E00FBBD36 /* AdView.swift */,
 			);
 			path = Coins;
 			sourceTree = "<group>";
@@ -537,7 +534,6 @@
 				E60DDAC72C8A48D000FBBD36 /* ContentView.swift in Sources */,
 				E6FE7C2D2CC1A17600919DCB /* BoostInfo.swift in Sources */,
 				E60DDB192C8B7F7300FBBD36 /* ProfilePictureView.swift in Sources */,
-				E60DDB272C92988E00FBBD36 /* AdView.swift in Sources */,
 				E607D4732CC72ACA00D448FB /* EditProfilePictureViewModel.swift in Sources */,
 				E60DDAC52C8A48D000FBBD36 /* BopitoApp.swift in Sources */,
 				E6FE7C2F2CC2E3C000919DCB /* BoostView.swift in Sources */,
@@ -750,7 +746,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -784,7 +780,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

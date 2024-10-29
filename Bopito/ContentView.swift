@@ -119,8 +119,7 @@ struct ContentView: View {
             Task {
                 // Check for Updates
                 await checkForUpdate()
-                
-                print("before deploying update: GADApplicationIdentifier = ca-app-pub-3940256099942544~1458002511 (production)")
+               
             }
         }
         

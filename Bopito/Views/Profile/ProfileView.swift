@@ -4,7 +4,7 @@ struct ProfileView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     
-    @State var posts: [Submission]?
+    @State var submissions: [Submission]?
     @State var user: User?
     @State var currentUser: User?
     @State var openedFromProfileTab: Bool
@@ -208,12 +208,12 @@ struct ProfileView: View {
                 
                 
                 
-                if var posts = posts {
+                if var submissions = submissions {
                     ScrollView {
                         LazyVStack(spacing: 0) {
-                            ForEach(posts) { post in
-                                SubmissionView(submission: post, onDelete: { deletedPostID in
-                                    posts.removeAll { $0.id == deletedPostID }
+                            ForEach(submissions) { submission in
+                                SubmissionView(submission: submission, onDelete: { deletedPostID in
+                                    submissions.removeAll { $0.id == deletedPostID }
                                 })
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 
@@ -224,14 +224,13 @@ struct ProfileView: View {
                         }
                         .padding(.bottom, 40)
                         
-                    }.scrollIndicators(.hidden)
+                    }
+                    .scrollIndicators(.hidden)
+                    .refreshable {
+                        await load()
+                    }
                 } else {
                     Spacer()
-                }
-            }
-            .onAppear {
-                Task {
-                    await load()
                 }
             }
             .sheet(isPresented: $isViewingSettings, onDismiss:  {
@@ -250,6 +249,12 @@ struct ProfileView: View {
             .sheet(isPresented: $isViewingFollows) {
                 FollowsTabView(selectedTab: followsTab, user: user)
             }
+            .onAppear {
+                Task {
+                    await load()
+                }
+            }
+            
         }
     }
     
@@ -282,12 +287,15 @@ struct ProfileView: View {
                 }
             }
         }
-        
-        // Load user posts
-        if let user = user {
-            posts = await supabaseManager.getUserSubmissions(userID: user.id)
+       
+        await loadSubmissions()
+    }
+    
+    func loadSubmissions() async {
+        guard let user else {
+            return
         }
-        
+        submissions = await supabaseManager.getUserSubmissions(userID: user.id)
     }
     
     

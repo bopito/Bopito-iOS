@@ -240,13 +240,7 @@ struct CoinShopView: View {
         .onDisappear {
             inAppPurchaseManager.stopObserving()  // Stop observing transactions
         }
-        .onChange(of: admobManager.coins, {
-            Task {
-                await supabaseManager.increaseUserBalance(amount: admobManager.coins)
-                admobManager.coins = 0
-                await load()
-            }
-        })
+        
     }
     
     // Fetch current user data
@@ -257,7 +251,7 @@ struct CoinShopView: View {
     }
     
     func purchase() async {
-        if let currentUser = currentUser, let selectedIndex = selectedItem {
+        if let selectedIndex = selectedItem {
             let selectedProduct = inAppPurchaseManager.products[selectedIndex]
             inAppPurchaseManager.purchaseProduct(selectedProduct) { coinsPurchased in
                 guard let coinsPurchased else {

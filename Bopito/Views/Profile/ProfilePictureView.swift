@@ -18,7 +18,7 @@ struct ProfilePictureView: View {
                 AsyncImage(url: refreshedURL) { phase in
                     switch phase {
                         case .empty:
-                            ProgressView()
+                            Circle()
                         case .success(let image):
                             image
                                 .resizable()

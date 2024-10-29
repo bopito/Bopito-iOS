@@ -9,13 +9,13 @@ import Foundation
 import GoogleMobileAds
 
 class AdmobManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
-  @Published var coins = 0
+    
   private var rewardedAd: GADRewardedAd?
 
   func loadAd() async {
     do {
       rewardedAd = try await GADRewardedAd.load(
-        withAdUnitID: "ca-app-pub-5387496707984386/1714082165", 
+        withAdUnitID: "ca-app-pub-3940256099942544~1458002511", 
         request: GADRequest()
       )
       // [START set_the_delegate]
@@ -35,16 +35,12 @@ class AdmobManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
 
     rewardedAd.present(fromRootViewController: nil) {
       let reward = rewardedAd.adReward
-      print("Reward amount: \(reward.amount)")
-      self.addCoins(reward.amount.intValue)
-        print(self.coins)
+        print("Reward amount: \(reward.amount.intValue)")
     }
   }
   // [END show_ad]
 
-  func addCoins(_ amount: Int) {
-    coins += amount
-  }
+
 
   // MARK: - GADFullScreenContentDelegate methods
 
