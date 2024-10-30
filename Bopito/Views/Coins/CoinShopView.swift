@@ -111,7 +111,7 @@ struct CoinShopView: View {
             .cornerRadius(10)
             .padding(10)
             
-            /*
+            
             VStack(spacing: 0) {
                 
                 Text("Don't want to pay? Not a problem!")
@@ -119,8 +119,11 @@ struct CoinShopView: View {
                 
                 Button {
                     Task {
+                        guard let currentUser else {
+                            return
+                        }
                         loadingAd = true
-                        await admobManager.loadAd()
+                        await admobManager.loadAd(userID: currentUser.id)
                         admobManager.showAd()
                         loadingAd = false
                     }
@@ -151,7 +154,7 @@ struct CoinShopView: View {
             .background() // Optional: Adds a background to the entire VStack
             .cornerRadius(10)
             .padding(.horizontal, 10)
-            */
+            
             
             /*
             VStack (spacing:0){

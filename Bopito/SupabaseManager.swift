@@ -922,7 +922,7 @@ class SupabaseManager: ObservableObject {
                     ),
                     decode: { data, response in
                         if let jsonString = String(data: data, encoding: .utf8) {
-                            print("JSON Response:", jsonString)
+                            //print("JSON Response:", jsonString)
                         }
                         return try JSONDecoder().decode(SubmissionsResponse.self, from: data)
                     }
