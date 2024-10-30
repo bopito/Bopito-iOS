@@ -78,7 +78,7 @@ struct HomeView: View {
                     ScrollView {
                         
                         LazyVStack(spacing: 0) {
-                            if var submissions = submissions {
+                            if let submissions = submissions {
                                 ForEach(submissions) { submission in
                                     SubmissionView(submission: submission, onDelete: { deletedPostID in
                                        // print("deleting:", submission.id)
@@ -149,9 +149,7 @@ struct HomeView: View {
     }
     
     func selectionChanged() async {
-        isLoading = true
-        submissions = await supabaseManager.getAllSubmissions(feedType: selectedFeedType, feedFilter: selectedFilterType)
-        isLoading = false
+        await loadPosts()
     }
 }
 

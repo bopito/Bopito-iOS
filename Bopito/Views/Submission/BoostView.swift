@@ -99,7 +99,7 @@ struct BoostView: View {
            }
 
            // Add the boost time interval (assuming it's in seconds)
-           let expirationDate = createdDate.addingTimeInterval(TimeInterval(boost.time))
+           let expirationDate = createdDate.addingTimeInterval(TimeInterval(boost.time) * 60)
            
            // Calculate the time remaining
            timeRemaining = max(expirationDate.timeIntervalSinceNow, 0)

@@ -19,7 +19,7 @@ class Submission: Identifiable, Codable {
     var likes_count: Int
     var dislikes_count: Int
     var replies_count: Int
-    var score: Int
+    var score: Int?
     var reports: Int
     
     init(id: String,
@@ -32,7 +32,7 @@ class Submission: Identifiable, Codable {
          likes_count: Int,
          dislikes_count: Int,
          replies_count: Int,
-         score: Int,
+         score: Int?,
          reports: Int
     ) {
         self.id = id

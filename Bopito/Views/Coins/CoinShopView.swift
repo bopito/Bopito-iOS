@@ -254,10 +254,10 @@ struct CoinShopView: View {
         if let selectedIndex = selectedItem {
             let selectedProduct = inAppPurchaseManager.products[selectedIndex]
             inAppPurchaseManager.purchaseProduct(selectedProduct) { coinsPurchased in
-                guard let coinsPurchased else {
-                    print("Purchase failed or no coins added.")
-                    return
-                }
+//                guard let coinsPurchased else {
+//                    print("Purchase failed or no coins added.")
+//                    return
+//                }
                 Task {
                     await supabaseManager.verifyReceiptAndAddToBalance()
                     await load() // Reload currentUser to show new balance

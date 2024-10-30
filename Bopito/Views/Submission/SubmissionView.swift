@@ -40,7 +40,7 @@ struct SubmissionView: View {
     
     @State var flagged: Bool = false
     
-    @State var score: Int = 0
+    @State var score: Int?
     
     // Popup Views
     @State private var activeSheet: ActiveSheet?
@@ -201,8 +201,8 @@ struct SubmissionView: View {
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 19, height: 19)
-                        .foregroundColor(score != 0 ? .yellow : .secondary)
-                    Text("\(score)")
+                        .foregroundColor(score != nil ? .yellow : .secondary)
+                    Text("\(score ?? 0)")
                         .foregroundColor(.primary)
                 }
                 .simultaneousGesture(
@@ -386,7 +386,9 @@ struct SubmissionView: View {
         repliesCount = submission.replies_count
         
         // Get Score
-        score = submission.score
+        if let submissionScore = submission.score {
+            score = submissionScore
+        }
         
         
         
@@ -405,7 +407,9 @@ struct SubmissionView: View {
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
         repliesCount = submission.replies_count
-        score = submission.score
+        if let submissionScore = submission.score {
+            score = submissionScore
+        }
     }
     
     func votePressed(value: Int) async {
