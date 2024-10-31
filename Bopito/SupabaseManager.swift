@@ -26,6 +26,7 @@ class SupabaseManager: ObservableObject {
         Task {
             await updateAuthenticationState() // Check auth status on init
             await subscribeToBoostsRealtime()
+            
         }
     }
     

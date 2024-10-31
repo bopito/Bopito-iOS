@@ -115,4 +115,5 @@ struct BoostView: View {
 
 #Preview {
     BoostView()
+        .environmentObject(SupabaseManager())
 }

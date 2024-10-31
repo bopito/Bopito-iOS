@@ -119,20 +119,181 @@ struct BoostsView: View {
             
             Divider()
             
-            if let currentUser = currentUser {
-                HStack (spacing:0) {
+            ZStack {
+                if let currentUser = currentUser {
+                    HStack (spacing:0) {
+                        Spacer()
+                        Image("coin")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                        Text(String(currentUser.balance))
+                            //.bold()
+                        Spacer()
+                    }
+                    .padding(10)
+                }
+                
+                HStack {
                     Spacer()
-                    Image("coin")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                    Text("\(currentUser.balance)")
+                    Divider()
+                        .frame(maxHeight: 20)
+                    Text("Smites")
+                        .padding(.horizontal, 5)
                         .bold()
+                        .cornerRadius(10)
+                    Divider()
+                        .frame(maxHeight: 20)
+                    Spacer()
+                    
+                    
+                    Spacer()
+                    Divider()
+                        .frame(maxHeight: 20)
+                    Text("Boosts")
+                        .padding(.horizontal, 5)
+                        .bold()
+                        .cornerRadius(10)
+                    Divider()
+                        .frame(maxHeight: 20)
                     Spacer()
                 }
-                .padding(.vertical, 10)
             }
             
+           
             
+            Divider()
+            
+            ScrollView {
+                VStack (spacing:10){
+                    
+                    HStack {
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "spider") { // Smite 1
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "poop") { // Smite 2
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "star") { // Boost 1
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "popper") { // Boost 2
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+                    HStack {
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "skunk") { // Smite 3
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "ghost") { // Smite 4
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "jellyfish") { // Boost 3
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "sun") { // Boost 4
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+                    HStack {
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "tornado") { // Smite 5
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "trex") { // Smite 6
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "eggplant") { // Boost 5
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "alien") { // Boost 6
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+                    HStack {
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "bomb") { // Smite 7
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "skull") { // Smite 8
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                        Spacer()
+                        Group {
+                            BoostButtonView2(submission: submission, name: "dragon") { // Boost 7
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                            BoostButtonView2(submission: submission, name: "rocket") { // Boost 8
+                                Task {
+                                    currentUser = await supabaseManager.getCurrentUser()
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+                }
+                .padding(.top, 10)
+                .padding(.horizontal, 10)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            //.scrollIndicators(.hidden)
+            
+            /*
             HStack (spacing:10) {
                 VStack (spacing:10) {
                     BoostButtonView(submission: submission, name: "poop") {
@@ -211,7 +372,7 @@ struct BoostsView: View {
                 }
             }
             .padding(.horizontal, 10)
-            
+            */
             
             
         }

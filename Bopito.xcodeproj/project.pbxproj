@@ -61,6 +61,7 @@
 		E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453722C9BE9FA00F799E6 /* SubmissionView.swift */; };
 		E69453752C9CBB1400F799E6 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453742C9CBB1400F799E6 /* Version.swift */; };
 		E69453782CA338F300F799E6 /* BoostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69453772CA338F300F799E6 /* BoostsView.swift */; };
+		E6EC460B2CD3F4B300AC3615 /* BootButtonView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EC460A2CD3F4B300AC3615 /* BootButtonView2.swift */; };
 		E6FE7C242CB5AD9C00919DCB /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = E6FE7C232CB5AD9C00919DCB /* GoogleMobileAds */; };
 		E6FE7C272CB5B9B500919DCB /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C262CB5B9B500919DCB /* SearchView.swift */; };
 		E6FE7C292CB5D35600919DCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FE7C282CB5D35600919DCB /* AppDelegate.swift */; };
@@ -140,6 +141,7 @@
 		E69453722C9BE9FA00F799E6 /* SubmissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionView.swift; sourceTree = "<group>"; };
 		E69453742C9CBB1400F799E6 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		E69453772CA338F300F799E6 /* BoostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostsView.swift; sourceTree = "<group>"; };
+		E6EC460A2CD3F4B300AC3615 /* BootButtonView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootButtonView2.swift; sourceTree = "<group>"; };
 		E6FE7C262CB5B9B500919DCB /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E6FE7C282CB5D35600919DCB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6FE7C2A2CB86DDE00919DCB /* AdmobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdmobManager.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				E69453772CA338F300F799E6 /* BoostsView.swift */,
 				E6FE7C2E2CC2E3C000919DCB /* BoostView.swift */,
 				E675589A2CA6558200B98B5C /* BoostButtonView.swift */,
+				E6EC460A2CD3F4B300AC3615 /* BootButtonView2.swift */,
 				E67558962CA53E6900B98B5C /* BoostersView.swift */,
 				E67558942CA53C3700B98B5C /* SharesView.swift */,
 				E60DDB052C8A4B8E00FBBD36 /* ComposePostView.swift */,
@@ -548,6 +551,7 @@
 				E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */,
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
+				E6EC460B2CD3F4B300AC3615 /* BootButtonView2.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
 				E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */,
 				E60DDB0E2C8A4B8E00FBBD36 /* RepliesView.swift in Sources */,
