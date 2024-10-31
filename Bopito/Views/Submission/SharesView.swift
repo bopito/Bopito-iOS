@@ -20,6 +20,7 @@ struct SharesView: View {
         
         Spacer()
     }
+    
 }
 
 #Preview {

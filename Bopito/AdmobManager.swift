@@ -14,10 +14,15 @@ class AdmobManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
     
     func loadAd(userID: String) async {
         do {
+            var adUnitID = "ca-app-pub-5387496707984386/1714082165"
+            if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+                adUnitID = "ca-app-pub-3940256099942544/1712485313"
+            }
             let options = GADServerSideVerificationOptions()
             options.userIdentifier = userID
+            
             rewardedAd = try await GADRewardedAd.load(
-                withAdUnitID: "ca-app-pub-5387496707984386/1714082165",
+                withAdUnitID: adUnitID,
                 request: GADRequest()
             )
             // Set server-side verification options on the rewarded ad

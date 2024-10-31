@@ -227,7 +227,7 @@ struct ProfileView: View {
                     }
                     .scrollIndicators(.hidden)
                     .refreshable {
-                        await load()
+                        //await load()
                     }
                 } else {
                     Spacer()

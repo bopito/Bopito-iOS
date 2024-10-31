@@ -403,7 +403,7 @@ struct SubmissionView: View {
     }
     
     func reloadSubmission() async {
-        self.submission = await supabaseManager.getSubmission(submissionID: submission.id)! 
+        self.submission = await supabaseManager.getSubmission(submissionID: submission.id)!
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
         repliesCount = submission.replies_count

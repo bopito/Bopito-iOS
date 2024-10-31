@@ -20,15 +20,21 @@ struct FollowsTabView: View {
     
     var body: some View {
         VStack {
+            Capsule()
+                .fill(Color.secondary)
+                .opacity(0.5)
+                .frame(width: 50, height: 5)
+                .padding(.top, 20)
             if selectedTab == 0 {
                 Text("Followers")
                     .font(.title2)
-                    .padding(.top, 10)
+                    .padding(10)
             } else {
                 Text("Following")
                     .font(.title2)
-                    .padding(.top, 10)
+                    .padding(10)
             }
+            Divider()
             
             TabView(selection: $selectedTab) {
                 if let currentUser = currentUser,

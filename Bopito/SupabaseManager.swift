@@ -362,7 +362,7 @@ class SupabaseManager: ObservableObject {
             likes_count: 0,
             dislikes_count: 0,
             replies_count: 0,
-            score: 0,
+            score: nil,
             reports: 0
         )
         do {
@@ -453,7 +453,7 @@ class SupabaseManager: ObservableObject {
         if let parent_id = submission.parent_id{
             await updateRepliesCount(parentID: parent_id)
         }
-    } // NEED TO REWRITE WITH RECURSIVE DELETE REPLIES
+    }
     
     func reportSubmission(submissionID: String) async {
         guard let submission = await getSubmission(submissionID: submissionID) else {

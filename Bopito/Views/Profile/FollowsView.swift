@@ -17,19 +17,19 @@ struct FollowsView: View {
     @State var type: String?
     
     var body: some View {
-      
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    if let follows = follows {
-                        ForEach(follows) { follow in
-                            FollowView(follow: follow, type: type)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Divider()
-                        }
+        
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                if let follows = follows {
+                    ForEach(follows) { follow in
+                        FollowView(follow: follow, type: type)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Divider()
                     }
                 }
-                .padding(.bottom, 100) // Adding some space at the bottom
             }
+            .padding(.bottom, 100) // Adding some space at the bottom
+        }
         
         
     }
@@ -39,8 +39,8 @@ struct FollowsView: View {
 #Preview {
     FollowsView(follows:
                     [
-                    Follow(id: "String", user_id: "", follower_id: ""),
-                    Follow(id: "String", user_id: "", follower_id: "")
+                        Follow(id: "String", user_id: "", follower_id: ""),
+                        Follow(id: "String", user_id: "", follower_id: "")
                     ]
     )
     .environmentObject(SupabaseManager())

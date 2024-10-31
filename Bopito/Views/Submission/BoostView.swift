@@ -14,7 +14,7 @@ struct BoostView: View {
     @State var boost: Boost?
     @State var user: User?
     
-    @State var timeRemaining: TimeInterval = 1
+    @State var timeRemaining: TimeInterval = 0
     @State var timer: Timer?
     
     var body: some View {

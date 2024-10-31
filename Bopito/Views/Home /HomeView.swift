@@ -83,6 +83,9 @@ struct HomeView: View {
                                     SubmissionView(submission: submission, onDelete: { deletedPostID in
                                        // print("deleting:", submission.id)
                                        // submissions.removeAll { $0.id == deletedPostID }
+                                        Task {
+                                            await loadPosts()
+                                        }
                                     })
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     
