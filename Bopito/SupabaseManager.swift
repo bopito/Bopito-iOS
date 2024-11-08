@@ -59,7 +59,7 @@ class SupabaseManager: ObservableObject {
     
     func updateAuthenticationState() async {
         do {
-            let user = try await supabase.auth.user()
+            _ = try await supabase.auth.user()
             DispatchQueue.main.async {
                 self.isAuthenticated = true
             }
@@ -128,7 +128,7 @@ class SupabaseManager: ObservableObject {
                         followers_count: 0,
                         following_count: 0,
                         verified: false,
-                        balance: 100,
+                        balance: 1000,
                         fcm_token: nil
                     )
                 )
@@ -450,8 +450,9 @@ class SupabaseManager: ObservableObject {
         guard let submission = await getSubmission(submissionID: submissionID) else {
             return
         }
-        if let parent_id = submission.parent_id{
-            await updateRepliesCount(parentID: parent_id)
+        if let parent_id = submission.parent_id {
+            print("sub", submissionID, "par", parent_id)
+            await updateRepliesCount(submissionID: parent_id)
         }
     }
     
@@ -516,18 +517,18 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func updateRepliesCount(parentID: String) async {
+    func updateRepliesCount(submissionID: String) async {
         do {
             let response = try await supabase
                 .from("submissions")
                 .select(count: .exact)
-                .eq("parent_id", value: parentID)
+                .eq("parent_id", value: submissionID)
                 .execute()
-            if let count = response.count {
+            if let count: Int = response.count {
                 try await supabase
                   .from("submissions")
                   .update(["replies_count": count])
-                  .eq("id", value: parentID)
+                  .eq("id", value: submissionID)
                   .execute()
             } else {
                 print("error getting replies count")
@@ -922,9 +923,11 @@ class SupabaseManager: ObservableObject {
                         ]
                     ),
                     decode: { data, response in
+                        /*
                         if let jsonString = String(data: data, encoding: .utf8) {
-                            //print("JSON Response:", jsonString)
+                            print("JSON Response:", jsonString)
                         }
+                         */
                         return try JSONDecoder().decode(SubmissionsResponse.self, from: data)
                     }
                 )

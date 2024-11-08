@@ -75,10 +75,12 @@ struct ProfileView: View {
                             }
                         }
                     } label: {
-                        Image(systemName: "ellipsis")
+                        Image(systemName: "gear")
                             .padding(.horizontal, 10)
-                            .padding(.vertical, (openedFromProfileTab ? 20 : 45))
+                            .padding(.vertical, (openedFromProfileTab ? 11 : 36))
                             .background()
+                            .font(.title3)
+                            .foregroundColor(.secondary)
                     }
                     .contentShape(Rectangle()) // Make the entire area tappable
                 }
@@ -108,7 +110,7 @@ struct ProfileView: View {
                 if let user = user {
                     // profile picture
                     ProfilePictureView(profilePictureURL: user.profile_picture)
-                        .frame(width: 85, height: 85)
+                        .frame(width: 100, height: 100)
                         .padding(.vertical, 10)
                         .id(profilePictureRefreshID)
                         

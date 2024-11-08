@@ -40,8 +40,10 @@ class DateTimeTool {
             return "\(Int(minutes))m"
         } else if hours < 24 {
             return "\(Int(hours))h"
-        } else {
+        } else if days < 365 {
             return "\(Int(days))d"
+        } else {
+            return "\(Int(years))y"
         }
     }
     

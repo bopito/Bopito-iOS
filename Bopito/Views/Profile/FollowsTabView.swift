@@ -19,7 +19,7 @@ struct FollowsTabView: View {
     @State var following: [Follow]?
     
     var body: some View {
-        VStack {
+        VStack (spacing:0){
             Capsule()
                 .fill(Color.secondary)
                 .opacity(0.5)

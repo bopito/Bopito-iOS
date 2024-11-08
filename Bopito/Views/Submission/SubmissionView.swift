@@ -363,6 +363,9 @@ struct SubmissionView: View {
     
     
     func load() async {
+        
+        //await supabaseManager.updateRepliesCount(submissionID: submission.id)
+        
         if user == nil || currentUser == nil {
             
             // load user who made the post
@@ -390,8 +393,6 @@ struct SubmissionView: View {
             score = submissionScore
         }
         
-        
-        
         // set time_since based on post created_at timestamp
         if let created_at = submission.created_at {
             if let datetime = DateTimeTool.shared.getSwiftDate(supabaseTimestamp: created_at) {
@@ -403,10 +404,14 @@ struct SubmissionView: View {
     }
     
     func reloadSubmission() async {
-        self.submission = await supabaseManager.getSubmission(submissionID: submission.id)!
+        self.submission =  await supabaseManager.getSubmission(submissionID: submission.id)!
+        // Likes and Dislikes
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
+        // Replies Count
+        await supabaseManager.updateRepliesCount(submissionID: submission.id)
         repliesCount = submission.replies_count
+        // Score (Boosts/Smites)
         if let submissionScore = submission.score {
             score = submissionScore
         }

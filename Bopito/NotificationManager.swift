@@ -27,7 +27,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
         UNUserNotificationCenter.current().delegate = self
         
         // Request notification permissions
-        requestNotificationPermissions()
+        //requestNotificationPermissions()
     }
     
     // Request permission to turn notifications on in app Settings for Bopito
@@ -41,9 +41,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
                 print("Notification permission granted: \(granted)")
                 DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
+                    self.notificationsEnabled = true
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.notificationsEnabled = false
+                    self.openNotificationsSettings()
                 }
             }
-            self.checkNotificationSettings()
         }
     }
     
@@ -54,20 +59,24 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate, Messaging
                 self?.notificationsEnabled = (settings.authorizationStatus == .authorized)
                 
                 if settings.authorizationStatus == .authorized {
-                    print("Notifications already enabled, no need to open settings")
+                    print("Notifications already enabled")
                 } else {
-                    print("Notifications not enabled, trying to open settings")
-                    if let url = URL(string: UIApplication.openSettingsURLString) {
-                        Task {
-                            await UIApplication.shared.open(url)
-                        }
-                    }
+                    print("Notifications not enabled")
                 }
             }
         }
     }
     
-   
+    func openNotificationsSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            DispatchQueue.main.async {
+                Task {
+                    await UIApplication.shared.open(url)
+                    print("test")
+                }
+            }
+        }
+    }
     
     // Handle Firebase Messaging token
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {

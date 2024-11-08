@@ -69,10 +69,10 @@ struct RepliesView: View {
                 HStack (spacing:0) {
                     if let currentUser = currentUser {
                         ProfilePictureView(profilePictureURL: currentUser.profile_picture)
-                            .frame(width: 60, height: 60)
+                            .frame(width: 32, height: 32)
                     } else {
                         ProgressView()
-                            .frame(width: 60, height: 60)
+                            .frame(width: 32, height: 32)
                     }
                     
                     
@@ -92,8 +92,8 @@ struct RepliesView: View {
                         }
                     }) {
                         Text("Send")
-                            //.padding(.trailing)
-                            .padding(15)
+                            .font(.callout)
+                            .padding(7)
                             .foregroundColor(.white)
                             .background(.blue)
                             .cornerRadius(30)
@@ -148,7 +148,7 @@ struct RepliesView: View {
                     text: replyText)
                 
                 // Update Replies Count for Submission
-                await supabaseManager.updateRepliesCount(parentID: submission.id)
+                await supabaseManager.updateRepliesCount(submissionID: submission.id)
                 
                 // Create Notification in DB
                 let isPost = submission.parent_id == nil
