@@ -33,29 +33,56 @@ struct BoostButtonView: View {
             
         }) {
             
-            HStack(spacing:2) {
+            VStack(alignment:.leading, spacing:5) {
+                HStack {
                     Text(icon)
-                    Text("\(abs(power))")
-                    
-                    Spacer()
-                    
+                        .font(.title)
+                }
+                .padding(5)
+                .frame(maxWidth: .infinity)
+                .background()
+                .cornerRadius(10)
+                .frame(maxWidth: .infinity)
+                HStack {
+                    Text("💪")
+                    Text(String(abs(power)))
+              
+                }
+                .padding(5)
+                .frame(maxWidth: .infinity)
+                .background()
+                .cornerRadius(10)
+                .frame(maxWidth: .infinity)
+                
+                HStack {
                     Text("⏱️")
-                    Text("\(time)")
-                    
-                    Spacer()
-                    
+                    Text(String(time))
+             
+                }
+                .padding(5)
+                .frame(maxWidth: .infinity)
+                .background()
+                .cornerRadius(10)
+                HStack {
                     Image("coin")
                         .resizable()
                         .frame(width: 20, height: 20)
-                    Text("\(price)")
+                    Text(String(price))
+                    
+                }
+                .padding(5)
+                .frame(maxWidth: .infinity)
+                .background()
+                .cornerRadius(10)
             }
             .font(.footnote)
-            .padding(8)
+            .padding(5)
+            
         }
-        .foregroundColor(.white)
+        .foregroundColor(.primary)
         .background(power < 0 ? .red : .blue)
         .cornerRadius(10)
-        .frame(maxWidth: 200)
+        .frame(maxWidth: 90) // This is just an estimation for testing here
         .task {
             Task.detached {
                     await load()
@@ -82,14 +109,15 @@ struct BoostButtonView: View {
         }
         await supabaseManager.purchaseBoost(
             boostName: self.name,
-            submissionID: submission.id)
+            submissionID: submission.id
+        )
         
     }
 }
 
 
 #Preview {
-    BoostButtonView(name:"star") {
+    BoostButtonView(name:"eggplant") {
         print("Boost action test")
     }
     .environmentObject(SupabaseManager())
