@@ -75,6 +75,10 @@ class SupabaseManager: ObservableObject {
         do {
             // Assuming the user is already authenticated and you have their ID
             let currentUser = try await supabase.auth.session.user
+            
+            if let user = await getCurrentUser() {
+                print(currentUser.id, user.id)
+            }
 
             // Update the user's FCM token
             try await supabase
@@ -119,8 +123,6 @@ class SupabaseManager: ObservableObject {
                 .upsert(
                     User(
                         id: userId,
-                        email: nil,
-                        phone: nil,
                         username: randomUsername,
                         bio: nil,
                         profile_picture: "https://api.dicebear.com/9.x/bottts-neutral/jpeg?seed=\(RandomGeneratorTool.shared.randomAlphaNumericString(length: 5))",
@@ -350,30 +352,28 @@ class SupabaseManager: ObservableObject {
     //
     // Submissions
     //
-    func postSubmission(author_id: String, parent_id: String?, image: String?, text: String) async {
-        let submission = Submission(
-            id: UUID().uuidString,
-            author_id: author_id,
-            parent_id: parent_id,
-            image: image,
-            text: text,
-            created_at: nil, //database can create this value
-            edited_at: nil,
-            likes_count: 0,
-            dislikes_count: 0,
-            replies_count: 0,
-            score: nil,
-            reports: 0
-        )
+    func postSubmission(parentId: String?, submissionText: String) async {
         do {
-            try await supabase
-                .from("submissions")
-                .insert(submission)
-                .execute()
-        } catch {
-            print(error)
+            let response = try await supabase.functions
+                .invoke(
+                    "post-submission",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "parentId": parentId,
+                            "submissionText": submissionText
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
         }
-    }
+        catch {
+            print("Error:", error.localizedDescription)
+        }
+        
+    } // Edge done
     
     func getReplies(parentID: String) async -> [Submission]? {
         do {
@@ -970,7 +970,7 @@ class SupabaseManager: ObservableObject {
         guard !query.isEmpty else {
             return [] // Return an empty array if the search query is empty
         }
-        
+        print("searching")
         do {
             let submissions: [Submission] = try await supabase
                 .from("submissions") // Replace with your actual users table name

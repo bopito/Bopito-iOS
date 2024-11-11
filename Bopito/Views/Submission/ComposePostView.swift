@@ -80,10 +80,9 @@ struct ComposePostView: View {
                 let authorID = user.id
                 // Call the postSubmission function in your supabase manager
                 await supabaseManager.postSubmission(
-                    author_id: authorID,
-                    parent_id: nil,
-                    image: nil,
-                    text: postText)
+                    parentId: nil,
+                    submissionText: postText)
+                
                 postText = "" // Clear the text editor on success
                 
                 presentationMode.wrappedValue.dismiss()

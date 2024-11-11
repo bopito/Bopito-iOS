@@ -142,10 +142,8 @@ struct RepliesView: View {
             if let currentUser = currentUser, let user = user {
                 // Create Submission in DB
                 await supabaseManager.postSubmission(
-                    author_id: currentUser.id,
-                    parent_id: submission.id,
-                    image: nil,
-                    text: replyText)
+                    parentId: submission.id,
+                    submissionText: replyText)
                 
                 // Update Replies Count for Submission
                 await supabaseManager.updateRepliesCount(submissionID: submission.id)
