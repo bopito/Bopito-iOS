@@ -107,6 +107,9 @@ struct ProfileView: View {
                     }
                 }
                 
+                Divider()
+                    .padding(.top, 10)
+                
                 if let user = user {
                     // profile picture
                     ProfilePictureView(profilePictureURL: user.profile_picture)

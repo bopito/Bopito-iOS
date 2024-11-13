@@ -11,17 +11,25 @@ struct ContentView: View {
     
     @EnvironmentObject var supabaseManager: SupabaseManager
     @EnvironmentObject var notificationManager: NotificationManager
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @State private var isOutdated = false
     @State private var latestVersion: String?
     @State private var currentVersion: String?
     @State private var isDevelopment = true // Set this to true during development to bypass
     
-    
     var body: some View {
         
         VStack {
-            if isOutdated {
+            if !networkMonitor.isConnected {
+                VStack(spacing: 10) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .foregroundColor(.red)
+                        .font(.system(size: 40))
+                    Text("No Internet Connection")
+                        .foregroundColor(.red)
+                }
+            } else if isOutdated {
                 VStack (spacing: 20) {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 40))
@@ -31,6 +39,10 @@ struct ContentView: View {
                     Button {
                         if let url = URL(string: "itms-apps://apps.apple.com/us/app/bopito/id6714448198") {
                             UIApplication.shared.open(url)
+                        }
+                        Task {
+                            await checkForUpdate()
+                            await supabaseManager.updateAuthenticationState()
                         }
                     } label: {
                         HStack {
@@ -152,5 +164,5 @@ struct ContentView: View {
         .environmentObject(NotificationManager())
         .environmentObject(InAppPurchaseManager())
         .environmentObject(AdmobManager())
-    
+        .environmentObject(NetworkMonitor())
 }

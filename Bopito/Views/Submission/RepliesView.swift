@@ -21,7 +21,7 @@ struct RepliesView: View {
 
     var body: some View {
         ZStack {
-            VStack {
+            VStack (spacing:0) {
                 Capsule()
                         .fill(Color.secondary)
                         .opacity(0.5)
@@ -30,6 +30,7 @@ struct RepliesView: View {
                 
                 Text("Replies")
                     .font(.title2)
+                    .padding(.vertical, 10)
                 
                 Divider()
 
@@ -130,7 +131,7 @@ struct RepliesView: View {
     func loadData() async {
         user = await supabaseManager.getUserByID(id: submission.author_id)
         currentUser = await supabaseManager.getCurrentUser()
-        replies = await supabaseManager.getReplies(parentID: submission.id)
+        replies = await supabaseManager.getReplies(parentId: submission.id)
     }
     
     func sendReply() async {

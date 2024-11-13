@@ -46,6 +46,7 @@
 		E66464832CA4889D0083C1D4 /* FollowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464822CA4889D0083C1D4 /* FollowButtonView.swift */; };
 		E66464852CA4C2240083C1D4 /* Boost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464842CA4C2240083C1D4 /* Boost.swift */; };
 		E66464872CA52AD00083C1D4 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464862CA52AD00083C1D4 /* TermsOfServiceView.swift */; };
+		E66593102CE42223008E2515 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E665930F2CE42223008E2515 /* NetworkMonitor.swift */; };
 		E67558952CA53C3700B98B5C /* SharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558942CA53C3700B98B5C /* SharesView.swift */; };
 		E67558972CA53E6900B98B5C /* BoostersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67558962CA53E6900B98B5C /* BoostersView.swift */; };
 		E675589D2CA68D9200B98B5C /* CoinShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675589C2CA68D9200B98B5C /* CoinShopView.swift */; };
@@ -124,6 +125,7 @@
 		E66464822CA4889D0083C1D4 /* FollowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButtonView.swift; sourceTree = "<group>"; };
 		E66464842CA4C2240083C1D4 /* Boost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boost.swift; sourceTree = "<group>"; };
 		E66464862CA52AD00083C1D4 /* TermsOfServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceView.swift; sourceTree = "<group>"; };
+		E665930F2CE42223008E2515 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		E67558942CA53C3700B98B5C /* SharesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesView.swift; sourceTree = "<group>"; };
 		E67558962CA53E6900B98B5C /* BoostersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostersView.swift; sourceTree = "<group>"; };
 		E675589C2CA68D9200B98B5C /* CoinShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinShopView.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				E67558A02CAC754800B98B5C /* InAppPurchaseManager.swift */,
 				E67558AB2CACA27C00B98B5C /* NotificationManager.swift */,
 				E6FE7C2A2CB86DDE00919DCB /* AdmobManager.swift */,
+				E665930F2CE42223008E2515 /* NetworkMonitor.swift */,
 				E60DDB1E2C90E9C100FBBD36 /* Tools */,
 				E60DDB152C8A4C5900FBBD36 /* Objects */,
 				E60DDB002C8A4B2500FBBD36 /* Views */,
@@ -547,6 +550,7 @@
 				E60DDB202C90E9E300FBBD36 /* DateTimeTool.swift in Sources */,
 				E60DDB0D2C8A4B8E00FBBD36 /* ComposePostView.swift in Sources */,
 				E60DDB242C91E45D00FBBD36 /* Follow.swift in Sources */,
+				E66593102CE42223008E2515 /* NetworkMonitor.swift in Sources */,
 				E6EC460B2CD3F4B300AC3615 /* BoostButtonView.swift in Sources */,
 				E60DDB102C8A4B8E00FBBD36 /* SettingsView.swift in Sources */,
 				E69453732C9BE9FA00F799E6 /* SubmissionView.swift in Sources */,
@@ -746,7 +750,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -780,7 +784,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

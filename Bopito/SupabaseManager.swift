@@ -375,22 +375,38 @@ class SupabaseManager: ObservableObject {
         
     } // Edge done
     
-    func getReplies(parentID: String) async -> [Submission]? {
-        do {
-            let submissions: [Submission] = try await supabase
-                        .from("submissions")
-                        .select()
-                        .eq("parent_id", value: parentID)
-                        .order("created_at", ascending: false)
-                        .execute()
-                        .value
-            return submissions
-            
-        } catch {
-            print("Failed to get replies for post with id:\(parentID) ... Error: \(error.localizedDescription)")
-            return nil
+    func getReplies(parentId: String) async -> [Submission]? {
+        struct SubmissionsResponse: Codable {
+            let data: [Submission]
+            let message: String
         }
-    }
+        
+        do {
+            // Invoke the Supabase function
+            let response = try await supabase.functions
+                .invoke(
+                    "get-replies",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "parentId": parentId
+                        ]
+                    ),
+                    decode: { data, response in
+                        /*
+                        if let jsonString = String(data: data, encoding: .utf8) {
+                            print("JSON Response:", jsonString)
+                        }
+                         */
+                        return try JSONDecoder().decode(SubmissionsResponse.self, from: data)
+                    }
+                )
+            return response.data
+        } catch {
+            // Print the error if the invocation fails
+            print("Error:", error.localizedDescription)
+            return nil // Ensure nil is returned on error
+        }
+    } // Edge Done
     
     func getUserSubmissions(userID: String) async -> [Submission]? {
         do {
@@ -431,7 +447,7 @@ class SupabaseManager: ObservableObject {
     func deleteSubmissionAndReplies(submissionID: String) async {
         do {
             // Recursively delete replies
-            if let replies = await getReplies(parentID: submissionID) {
+            if let replies = await getReplies(parentId: submissionID) {
                 for submission in replies {
                     await deleteSubmissionAndReplies(submissionID: submission.id)
                 }
@@ -940,7 +956,7 @@ class SupabaseManager: ObservableObject {
             return nil // Ensure nil is returned on error
         }
         
-    }
+    } // Edge (w/RPC) done
     
     
     //

@@ -22,6 +22,7 @@ struct BopitoApp: App {
     @StateObject private var inAppPurchaseManager = InAppPurchaseManager()
     @StateObject private var notificationManager = NotificationManager()
     @StateObject private var admobManager = AdmobManager()
+    @StateObject private var networkMonitor = NetworkMonitor()
     
     var body: some Scene {
         WindowGroup {
@@ -30,7 +31,7 @@ struct BopitoApp: App {
                     .environmentObject(supabaseManager)
                     .environmentObject(notificationManager)
                     .environmentObject(admobManager)
-                    
+                    .environmentObject(networkMonitor)
         }
     }
 }
