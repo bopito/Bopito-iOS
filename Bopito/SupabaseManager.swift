@@ -524,7 +524,7 @@ class SupabaseManager: ObservableObject {
                   .eq("id", value: submissionID)
                   .execute()
             } else {
-                print("error getting likes count")
+                print("error getting dislikes count")
             }
         } catch {
             print("Failed to get likes or update submission likes_count. Error: \(error)")
@@ -578,46 +578,25 @@ class SupabaseManager: ObservableObject {
     //
     // Voting
     //
-    func castVote(submissionID: String, voterID: String, receiverID: String, value: Int) async {
+    func castVote(voteValue: Int, submissionId: String) async {
         do {
-            let vote: Vote = try await supabase
-                .from("votes")
-                .select()
-                .eq("voter_id", value: voterID)
-                .eq("submission_id", value: submissionID)
-                .single()
-                .execute()
-                .value
-            print("old vote value: \(vote.value)")
-            vote.value = value
-            print("new vote value: \(vote.value)")
-            do {
-                try await supabase
-                    .from("votes")
-                    .upsert(vote)
-                    .execute()
-            } catch {
-                print("Failed to replace Vote in DB: \(error.localizedDescription)")
-            }
-        } catch {
-            print("Vote not found: \(error.localizedDescription)")
-            print("Creating new Vote")
-            let vote = Vote(
-                id: UUID().uuidString,
-                submission_id: submissionID,
-                voter_id: voterID,
-                receiver_id: receiverID,
-                value: value)
-            print("creating new vote with: \(vote.value)")
-            do {
-                try await supabase
-                    .from("votes")
-                    .upsert(vote)
-                    .execute()
-            } catch {
-                print("Failed to add Vote to DB: \(error.localizedDescription)")
-            }
-            
+            let response = try await supabase.functions
+                .invoke(
+                    "cast-vote",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "voteValueString": "\(voteValue)",
+                            "submissionId": submissionId
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
+        }
+        catch {
+            print("Error:", error.localizedDescription)
         }
     }
  

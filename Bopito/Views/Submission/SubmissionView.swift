@@ -421,16 +421,14 @@ struct SubmissionView: View {
         print("voting: \(value)")
         // get current user
         if let currentUser = currentUser {
-            // cast vote
+            // Update thumbs sup/down color
+            voteValue = value
+            // Cast vote into database
             await supabaseManager.castVote(
-                submissionID: submission.id,
-                voterID: currentUser.id,
-                receiverID: submission.author_id,
-                value: value)
-            // Update local value for thumb color
-            voteValue = await supabaseManager.getUserVote(
-                submissionID: submission.id,
-                userID: currentUser.id)
+                voteValue: value,
+                submissionId: submission.id
+            )
+
             // Update Likes/Dislikes counts
             await supabaseManager.updateLikesCount(submissionID: submission.id)
             await supabaseManager.updateDislikesCount(submissionID: submission.id)
