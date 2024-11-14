@@ -168,6 +168,9 @@ struct ProfileView: View {
                         .buttonStyle(PlainButtonStyle())
                     }.padding(.bottom, 10)
                     
+                    
+                    
+                    
                     if isCurrentUsersProfile {
                         Button(action: {
                             Task {
@@ -206,7 +209,18 @@ struct ProfileView: View {
                             .padding(.bottom, 10)
                         }
                     }
+                    
+                    // Join Date
+                    if var joinDate =  user.created_at {
+                        if var date =  DateTimeTool.shared.getSwiftDate(supabaseTimestamp: joinDate) {
+                            Text("Joined \(date, format: .dateTime.month(.wide).year())")
+                                .font(.footnote)
+                                .padding(.bottom, 10)
+                        }
+                    }
+                    
                     Divider()
+                    
                 } else {
                     ProgressView()
                 }

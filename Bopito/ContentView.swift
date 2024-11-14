@@ -21,121 +21,140 @@ struct ContentView: View {
     var body: some View {
         
         VStack {
-            if !networkMonitor.isConnected {
-                VStack(spacing: 10) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .foregroundColor(.red)
-                        .font(.system(size: 40))
-                    Text("No Internet Connection")
-                        .foregroundColor(.red)
-                }
-            } else if isOutdated {
-                VStack (spacing: 20) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 40))
-                    Text("A new version of Bopito is available")
-                        .foregroundColor(.primary)
-                    
-                    Button {
-                        if let url = URL(string: "itms-apps://apps.apple.com/us/app/bopito/id6714448198") {
-                            UIApplication.shared.open(url)
-                        }
-                        Task {
-                            await checkForUpdate()
-                            await supabaseManager.updateAuthenticationState()
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: "arrow.2.circlepath")
-                            Text("Update")
-                        }
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+            VStack {
+                if !networkMonitor.isConnected {
+                    VStack(spacing: 10) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundColor(.red)
+                            .font(.system(size: 40))
+                        Text("No Internet Connection")
+                            .foregroundColor(.red)
                     }
-                }
-                
-                
-            } else {
-                if supabaseManager.isAuthenticated {
-                    if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-                        AppView()
-                            .task {
-                                print("In Preview so FCM Push Notifications don't work")
+                } else if isOutdated {
+                    VStack (spacing: 20) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 40))
+                        Text("A new version of Bopito is available")
+                            .foregroundColor(.primary)
+                        
+                        Button {
+                            if let url = URL(string: "itms-apps://apps.apple.com/us/app/bopito/id6714448198") {
+                                UIApplication.shared.open(url)
                             }
-                    }
-                    else {
-                        AppView() // Show app content when authenticated
-                            .task {
-                                try? await Task.sleep(nanoseconds: 10 * 1_000_000_000)
-                                
-                                print("Trying to upsert FCM Token")
-                                if let token = notificationManager.fcmToken {
-                                    await supabaseManager.addFirebaseCloudMessengerToken(token: token)
-                                }
-                            }
-                    }
-                } else {
-                    VStack {
-                        
-                        Spacer()
-                        
-                        Image("bopito-logo")
-                            .resizable()
-                            .frame(width: 128, height: 128)
-                            .padding(100)
-                        
-                        Button(action: {
                             Task {
-                                await supabaseManager.signInAnonymously()
+                                await checkForUpdate()
+                                await supabaseManager.updateAuthenticationState()
                             }
-                        }) {
-                            Text("Let's Go!")
-                                .font(.headline)
-                                .padding(.horizontal, 15)
-                                .padding(.vertical, 10)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.2.circlepath")
+                                Text("Update")
+                            }
+                            .bold()
+                            .foregroundColor(.white)
+                            .padding(10)
+                            .background(Color.blue)
+                            .cornerRadius(10)
                         }
-                        
-                        Spacer()
-                        
-                        VStack {
-                            Text("By continuing, you agree to Bopito's ")
-                                .font(.caption)
-                            +
-                            Text("[Terms of Service](https://bopito.com/privacy-policy)")
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                            +
-                            Text(" and confirm that you have read and understand the ")
-                                .font(.caption)
-                            +
-                            Text("[Privacy Policy](https://bopito.com/privacy-policy)")
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                            +
-                            Text(".")
-                                .font(.caption)
-                        }
-                        .padding(40)
-                        
                     }
                     
                     
+                } else {
+                    if supabaseManager.isAuthenticated {
+                        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+                            AppView()
+                                .task {
+                                    print("In Preview so FCM Push Notifications don't work")
+                                }
+                        }
+                        else {
+                            AppView() // Show app content when authenticated
+                                .task {
+                                    try? await Task.sleep(nanoseconds: 10 * 1_000_000_000)
+                                    
+                                    print("Trying to upsert FCM Token")
+                                    if let token = notificationManager.fcmToken {
+                                        await supabaseManager.addFirebaseCloudMessengerToken(token: token)
+                                    }
+                                }
+                        }
+                    } else {
+                        VStack {
+                            
+                            if supabaseManager.signInAttemptComplete {
+                                
+                                Spacer()
+                                
+                                Image("bopito-logo")
+                                    .resizable()
+                                    .frame(width: 128, height: 128)
+                                    .padding(100)
+                                
+                                Button(action: {
+                                    Task {
+                                        await supabaseManager.signInAnonymously()
+                                    }
+                                }) {
+                                    Text("Let's Go!")
+                                        .font(.headline)
+                                        .padding(.horizontal, 15)
+                                        .padding(.vertical, 10)
+                                        .background(Color.blue)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(8)
+                                }
+                                
+                                
+                                Spacer()
+                                
+                                VStack {
+                                    Text("By continuing, you agree to Bopito's ")
+                                        .font(.caption)
+                                    +
+                                    Text("[Terms of Service](https://bopito.com/privacy-policy)")
+                                        .font(.caption)
+                                        .foregroundColor(.blue)
+                                    +
+                                    Text(" and confirm that you have read and understand the ")
+                                        .font(.caption)
+                                    +
+                                    Text("[Privacy Policy](https://bopito.com/privacy-policy)")
+                                        .font(.caption)
+                                        .foregroundColor(.blue)
+                                    +
+                                    Text(".")
+                                        .font(.caption)
+                                }
+                                .padding(40)
+                                
+                            } else {
+                                
+                                Spacer()
+                                
+                                Image("bopito-logo")
+                                    .resizable()
+                                    .frame(width: 128, height: 128)
+                                    .padding(100)
+                                
+                                Spacer()
+                            }
+                        
+                            
+                        }
+                        
+                        
+                    }
                 }
+                
+                
             }
-            
-            
-        }
-        .onAppear {
-            Task {
-                // Check for Updates
-                await checkForUpdate()
-               
+            .background()
+            .onAppear {
+                Task {
+                    // Check for Updates
+                    await checkForUpdate()
+                   
+                }
             }
         }
         

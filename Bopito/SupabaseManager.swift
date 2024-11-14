@@ -13,7 +13,8 @@ class SupabaseManager: ObservableObject {
     
     private var supabase: SupabaseClient
     
-    @Published var isAuthenticated: Bool = false // Published property
+    @Published var isAuthenticated: Bool = false
+    @Published var signInAttemptComplete: Bool = false
     
     @Published var boosts: [Boost] = []
     @Published var currentRealtimeSubmissionID: String?
@@ -58,6 +59,7 @@ class SupabaseManager: ObservableObject {
     }
     
     func updateAuthenticationState() async {
+        print("test")
         do {
             _ = try await supabase.auth.user()
             DispatchQueue.main.async {
@@ -69,30 +71,32 @@ class SupabaseManager: ObservableObject {
                 self.isAuthenticated = false
             }
         }
+        DispatchQueue.main.async {
+            self.signInAttemptComplete = true
+        }
     }
     
     func addFirebaseCloudMessengerToken(token: String) async {
         do {
-            // Assuming the user is already authenticated and you have their ID
-            let currentUser = try await supabase.auth.session.user
             
-            if let user = await getCurrentUser() {
-                print(currentUser.id, user.id)
-            }
-
-            // Update the user's FCM token
-            try await supabase
-                .from("users")
-                .update(["fcm_token": token]) // Update the FCM token
-                .eq("id", value: currentUser.id) // Match by user ID
-                .execute()
-
-            print("FCM token updated successfully.")
+            let response = try await supabase.functions
+                .invoke(
+                    "store-user-fcm-token",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "fcmToken": token
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
 
         } catch {
             print("Error updating FCM token: \(error)")
         }
-    }
+    } // Edge done - writes to 'users' table
     
     func signInAnonymously() async {
         do {
@@ -100,9 +104,11 @@ class SupabaseManager: ObservableObject {
             print("Signed in anonymously.")
             // Store user data in the database
             let user = try await supabase.auth.user()
-            await createUserInDatabase(userId: user.id.uuidString)
-            // update isAuthenticated
-            await updateAuthenticationState()
+            
+            await createUserInDatabase(userId: user.id.uuidString) // create user, Edge function will handle if they already exist
+            
+            await updateAuthenticationState() // updates isAuthenticated
+            
         } catch {
             print("Failed to sign in anonymously. Error: \(error.localizedDescription)")
         }
@@ -116,29 +122,20 @@ class SupabaseManager: ObservableObject {
     
     private func createUserInDatabase(userId: String) async {
         do {
-            print("creating acccount in supabase")
-            let randomUsername = "user\(Int.random(in: 100000...999999))"
-            try await supabase
-                .from("users")
-                .upsert(
-                    User(
-                        id: userId,
-                        username: randomUsername,
-                        bio: nil,
-                        profile_picture: "https://api.dicebear.com/9.x/bottts-neutral/jpeg?seed=\(RandomGeneratorTool.shared.randomAlphaNumericString(length: 5))",
-                        name: randomUsername,
-                        followers_count: 0,
-                        following_count: 0,
-                        verified: false,
-                        balance: 1000,
-                        fcm_token: nil
-                    )
+            let response = try await supabase.functions
+                .invoke(
+                    "create-user",
+                    
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
                 )
-                .execute()
-        } catch {
-            print(error)
+            print(response ?? "")
         }
-    }
+        catch {
+            print("Error:", error.localizedDescription)
+        }
+    } // Edge done - writes to 'users' table
     
     func signOut() async {
         do {
@@ -146,6 +143,7 @@ class SupabaseManager: ObservableObject {
             print("Signed out successfully.")
             // update isAuthenticated
             await updateAuthenticationState()
+            
         } catch {
             print("Failed to sign out. Error: \(error.localizedDescription)")
         }
@@ -373,7 +371,7 @@ class SupabaseManager: ObservableObject {
             print("Error:", error.localizedDescription)
         }
         
-    } // Edge done
+    } // Edge done - writes to 'submissions' table
     
     func getReplies(parentId: String) async -> [Submission]? {
         struct SubmissionsResponse: Codable {
@@ -406,7 +404,7 @@ class SupabaseManager: ObservableObject {
             print("Error:", error.localizedDescription)
             return nil // Ensure nil is returned on error
         }
-    } // Edge Done
+    } // Edge (w/RPC) Done - reads from 'submissions' using RPC for complex SQL join
     
     func getUserSubmissions(userID: String) async -> [Submission]? {
         do {
@@ -679,7 +677,7 @@ class SupabaseManager: ObservableObject {
         catch {
             print("Error:", error.localizedDescription)
         }
-    } // edge done
+    } // edge done  - writes to 'boosts' table
     
     func getBoostInfo(boostName: String) async -> BoostInfo? {
         do {
@@ -956,7 +954,7 @@ class SupabaseManager: ObservableObject {
             return nil // Ensure nil is returned on error
         }
         
-    } // Edge (w/RPC) done
+    } // Edge (w/RPC for blocks filter) done  - reads from 'submisison' table
     
     
     //
