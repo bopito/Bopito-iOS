@@ -17,6 +17,7 @@ struct EditProfileView: View {
     @State var user: User?
     
     // Properties for form fields
+    @State var incognitoToggleOn: Bool = false
     @State var name: String = ""
     @State var username: String = ""
     @State var bio: String = ""
@@ -61,57 +62,68 @@ struct EditProfileView: View {
                 Button(action: {
                     isEditingProfilePicture = true
                 }) {
-                    Text("Change Image")
+                    Text("Change Avatar")
                         .font(.callout)
                 }
+                .padding(.bottom, 10)
                 
-                //Divider()
-                
+                /*
+                // Settings
                 HStack {
-                    Text("Name")
+                    Text("Ghost Mode")
                         .font(.headline)
-                        .padding(.leading, 10)
-                    Spacer()
-                    TextField("Enter your name", text: $name)
+                    Toggle("", isOn: $incognitoToggleOn)
+                        .labelsHidden()
+                }
+                 */
+                
+                if !incognitoToggleOn {
+                    HStack {
+                        Text("Name")
+                            .font(.headline)
+                            .padding(.leading, 10)
+                        Spacer()
+                        TextField("Enter your name", text: $name)
+                            .padding(.trailing, 10)
+                            .frame(maxWidth: 200)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
+                    
+                    
+                    HStack {
+                        Text("Username")
+                            .font(.headline)
+                            .padding(.leading, 10)
+                        Spacer()
+                        TextField("@\(username)", text: Binding(
+                            get: { username },
+                            set: { newValue in
+                                username = sanitizeUsername(newValue)
+                            }
+                        ))
                         .padding(.trailing, 10)
                         .frame(maxWidth: 200)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                
-                
-                HStack {
-                    Text("Username")
-                        .font(.headline)
-                        .padding(.leading, 10)
-                    Spacer()
-                    TextField("@\(username)", text: Binding(
-                        get: { username },
-                        set: { newValue in
-                            username = sanitizeUsername(newValue)
-                        }
-                    ))
-                    .padding(.trailing, 10)
-                    .frame(maxWidth: 200)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .keyboardType(.asciiCapable) // only letter and numbers
-                    .autocapitalization(.none)
-                }
-                
-                
-                HStack {
-                    Text("Bio")
-                        .font(.headline)
-                        .padding(.leading, 10)
-                    Spacer()
-                    TextField("Enter your bio", text: $bio)
-                        .padding(.trailing, 10)
-                        .frame(maxWidth: 200)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                
-                if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                        .foregroundStyle(.red)
+                        .keyboardType(.asciiCapable) // only letter and numbers
+                        .autocapitalization(.none)
+                    }
+                    
+                    
+                    HStack {
+                        Text("Bio")
+                            .font(.headline)
+                            .padding(.leading, 10)
+                        Spacer()
+                        TextField("Enter your bio", text: $bio)
+                            .padding(.trailing, 10)
+                            .frame(maxWidth: 200)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
+                    
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundStyle(.red)
+                    }
                 }
                 
             }
@@ -129,7 +141,7 @@ struct EditProfileView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)  // Adjust this value for more or less rounded corners
             }
-            .padding(.top, 20)
+            .padding(.top, 10)
             
             Spacer()
             

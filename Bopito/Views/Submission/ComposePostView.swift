@@ -16,8 +16,7 @@ struct ComposePostView: View {
     @FocusState private var isTextFieldFocused: Bool // Add FocusState for managing focus
     
     @State private var postText: String = ""
-    
-    @State var user: User?
+
     
     var body: some View {
         VStack {
@@ -56,18 +55,11 @@ struct ComposePostView: View {
         }
         .padding()
         .onAppear {
-            Task {
-                await loadData()
-            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 // Request focus after a slight delay
                 isTextFieldFocused = true
             }
         }
-    }
-    
-    func loadData() async {
-        user = await supabaseManager.getCurrentUser() // make sure logged in
     }
     
     func submit() async {
@@ -76,21 +68,15 @@ struct ComposePostView: View {
         
         // Check if postText is not just empty space or a completely empty string
         if !trimmedText.isEmpty {
-            if let user = user { // Check if the user is logged in
-                let authorID = user.id
-                // Call the postSubmission function in your supabase manager
-                await supabaseManager.postSubmission(
-                    parentId: nil,
-                    submissionText: postText)
-                
-                postText = "" // Clear the text editor on success
-                
-                presentationMode.wrappedValue.dismiss()
-                
-            } else {
-                print("User is not logged in.")
-                presentationMode.wrappedValue.dismiss()
-            }
+            // Call the postSubmission function in your supabase manager
+            await supabaseManager.postSubmission(
+                parentId: nil,
+                submissionText: postText)
+            
+            postText = "" // Clear the text editor on success
+            
+            presentationMode.wrappedValue.dismiss()
+
         } else {
             print("Post text cannot be empty.")
         }

@@ -69,16 +69,9 @@ struct FollowButtonView: View {
                 if !isFollowing {
                     // follow
                     await supabaseManager.followUser(userID: userToFollow.id)
-                    // Create Notification in DB
-                    let message = "started following you!"
-                    let type = "follow"
-                    await supabaseManager.createNotification(
-                        recipitentID: userToFollow.id,
-                        senderID: currentUser.id,
-                        type: type,
-                        submissionID: nil,
-                        message: message
-                    )
+                    
+                    print("need to do notifications for follows in edge")
+                    
                 } else {
                     // otherwise unfollow
                     await supabaseManager.unfollowUser(userID: userToFollow.id)

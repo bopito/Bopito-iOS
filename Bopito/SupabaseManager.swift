@@ -59,7 +59,6 @@ class SupabaseManager: ObservableObject {
     }
     
     func updateAuthenticationState() async {
-        print("test")
         do {
             _ = try await supabase.auth.user()
             DispatchQueue.main.async {
@@ -214,26 +213,6 @@ class SupabaseManager: ObservableObject {
     //
     // Supabase Notifications
     //
-    func createNotification(recipitentID: String, senderID: String, type: String, submissionID: String?, message: String) async {
-        let notification = Notification(id: UUID().uuidString,
-                                        recipient_id: recipitentID,
-                                        sender_id: senderID,
-                                        type: type,
-                                        submission_id: submissionID,
-                                        is_read: false,
-                                        message: message
-        )
-        print(notification.id)
-        do {
-            try await supabase
-                .from("notifications")
-                .insert(notification)
-                .execute()
-        } catch {
-            print("Failed to insert Notification. Error: \(error.localizedDescription)")
-        }
-    }
-    
     func getNotifications() async -> [Notification]? {
         do {
             let currentUser = try await supabase.auth.session.user
@@ -442,33 +421,26 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func deleteSubmissionAndReplies(submissionID: String) async {
+    func deleteSubmission(submissionId: String) async {
         do {
-            // Recursively delete replies
-            if let replies = await getReplies(parentId: submissionID) {
-                for submission in replies {
-                    await deleteSubmissionAndReplies(submissionID: submission.id)
-                }
-            }
-            // Delete the submission
-            try await supabase
-                .from("submissions")
-                .delete()
-                .eq("id", value: submissionID)
-                .execute()
-        } catch {
-            print("Failed while trying to delete submission. Error: \(error)")
+            let response = try await supabase.functions
+                .invoke(
+                    "delete-submission",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "submissionId": submissionId
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
         }
-        
-        // Update replies_count on parentSubmission
-        guard let submission = await getSubmission(submissionID: submissionID) else {
-            return
+        catch {
+            print("Error:", error.localizedDescription)
         }
-        if let parent_id = submission.parent_id {
-            print("sub", submissionID, "par", parent_id)
-            await updateRepliesCount(submissionID: parent_id)
-        }
-    }
+    } // Edge done
     
     func reportSubmission(submissionID: String) async {
         guard let submission = await getSubmission(submissionID: submissionID) else {
@@ -485,71 +457,7 @@ class SupabaseManager: ObservableObject {
         } catch {
             print("Failed to update submission reports count. Error: \(error)")
         }
-    }
-    
-    func updateLikesCount(submissionID: String) async {
-        do {
-            let response = try await supabase
-                .from("votes")
-                .select(count: .exact)
-                .eq("submission_id", value: submissionID)
-                .eq("value", value: 1)
-                .execute()
-            if let count = response.count {
-                try await supabase
-                  .from("submissions")
-                  .update(["likes_count": count])
-                  .eq("id", value: submissionID)
-                  .execute()
-            } else {
-                print("error getting likes count")
-            }
-        } catch {
-            print("Failed to get likes or update submission likes_count. Error: \(error)")
-        }
-    }
-    
-    func updateDislikesCount(submissionID: String) async {
-        do {
-            let response = try await supabase
-                .from("votes")
-                .select(count: .exact)
-                .eq("submission_id", value: submissionID)
-                .eq("value", value: -1)
-                .execute()
-            if let count = response.count {
-                try await supabase
-                  .from("submissions")
-                  .update(["dislikes_count": count])
-                  .eq("id", value: submissionID)
-                  .execute()
-            } else {
-                print("error getting dislikes count")
-            }
-        } catch {
-            print("Failed to get likes or update submission likes_count. Error: \(error)")
-        }
-    }
-    
-    func updateRepliesCount(submissionID: String) async {
-        do {
-            let response = try await supabase
-                .from("submissions")
-                .select(count: .exact)
-                .eq("parent_id", value: submissionID)
-                .execute()
-            if let count: Int = response.count {
-                try await supabase
-                  .from("submissions")
-                  .update(["replies_count": count])
-                  .eq("id", value: submissionID)
-                  .execute()
-            } else {
-                print("error getting replies count")
-            }
-        } catch {
-            print("Failed to get replies or update submission replies count. Error: \(error)")
-        }
+        
     }
     
     func getScore(submissionID: String) async -> Int {
@@ -598,7 +506,7 @@ class SupabaseManager: ObservableObject {
         catch {
             print("Error:", error.localizedDescription)
         }
-    }
+    } // Edge done
  
     func getUserVote(submissionID: String, userID: String) async -> Int {
         do {

@@ -18,6 +18,7 @@ struct RepliesView: View {
     
     @State private var replyText: String = ""
     @FocusState private var isTextFieldFocused: Bool
+    @State var isSending: Bool = false
 
     var body: some View {
         ZStack {
@@ -80,26 +81,45 @@ struct RepliesView: View {
                     TextField("Add a comment...", text: $replyText)
                         .padding(.leading, 8)
                         .padding(7)
-                        .background(Color(.systemGray6))
+                        .background(Color(.systemGray4))
                         .cornerRadius(20)
                         .padding(.horizontal)
                         .focused($isTextFieldFocused)
 
-                    Button(action: {
-                        // Handle send comment action
-                        Task {
-                            await sendReply()
-                            await loadData()
-                        }
-                    }) {
-                        Text("Send")
-                            .font(.callout)
-                            .padding(7)
-                            .foregroundColor(.white)
-                            .background(.blue)
-                            .cornerRadius(30)
+                    if !isSending {
+                        Button(action: {
+                            // Handle send comment action
+                            Task {
+                                await sendReply()
+                                await loadData()
+                            }
+                        }) {
+                            Image(systemName: "shift")
+                                .font(.title2)
                             
+                            
+                        }
+                        .font(.callout)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 5)
+                        .foregroundColor(.white)
+                        .background(.blue)
+                        .cornerRadius(30)
+                        
+                    } else {
+                        Button(action: {
+                        }) {
+                            ProgressView()
+                        }
+                        .font(.callout)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 7)
+                        .foregroundColor(.white)
+                        .background(.indigo)
+                        .cornerRadius(30)
                     }
+                
+                    
                 }
                 .padding()
                 .background(Color(.systemBackground))
@@ -140,30 +160,17 @@ struct RepliesView: View {
         // Check if postText is not just empty space or a completely empty string
         if !trimmedText.isEmpty {
             
-            if let currentUser = currentUser, let user = user {
-                // Create Submission in DB
-                await supabaseManager.postSubmission(
-                    parentId: submission.id,
-                    submissionText: replyText)
-                
-                // Update Replies Count for Submission
-                await supabaseManager.updateRepliesCount(submissionID: submission.id)
-                
-                // Create Notification in DB
-                let isPost = submission.parent_id == nil
-                let message = "replied to your \(isPost ? "post" : "comment")!"
-                let type = "comment"
-                await supabaseManager.createNotification(
-                    recipitentID: user.id,
-                    senderID: currentUser.id,
-                    type: type,
-                    submissionID: submission.id,
-                    message: message
-                )
-                
-                replyText = "" // Clear the text editor on success
-            }
             isTextFieldFocused = false
+            
+            isSending = true
+            // Create Submission in DB
+            await supabaseManager.postSubmission(
+                parentId: submission.id,
+                submissionText: replyText)
+            
+            replyText = "" // Clear the text editor on success
+            isSending = false
+            
         }
     }
     

@@ -29,9 +29,12 @@ struct SubmissionView: View {
     @State var currentUser: User?
     
     @State var submission: Submission
+    
     @State var time_since: String?
     
     @State var voteValue: Int = 0
+    
+    @State var submissionText: String = ""
     
     @State var likesCount: Int = 0
     @State var dislikesCount: Int = 0
@@ -141,7 +144,7 @@ struct SubmissionView: View {
             
             // Submission Text
             HStack {
-                Text(submission.text)
+                Text(submissionText)
                     .font(.body)
                 
             }.padding(.horizontal, 10)
@@ -333,7 +336,6 @@ struct SubmissionView: View {
                     message: Text("Are you sure you want to delete this post? This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete"), action: {
                         Task {
-                            submission.text = "[Marked for Deletion]"
                             await deleteSubmission()
                         }
                     }),
@@ -381,6 +383,9 @@ struct SubmissionView: View {
                 userID: currentUser.id)
         }
         
+        // Set submissionText
+        submissionText = submission.text
+        
         // Get Likes and Dislikes Counts
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
@@ -409,7 +414,6 @@ struct SubmissionView: View {
         likesCount = submission.likes_count
         dislikesCount = submission.dislikes_count
         // Replies Count
-        await supabaseManager.updateRepliesCount(submissionID: submission.id)
         repliesCount = submission.replies_count
         // Score (Boosts/Smites)
         if let submissionScore = submission.score {
@@ -420,39 +424,24 @@ struct SubmissionView: View {
     func votePressed(value: Int) async {
         print("voting: \(value)")
         // get current user
-        if let currentUser = currentUser {
-            // Update thumbs sup/down color
-            voteValue = value
-            // Cast vote into database
-            await supabaseManager.castVote(
-                voteValue: value,
-                submissionId: submission.id
-            )
-
-            // Update Likes/Dislikes counts
-            await supabaseManager.updateLikesCount(submissionID: submission.id)
-            await supabaseManager.updateDislikesCount(submissionID: submission.id)
-            
-            // Create Notification in DB
-            let isPost = submission.parent_id == nil
-            let message = "liked your \(isPost ? "post" : "comment")!"
-            let type = "like"
-            await supabaseManager.createNotification(
-                recipitentID: submission.author_id,
-                senderID: currentUser.id,
-                type: type,
-                submissionID: submission.id,
-                message: message
-            )
-            
-            await reloadSubmission()
-            likesCount = submission.likes_count
-            dislikesCount = submission.dislikes_count
-        }
+        // Update thumbs sup/down color
+        voteValue = value
+        // Cast vote into database
+        await supabaseManager.castVote(
+            voteValue: value,
+            submissionId: submission.id
+        )
+        
+        await reloadSubmission()
+        likesCount = submission.likes_count
+        dislikesCount = submission.dislikes_count
+        
     }
     
     func deleteSubmission() async {
-        await supabaseManager.deleteSubmissionAndReplies(submissionID: submission.id)
+        submissionText = "[Marked for Deletion]"
+        
+        await supabaseManager.deleteSubmission(submissionId: submission.id)
         onDelete(submission.id)
     }
     

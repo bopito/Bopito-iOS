@@ -211,8 +211,8 @@ struct ProfileView: View {
                     }
                     
                     // Join Date
-                    if var joinDate =  user.created_at {
-                        if var date =  DateTimeTool.shared.getSwiftDate(supabaseTimestamp: joinDate) {
+                    if let joinDate =  user.created_at {
+                        if let date =  DateTimeTool.shared.getSwiftDate(supabaseTimestamp: joinDate) {
                             Text("Joined \(date, format: .dateTime.month(.wide).year())")
                                 .font(.footnote)
                                 .padding(.bottom, 10)
