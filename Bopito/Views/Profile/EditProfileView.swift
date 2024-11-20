@@ -87,6 +87,7 @@ struct EditProfileView: View {
                             .padding(.trailing, 10)
                             .frame(maxWidth: 200)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .textContentType(.name)
                     }
                     
                     
@@ -106,6 +107,7 @@ struct EditProfileView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.asciiCapable) // only letter and numbers
                         .autocapitalization(.none)
+                        .textContentType(.none)
                     }
                     
                     
@@ -118,6 +120,7 @@ struct EditProfileView: View {
                             .padding(.trailing, 10)
                             .frame(maxWidth: 200)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .textContentType(.none)
                     }
                     
                     if let errorMessage = errorMessage {
@@ -183,17 +186,12 @@ struct EditProfileView: View {
     
     func saveChangesPressed() async {
         if let user = user {
-            if username != user.username {
-                guard await supabaseManager.usernameAvailable(username: username) else {
-                    errorMessage = "Error: username taken"
-                    return
-                }
-            }
+
             user.username = username
             user.name = name
             user.bio = bio
             
-            await supabaseManager.updateUser(user: user)
+            await supabaseManager.updateProfile(editedUser: user)
             presentationMode.wrappedValue.dismiss()
         }
         

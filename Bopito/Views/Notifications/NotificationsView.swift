@@ -16,6 +16,8 @@ struct NotificationsView: View {
     
     @State var notificationsEnabled: Bool? 
     
+    @State var refreshId: Int = 0
+    
     var body: some View {
         VStack (spacing:0) {
             Text("Notifications")
@@ -63,9 +65,18 @@ struct NotificationsView: View {
                 }
                 .padding(.bottom, 100) // Adding some space at the bottom
             }
+            .id(refreshId)
+            .refreshable {
+                Task {
+                    notifications = nil
+                    notifications = await supabaseManager.getNotifications()
+                    refreshId += 1 // Ensures the UI refreshes to show new notifications instead of what it cached
+                }
+            }
             .task {
                 print("loading")
                 await load()
+                refreshId += 1 // Ensures the UI refreshes to show new notifications instead of what it cached
             }
         }
     }

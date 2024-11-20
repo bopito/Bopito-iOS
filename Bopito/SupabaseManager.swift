@@ -264,45 +264,36 @@ class SupabaseManager: ObservableObject {
                         .value
             return user
         } catch {
+            if let u = await getUserByID(id: id) {
+                print(u.username)
+            }
             print("Failed to get user by ID. Error: \(error.localizedDescription)")
             return nil
         }
     }
     
-    func updateUser(user: User) async {
+    func updateProfile(editedUser: User) async {
         do {
-            try await supabase
-                .from("users")
-                .upsert(user)
-                .execute()
-        } catch {
-            print("Failed to update User in Database. Error: \(error.localizedDescription)")
+            let response = try await supabase.functions
+                .invoke(
+                    "update-profile",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "newName": editedUser.name,
+                            "newUsername": editedUser.username,
+                            "newBio": editedUser.bio
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "No Response from update-profile edge function")
         }
-    }
-    
-    func usernameAvailable(username: String) async -> Bool {
-        do {
-            // Fetch users with the given username
-            let users: [User] = try await supabase
-                .from("users")
-                .select()
-                .eq("username", value: username)  // Use the provided username instead of a hardcoded value
-                .execute()
-                .value
-            
-            // If the array is empty, the username is available
-            if users.isEmpty {
-                return true
-            } else {
-                // Username already exists
-                print("Username is already taken: \(users.first?.username ?? "")")
-                return false
-            }
-        } catch {
-            print("Error checking username availability: \(error)")
-            return false
+        catch {
+            print("Error:", error.localizedDescription)
         }
-    }
+    } // Edge done
     
     func updateProfilePicture(imageData: String) async {
         do {
@@ -323,7 +314,7 @@ class SupabaseManager: ObservableObject {
         catch {
             print("Error:", error.localizedDescription)
         }
-    }
+    } // Edge done
     
     
     //
