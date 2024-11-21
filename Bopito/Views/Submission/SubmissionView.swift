@@ -73,9 +73,11 @@ struct SubmissionView: View {
                         .foregroundStyle(.background, .secondary) // First color for the icon, second for the background
                         .frame(width: 35, height: 35)
                 }
-                HStack (spacing:0) {
+                HStack (alignment:.bottom, spacing:0) {
                     if let user = user {
                         Text("@\(user.username)")
+                            .font(.subheadline)
+                            .bold()
                             .onTapGesture {
                                 activeSheet = .profile
                             }
@@ -88,13 +90,15 @@ struct SubmissionView: View {
                         
                     } else {
                         //placeholder
-                        /*
-                        Text("@username")
-                            .padding(.leading, 10)
-                        Image(systemName: "checkmark.seal.fill")
-                            .foregroundColor(.blue)
-                            .padding(.leading, 7)
-                         */
+//                        
+//                        Text("@username")
+//                            .padding(.leading, 10)
+//                            .font(.subheadline)
+//                            .bold()
+//                        Image(systemName: "checkmark.seal.fill")
+//                            .foregroundColor(.blue)
+//                            .padding(.leading, 7)
+                         
                     }
                     
                     if let time_since = time_since {
@@ -103,8 +107,9 @@ struct SubmissionView: View {
                             .padding(.leading, 10)
                     } else {
                         //placeholder
-                        //Text("?h")
-                         //   .font(.subheadline)
+//                        Text("?h")
+//                            .padding(.leading, 10)
+//                            .font(.caption)
                     }
                     
                     Spacer()
@@ -150,13 +155,14 @@ struct SubmissionView: View {
             }.padding(.horizontal, 10)
             
             // Image
-            //                Image("SampleImage")
-            //                    .resizable()
-            //                    .aspectRatio(contentMode: .fit)
-            //                    .background(.background)
-            //                    .cornerRadius(10)
-            //                    .padding(10)
-            
+            /*
+            Image("SampleImage")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .background(.background)
+                .cornerRadius(10)
+                .padding(10)
+            */
             
             HStack {
                 
@@ -446,7 +452,7 @@ struct SubmissionView: View {
     }
     
     func reportSubmission() async {
-        await supabaseManager.reportSubmission(submissionID: submission.id)
+        await supabaseManager.reportSubmission(submissionId: submission.id, reason: "other")
     }
 }
 
@@ -464,8 +470,7 @@ struct PostView2_Previews: PreviewProvider {
                            likes_count: 0,
                            dislikes_count: 0,
                            replies_count: 0,
-                           score: 0,
-                           reports: 0
+                           score: 0
                           ), onDelete: {deletedPostID in }
         )
         .environmentObject(SupabaseManager())

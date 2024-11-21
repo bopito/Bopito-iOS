@@ -433,22 +433,26 @@ class SupabaseManager: ObservableObject {
         }
     } // Edge done
     
-    func reportSubmission(submissionID: String) async {
-        guard let submission = await getSubmission(submissionID: submissionID) else {
-            print("No submission found in database when trying to report...")
-            return
-        }
+    func reportSubmission(submissionId: String, reason: String) async {
         do {
-            try await supabase
-              .from("submissions")
-              .update(["reports": submission.reports + 1])
-              .eq("id", value: submissionID)
-              .execute()
-            print("Submission reported successfully!")
-        } catch {
-            print("Failed to update submission reports count. Error: \(error)")
+            let response = try await supabase.functions
+                .invoke(
+                    "report-submission",
+                    options: FunctionInvokeOptions(
+                        body: [
+                            "submissionId": submissionId,
+                            "reason": reason
+                        ]
+                    ),
+                    decode: { data, response in
+                        String(data: data, encoding: .utf8)
+                    }
+                )
+            print(response ?? "")
         }
-        
+        catch {
+            print("Error:", error.localizedDescription)
+        }
     }
     
     func getScore(submissionID: String) async -> Int {

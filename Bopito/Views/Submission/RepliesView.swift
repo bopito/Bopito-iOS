@@ -190,8 +190,7 @@ struct RepliesView: View {
                        likes_count: 0,
                        dislikes_count: 0,
                        replies_count: 0,
-                       score: 0,
-                       reports: 0
+                       score: 0
                       )
         )
     .environmentObject(SupabaseManager())
