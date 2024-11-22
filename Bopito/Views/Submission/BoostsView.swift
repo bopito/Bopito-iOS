@@ -95,29 +95,31 @@ struct BoostsView: View {
             
             Divider()
             
-            VStack (spacing:0) {
-                if supabaseManager.boosts.isEmpty {
-                    Image(systemName: "bolt.slash")
-                        .font(.system(size: 70))
-                } else {
-                    ScrollView {
-                        VStack(spacing:0) {
-                            ForEach(supabaseManager.boosts, id: \.id) { boost in
-                                BoostView(boost: boost)
-                                    .background()
+            if supabaseManager.realtimeIsSubscribed {
+                
+                VStack (spacing:0) {
+                    if supabaseManager.boosts.isEmpty {
+                        Image(systemName: "bolt.slash")
+                            .font(.system(size: 70))
+                    } else {
+                        ScrollView {
+                            VStack(spacing:0) {
+                                ForEach(supabaseManager.boosts, id: \.id) { boost in
+                                    BoostView(boost: boost)
+                                        .background()
+                                }
                             }
                         }
                     }
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background()//(.quinary)
-            
-            
-            Divider()
-            
-            
-            if supabaseManager.realtimeIsSubscribed {
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background()//(.quinary)
+                
+                
+                Divider()
+                
+                
+                
                 
                 ZStack {
                     if let currentUser = currentUser {
@@ -293,6 +295,10 @@ struct BoostsView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 //.scrollIndicators(.hidden)
                 
+            } else {
+                Spacer()
+                ProgressView()
+                Spacer()
             }
             
             
@@ -316,7 +322,7 @@ struct BoostsView: View {
         
         supabaseManager.currentRealtimeSubmissionId = submission.id
         
-
+        
         if let boosts = await supabaseManager.getLiveBoosts(submissionId: submission.id) {
             supabaseManager.boosts = boosts
         }
