@@ -317,6 +317,7 @@ struct SubmissionView: View {
         .sheet(item: $activeSheet, onDismiss: {
             Task {
                 await reloadSubmission()
+                await supabaseManager.unsubscribeToBoostsRealtime()
             }
         }) { sheet in
             switch sheet {

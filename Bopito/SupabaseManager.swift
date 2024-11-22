@@ -17,7 +17,8 @@ class SupabaseManager: ObservableObject {
     @Published var signInAttemptComplete: Bool = false
     
     @Published var boosts: [Boost] = []
-    @Published var currentRealtimeSubmissionID: String?
+    @Published var currentRealtimeSubmissionId: String?
+    @Published var realtimeIsSubscribed: Bool = false
     
     init() {
         supabase = SupabaseClient(
@@ -26,8 +27,7 @@ class SupabaseManager: ObservableObject {
         )
         Task {
             await updateAuthenticationState() // Check auth status on init
-            await subscribeToBoostsRealtime()
-            
+            //await subscribeToBoostsRealtime()
         }
     }
     
@@ -457,7 +457,7 @@ class SupabaseManager: ObservableObject {
     
     func getScore(submissionID: String) async -> Int {
         
-        guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
+        guard let liveBoosts = await getLiveBoosts(submissionId: submissionID) else {
             print("Error fetching live boosts")
             return 0
         }
@@ -577,13 +577,13 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func getLiveBoosts(submissionID: String) async -> [Boost]? {
+    func getLiveBoosts(submissionId: String) async -> [Boost]? {
         do {
             let boosts: [Boost] = try await supabase
                 .from("boosts")
                 .select()
                 .eq("live", value: "true")
-                .eq("submission_id", value: submissionID)
+                .eq("submission_id", value: submissionId)
                 .order("created_at", ascending: false)
                 .execute()
                 .value
@@ -636,6 +636,11 @@ class SupabaseManager: ObservableObject {
     }   // edge done
     
     func subscribeToBoostsRealtime() async {
+
+        // Close old connections
+        await unsubscribeToBoostsRealtime()
+        
+        print("Connecting to realtime...")
         
         // Subscribe to Channel
         let myChannel = supabase.channel("boost-changes")
@@ -647,23 +652,18 @@ class SupabaseManager: ObservableObject {
         )
         await myChannel.subscribe()
         
-        // Get existing boosts that are live
-//        guard let liveBoosts = await getLiveBoosts(submissionID: submissionID) else {
-//            print("Error fetching live boosts")
-//            return
-//        }
-//        
-//        DispatchQueue.main.async {
-//            self.boosts = liveBoosts
-//        }
+        DispatchQueue.main.async {
+            self.realtimeIsSubscribed = true
+        }
         
-        // Add new boosts as they go live in the "boosts" table
+        print(myChannel.status)
+    
         for await _ in changes {
-            guard let currentRealtimeSubmissionID else {
+            guard let currentRealtimeSubmissionId else {
                 return
             }
-            guard let liveBoosts = await getLiveBoosts(submissionID: currentRealtimeSubmissionID) else {
-                print("error getting boosts")
+            guard let liveBoosts = await getLiveBoosts(submissionId: currentRealtimeSubmissionId) else {
+                print("Error getting boosts")
                 return
             }
             DispatchQueue.main.async {
@@ -672,6 +672,21 @@ class SupabaseManager: ObservableObject {
             
         }
  
+    }
+    
+    func unsubscribeToBoostsRealtime() async {
+     
+        print("Disconnecting from Realtime..")
+        
+        await supabase.removeAllChannels()
+        
+        DispatchQueue.main.async {
+            self.realtimeIsSubscribed = false
+        }
+        
+        let myChannel = supabase.channel("boost-changes")
+        print(myChannel.status)
+        
     }
     
     

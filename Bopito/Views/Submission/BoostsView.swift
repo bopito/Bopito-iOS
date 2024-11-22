@@ -16,8 +16,6 @@ struct BoostsView: View {
     @State var submission: Submission?
     @State var currentUser: User?
     
-    @State var loading: Bool = true
-    
     
     var body: some View {
         VStack (spacing:0) {
@@ -97,7 +95,6 @@ struct BoostsView: View {
             
             Divider()
             
-            
             VStack (spacing:0) {
                 if supabaseManager.boosts.isEmpty {
                     Image(systemName: "bolt.slash")
@@ -119,180 +116,184 @@ struct BoostsView: View {
             
             Divider()
             
-            ZStack {
-                if let currentUser = currentUser {
-                    HStack (spacing:0) {
-                        Spacer()
-                        Image("coin")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text(String(currentUser.balance))
+            
+            if supabaseManager.realtimeIsSubscribed {
+                
+                ZStack {
+                    if let currentUser = currentUser {
+                        HStack (spacing:0) {
+                            Spacer()
+                            Image("coin")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                            Text(String(currentUser.balance))
                             //.bold()
+                            Spacer()
+                        }
+                        .padding(10)
+                    }
+                    
+                    HStack {
+                        Spacer()
+                        Divider()
+                            .frame(maxHeight: 20)
+                        Text("Smites")
+                            .padding(.horizontal, 5)
+                            .bold()
+                            .cornerRadius(10)
+                        Divider()
+                            .frame(maxHeight: 20)
+                        Spacer()
+                        
+                        
+                        Spacer()
+                        Divider()
+                            .frame(maxHeight: 20)
+                        Text("Boosts")
+                            .padding(.horizontal, 5)
+                            .bold()
+                            .cornerRadius(10)
+                        Divider()
+                            .frame(maxHeight: 20)
                         Spacer()
                     }
-                    .padding(10)
                 }
                 
-                HStack {
-                    Spacer()
-                    Divider()
-                        .frame(maxHeight: 20)
-                    Text("Smites")
-                        .padding(.horizontal, 5)
-                        .bold()
-                        .cornerRadius(10)
-                    Divider()
-                        .frame(maxHeight: 20)
-                    Spacer()
-                    
-                    
-                    Spacer()
-                    Divider()
-                        .frame(maxHeight: 20)
-                    Text("Boosts")
-                        .padding(.horizontal, 5)
-                        .bold()
-                        .cornerRadius(10)
-                    Divider()
-                        .frame(maxHeight: 20)
-                    Spacer()
+                
+                
+                Divider()
+                
+                ScrollView {
+                    VStack (spacing:10){
+                        
+                        HStack {
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "spider") { // Smite 1
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "poop") { // Smite 2
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "star") { // Boost 1
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "popper") { // Boost 2
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        HStack {
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "skunk") { // Smite 3
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "ghost") { // Smite 4
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "jellyfish") { // Boost 3
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "sun") { // Boost 4
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        HStack {
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "tornado") { // Smite 5
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "trex") { // Smite 6
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "eggplant") { // Boost 5
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "alien") { // Boost 6
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        HStack {
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "bomb") { // Smite 7
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "skull") { // Smite 8
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                            Spacer()
+                            Group {
+                                BoostButtonView(submission: submission, name: "dragon") { // Boost 7
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                                BoostButtonView(submission: submission, name: "rocket") { // Boost 8
+                                    Task {
+                                        currentUser = await supabaseManager.getCurrentUser()
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                    }
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                //.scrollIndicators(.hidden)
+                
             }
-            
-           
-            
-            Divider()
-            
-            ScrollView {
-                VStack (spacing:10){
-                    
-                    HStack {
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "spider") { // Smite 1
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "poop") { // Smite 2
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "star") { // Boost 1
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "popper") { // Boost 2
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "skunk") { // Smite 3
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "ghost") { // Smite 4
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "jellyfish") { // Boost 3
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "sun") { // Boost 4
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "tornado") { // Smite 5
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "trex") { // Smite 6
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "eggplant") { // Boost 5
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "alien") { // Boost 6
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "bomb") { // Smite 7
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "skull") { // Smite 8
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                        Spacer()
-                        Group {
-                            BoostButtonView(submission: submission, name: "dragon") { // Boost 7
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                            BoostButtonView(submission: submission, name: "rocket") { // Boost 8
-                                Task {
-                                    currentUser = await supabaseManager.getCurrentUser()
-                                }
-                            }
-                        }
-                        Spacer()
-                    }
-                }
-                .padding(.top, 10)
-                .padding(.horizontal, 10)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            //.scrollIndicators(.hidden)
-            
             
             
         }
@@ -313,11 +314,15 @@ struct BoostsView: View {
             return
         }
         
-        supabaseManager.currentRealtimeSubmissionID = submission.id
+        supabaseManager.currentRealtimeSubmissionId = submission.id
         
-        if let boosts = await supabaseManager.getLiveBoosts(submissionID: submission.id) {
+
+        if let boosts = await supabaseManager.getLiveBoosts(submissionId: submission.id) {
             supabaseManager.boosts = boosts
         }
+        
+        await supabaseManager.subscribeToBoostsRealtime()
+        
     }
     
     
