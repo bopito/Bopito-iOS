@@ -50,6 +50,8 @@ struct ComposePostView: View {
             ScrollView {
                 TextField("What's on your mind?", text: $postText, axis: .vertical)
                     .focused($isTextFieldFocused)
+                
+                
             }
             
         }

@@ -89,11 +89,11 @@ struct HomeView: View {
                                         //    }
                                     })
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    
                                 }
                             }
                         }
                         .padding(.bottom, 100) // Adding some space at the bottom
+                        //.id(UUID())
                         
                     }
                     .scrollIndicators(.hidden)

@@ -366,6 +366,9 @@ struct SubmissionView: View {
         .task {
             await load()
         }
+        .onDisappear() {
+            print("onDisappear()")
+        }
         
     }
     
@@ -430,9 +433,36 @@ struct SubmissionView: View {
     
     func votePressed(value: Int) async {
         print("voting: \(value)")
-        // get current user
+        // Temporarily update likes/dislikes counts
+        let oldVoteValue = voteValue
+        if oldVoteValue == 0 {
+            if value == 1 {
+                likesCount += 1
+            } else if value == -1 {
+                dislikesCount += 1
+            }
+        } else if oldVoteValue == 1 {
+            if value == 0 {
+                likesCount -= 1
+            } else if value == 1 {
+                likesCount -= 1
+            } else if value == -1 {
+                likesCount -= 1
+                dislikesCount += 1
+            }
+        } else if oldVoteValue == -1 {
+            if value == 0 {
+                dislikesCount -= 1
+            } else if value == 1 {
+                likesCount += 1
+                dislikesCount -= 1
+            } else if value == -1 {
+                dislikesCount -= 1
+            }
+        }
         // Update thumbs sup/down color
         voteValue = value
+        
         // Cast vote into database
         await supabaseManager.castVote(
             voteValue: value,
