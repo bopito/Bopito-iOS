@@ -96,12 +96,7 @@ struct EditProfileView: View {
                             .font(.headline)
                             .padding(.leading, 10)
                         Spacer()
-                        TextField("@\(username)", text: Binding(
-                            get: { username },
-                            set: { newValue in
-                                username = sanitizeUsername(newValue)
-                            }
-                        ))
+                        TextField("@\(username)", text: $username)
                         .padding(.trailing, 10)
                         .frame(maxWidth: 200)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -178,12 +173,6 @@ struct EditProfileView: View {
         }
     }
     
-    func sanitizeUsername(_ input: String) -> String {
-        // Only allow English letters (both lowercase and uppercase) and numbers
-        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-        return input.unicodeScalars.filter { allowedCharacters.contains($0) }.map(String.init).joined().lowercased()
-    }
-    
     func saveChangesPressed() async {
         if let user = user {
 
@@ -191,8 +180,14 @@ struct EditProfileView: View {
             user.name = name
             user.bio = bio
             
-            await supabaseManager.updateProfile(editedUser: user)
-            presentationMode.wrappedValue.dismiss()
+            do {
+                try await supabaseManager.updateProfile(editedUser: user)
+                presentationMode.wrappedValue.dismiss()
+            } catch {
+                print(error.localizedDescription)
+                errorMessage = "Error updating profile: \(error.localizedDescription)"
+            }
+            
         }
         
     }

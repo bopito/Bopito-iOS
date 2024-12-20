@@ -41,6 +41,7 @@
 		E60DDB292C935FE100FBBD36 /* FollowsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */; };
 		E60DDB2C2C9360B100FBBD36 /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */; };
 		E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60DDB2F2C93635C00FBBD36 /* FollowView.swift */; };
+		E63831AC2D120B050036F283 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63831AB2D120B050036F283 /* PostView.swift */; };
 		E664647F2CA480AE0083C1D4 /* VotersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E664647E2CA480AE0083C1D4 /* VotersView.swift */; };
 		E66464812CA481CC0083C1D4 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464802CA481CC0083C1D4 /* VoteView.swift */; };
 		E66464832CA4889D0083C1D4 /* FollowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66464822CA4889D0083C1D4 /* FollowButtonView.swift */; };
@@ -121,6 +122,7 @@
 		E60DDB282C935FE100FBBD36 /* FollowsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsTabView.swift; sourceTree = "<group>"; };
 		E60DDB2B2C9360B100FBBD36 /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
 		E60DDB2F2C93635C00FBBD36 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
+		E63831AB2D120B050036F283 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		E664647E2CA480AE0083C1D4 /* VotersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotersView.swift; sourceTree = "<group>"; };
 		E66464802CA481CC0083C1D4 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
 		E66464822CA4889D0083C1D4 /* FollowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButtonView.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 			isa = PBXGroup;
 			children = (
 				E69453722C9BE9FA00F799E6 /* SubmissionView.swift */,
+				E63831AB2D120B050036F283 /* PostView.swift */,
 				E60DDB062C8A4B8E00FBBD36 /* RepliesView.swift */,
 				E664647E2CA480AE0083C1D4 /* VotersView.swift */,
 				E66464802CA481CC0083C1D4 /* VoteView.swift */,
@@ -533,6 +536,7 @@
 				E6FE7C292CB5D35600919DCB /* AppDelegate.swift in Sources */,
 				E60DDB302C93635C00FBBD36 /* FollowView.swift in Sources */,
 				E60DDB1D2C90DF3D00FBBD36 /* EditProfileView.swift in Sources */,
+				E63831AC2D120B050036F283 /* PostView.swift in Sources */,
 				E66464852CA4C2240083C1D4 /* Boost.swift in Sources */,
 				E60DDB142C8A4C5600FBBD36 /* Submission.swift in Sources */,
 				E60DDB022C8A4B3400FBBD36 /* AppView.swift in Sources */,
@@ -754,7 +758,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -788,7 +792,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Bopito.Bopito;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

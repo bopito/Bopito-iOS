@@ -2,6 +2,13 @@ import SwiftUI
 
 struct ProfileView: View {
     
+    enum ActiveSheet: Identifiable {
+        case settings, shop, editProfile, follows
+        var id: Int {
+            hashValue
+        }
+    }
+    
     @EnvironmentObject var supabaseManager: SupabaseManager
     
     @State var submissions: [Submission]?
@@ -13,9 +20,7 @@ struct ProfileView: View {
     @State var isFollowing: Bool = false
     @State var isBlocked: Bool = false
     
-    @State var isViewingEditProfile: Bool = false
-    @State var isViewingSettings: Bool = false
-    @State var isViewingFollows: Bool = false
+    @State private var activeSheet: ActiveSheet?
     @State var followsTab: Int = 0
     
     @State var profilePictureRefreshID: UUID = UUID()
@@ -24,6 +29,16 @@ struct ProfileView: View {
         ZStack {
             VStack {
                 HStack (alignment:.top) {
+                    Button(action: {
+                        activeSheet = .shop
+                    }, label: {
+                        Image(systemName: "dollarsign.square")
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, (openedFromProfileTab ? 11 : 36))
+                            .background()
+                            .font(.title3)
+                            .foregroundColor(.secondary)
+                    })
                     Spacer()
                     Menu {
                         if let user = user, let currentUser = currentUser {
@@ -134,7 +149,7 @@ struct ProfileView: View {
                         Button(action: {
                             // Action to navigate to FollowersView
                             followsTab = 0
-                            isViewingFollows = true
+                            activeSheet = .follows
                         }) {
                             VStack {
                                 Text("\(user.followers_count)")
@@ -154,7 +169,7 @@ struct ProfileView: View {
                         Button(action: {
                             // Action to navigate to FollowersView
                             followsTab = 1
-                            isViewingFollows = true
+                            activeSheet = .follows
                         }) {
                             VStack {
                                 Text("\(user.following_count)")
@@ -174,7 +189,7 @@ struct ProfileView: View {
                     if isCurrentUsersProfile {
                         Button(action: {
                             Task {
-                                isViewingEditProfile = true
+                                activeSheet = .editProfile
                             }
                         }) {
                             Text("Edit Profile")
@@ -252,21 +267,22 @@ struct ProfileView: View {
                     Spacer()
                 }
             }
-            .sheet(isPresented: $isViewingSettings, onDismiss:  {
-                //
-            }) {
-                SettingsView()
-            }
-            .sheet(isPresented: $isViewingEditProfile, onDismiss:  {
+            .sheet(item: $activeSheet, onDismiss: {
                 Task {
                     await load()
                     profilePictureRefreshID = UUID()
                 }
-            }) {
-                EditProfileView()
-            }
-            .sheet(isPresented: $isViewingFollows) {
-                FollowsTabView(selectedTab: followsTab, user: user)
+            }) { sheet in
+                switch sheet {
+                    case .settings:
+                        SettingsView()
+                    case .shop:
+                        CoinShopView()
+                    case .editProfile:
+                        EditProfileView()
+                    case .follows:
+                        FollowsTabView(selectedTab: followsTab, user: user)
+                }
             }
             .onAppear {
                 Task {

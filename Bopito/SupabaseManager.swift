@@ -272,7 +272,11 @@ class SupabaseManager: ObservableObject {
         }
     }
     
-    func updateProfile(editedUser: User) async {
+    func updateProfile(editedUser: User) async throws {
+        struct ErrorResponse: Codable {
+            var error: String?
+        }
+        
         do {
             let response = try await supabase.functions
                 .invoke(
@@ -285,13 +289,24 @@ class SupabaseManager: ObservableObject {
                         ]
                     ),
                     decode: { data, response in
-                        String(data: data, encoding: .utf8)
+                        //String(data: data, encoding: .utf8)
+                        try? JSONDecoder().decode(ErrorResponse.self, from: data)
                     }
                 )
-            print(response ?? "No Response from update-profile edge function")
+            
+            if let response = response {
+                if let error = response.error {
+                    // Push error to catch block
+                    throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: error])
+                }
+                // If no error in response:
+                print("Profile updated successfully.")
+            }
+            
         }
         catch {
-            print("Error:", error.localizedDescription)
+            // Output error for use in EditProfileView
+            throw error
         }
     } // Edge done
     

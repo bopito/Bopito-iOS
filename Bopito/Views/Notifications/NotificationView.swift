@@ -17,13 +17,19 @@ struct NotificationView: View {
     @State var notificationType: String?
     @State var time_since: String?
     
-    @State private var sheetToPresent: SheetItem? = nil
+    @State private var activeSheet: SheetItem? = nil
     
     var body: some View {
         HStack (spacing: 0){
             if let user = user {
+                
+                
                 ProfilePictureView(profilePictureURL: user.profile_picture)
                     .frame(width: 50, height: 50)
+                    .onTapGesture {
+                        //activeSheet = .profile
+                        activeSheet = .profile
+                    }
                 
             } else {
                 ProgressView()
@@ -61,9 +67,27 @@ struct NotificationView: View {
         }
         .padding(10)
         //.background()
-        
         .contentShape(Rectangle()) // Ensures the entire area responds to taps
-    
+        .onTapGesture {
+            //activeSheet = .profile
+            activeSheet = .submission
+        }
+        .sheet(item: $activeSheet, onDismiss: {
+            //
+        }) { sheet in
+            switch sheet {
+                case .profile:
+                    ProfileView(user: user, openedFromProfileTab: false)
+//                case .follower:
+//                    ProfileView(user: user, openedFromProfileTab: false)
+                case .submission:
+                    if let notification = notification {
+                        if let submission_id = notification.submission_id {
+                            PostView(submissionId: submission_id)
+                        }
+                    }
+            }
+        }
         .onAppear() {
             Task{
                 await load()

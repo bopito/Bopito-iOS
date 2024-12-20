@@ -14,6 +14,12 @@ enum ActiveSheet: Identifiable {
         hashValue
     }
 }
+enum ActiveFullscreenCover: Identifiable {
+    case post, profile
+    var id: Int {
+        hashValue
+    }
+}
 enum ActiveAlert: Identifiable {
     case delete, report
     var id: Int {
@@ -47,6 +53,7 @@ struct SubmissionView: View {
     
     // Popup Views
     @State private var activeSheet: ActiveSheet?
+    @State private var activeFullscreenCover: ActiveFullscreenCover?
     @State private var activeAlert: ActiveAlert?
     
     var onDelete: (String) -> Void // Callback for removing post in parent view when deleted
@@ -64,6 +71,7 @@ struct SubmissionView: View {
                         .padding(.top, 5)
                         .onTapGesture {
                             activeSheet = .profile
+                            //activeFullscreenCover = .profile
                         }
                 } else {
                     
@@ -139,7 +147,6 @@ struct SubmissionView: View {
                         Image(systemName: "ellipsis")
                             .padding(.leading, 20)
                             .padding(.vertical, 10)
-                            .background()
                             .foregroundColor(.secondary)
                     }
                     .contentShape(Rectangle()) // Make the entire area tappable
@@ -149,8 +156,27 @@ struct SubmissionView: View {
             
             // Submission Text
             HStack {
-                Text(submissionText)
-                    .font(.body)
+                let components = extractLinks(from: submissionText)
+
+                        // Use a VStack or HStack to display the components inline
+                VStack (alignment: .leading) {
+                            // Iterate through components and display them
+                            ForEach(components, id: \.text) { component in
+                                if let url = component.url {
+                                    // For links, make them tappable
+                                    Text(component.text)
+                                        .foregroundColor(.blue)
+                                        .underline()
+                                        .onTapGesture {
+                                            UIApplication.shared.open(url)
+                                        }
+                                } else {
+                                    // For non-link text, display normally
+                                    Text(component.text)
+                                }
+                            }
+                            .font(.body)
+                        }
                 
             }.padding(.horizontal, 10)
             
@@ -259,13 +285,6 @@ struct SubmissionView: View {
                             }
                         }
                 )
-//                .simultaneousGesture(
-//                    LongPressGesture(minimumDuration: 0.2) // Adjust duration as needed
-//                        .onEnded { _ in
-//                            // Long press action to open the sheet
-//                            activeSheet = .voters
-//                        }
-//                )
                 
                 Spacer()
                 
@@ -321,18 +340,30 @@ struct SubmissionView: View {
             }
         }) { sheet in
             switch sheet {
-            case .shares:
-                SharesView()
-            case .replies:
-                RepliesView(submission: submission)
-            case .boosts:
-                BoostsView(submission: submission)
-            case .boosters:
-                BoostersView()
-            case .voters:
-                VotersView(submissionID: submission.id)
-            case .profile:
-                ProfileView(user: user, openedFromProfileTab: false)
+                case .shares:
+                    SharesView()
+                case .replies:
+                    RepliesView(submission: submission)
+                case .boosts:
+                    BoostsView(submission: submission)
+                case .boosters:
+                    BoostersView()
+                case .voters:
+                    VotersView(submissionID: submission.id)
+                case .profile:
+                    ProfileView(user: user, openedFromProfileTab: false)
+            }
+        }
+        .fullScreenCover(item: $activeFullscreenCover, onDismiss: {
+            Task {
+                await reloadSubmission()
+            }
+        }) { cover in
+            switch cover {
+                case .post:
+                    PostView()
+                case .profile:
+                    ProfileView(user: user, openedFromProfileTab: false)
             }
         }
         .alert(item: $activeAlert) { alertType in
@@ -367,7 +398,7 @@ struct SubmissionView: View {
             await load()
         }
         .onDisappear() {
-            print("onDisappear()")
+            //print("onDisappear()")
         }
         
     }
@@ -484,6 +515,40 @@ struct SubmissionView: View {
     
     func reportSubmission() async {
         await supabaseManager.reportSubmission(submissionId: submission.id, reason: "other")
+    }
+    
+    func extractLinks(from text: String) -> [LinkComponent] {
+            let words = text.split(separator: " ")
+            var components: [LinkComponent] = []
+
+            var currentText = ""
+            for word in words {
+                if let url = URL(string: String(word)), url.scheme == "http" || url.scheme == "https" {
+                    if !currentText.isEmpty {
+                        components.append(LinkComponent(text: currentText))
+                        currentText = ""
+                    }
+                    components.append(LinkComponent(text: String(word), url: url))
+                } else {
+                    currentText += (currentText.isEmpty ? "" : " ") + word
+                }
+            }
+
+            if !currentText.isEmpty {
+                components.append(LinkComponent(text: currentText))
+            }
+
+            return components
+        }
+}
+
+struct LinkComponent: Hashable {
+    let text: String
+    let url: URL?
+
+    init(text: String, url: URL? = nil) {
+        self.text = text
+        self.url = url
     }
 }
 

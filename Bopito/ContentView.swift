@@ -18,6 +18,8 @@ struct ContentView: View {
     @State private var currentVersion: String?
     @State private var isDevelopment = true // Set this to true during development to bypass
     
+    @State var letsGoButtonHidden = false
+    
     var body: some View {
         
         VStack {
@@ -90,20 +92,22 @@ struct ContentView: View {
                                     .frame(width: 128, height: 128)
                                     .padding(100)
                                 
-                                Button(action: {
-                                    Task {
-                                        await supabaseManager.signInAnonymously()
+                                if (!letsGoButtonHidden) {
+                                    Button(action: {
+                                        Task {
+                                            letsGoButtonHidden = true
+                                            await supabaseManager.signInAnonymously()
+                                        }
+                                    }) {
+                                        Text("Let's Go!")
+                                            .font(.headline)
+                                            .padding(.horizontal, 15)
+                                            .padding(.vertical, 10)
+                                            .background(Color.blue)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(8)
                                     }
-                                }) {
-                                    Text("Let's Go!")
-                                        .font(.headline)
-                                        .padding(.horizontal, 15)
-                                        .padding(.vertical, 10)
-                                        .background(Color.blue)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(8)
                                 }
-                                
                                 
                                 Spacer()
                                 

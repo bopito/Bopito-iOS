@@ -31,13 +31,6 @@ struct AppView: View {
                 .tag(TabSelection.search)
                 .badge(0) // Example badge
             
-            CoinShopView()
-                .tabItem {
-                    Label("", systemImage: "bitcoinsign.circle")
-                }
-                .tag(TabSelection.earn)
-                .badge(0) // Example badge
-            
             NotificationsView()
                 .tabItem {
                     Label("", systemImage: "bell.fill")
@@ -61,7 +54,6 @@ struct AppView: View {
 enum TabSelection {
     case home
     case search
-    case earn
     case notifications
     case profile
 }
