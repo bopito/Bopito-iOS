@@ -333,7 +333,7 @@ class SupabaseManager: ObservableObject {
     
     
     //
-    // Submissions
+    //  Submissions
     //
     func postSubmission(parentId: String?, submissionText: String) async {
         do {
