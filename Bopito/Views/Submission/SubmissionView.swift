@@ -81,44 +81,71 @@ struct SubmissionView: View {
                         .foregroundStyle(.background, .secondary) // First color for the icon, second for the background
                         .frame(width: 35, height: 35)
                 }
-                HStack (alignment:.bottom, spacing:0) {
-                    if let user = user {
-                        Text("@\(user.username)")
-                            .font(.subheadline)
-                            .bold()
-                            .onTapGesture {
-                                activeSheet = .profile
-                            }
-                            .padding(.leading, 10)
-                        if user.verified == true {
-                            Image(systemName: "checkmark.seal.fill")
-                                .foregroundColor(.blue)
-                                .padding(.leading, 7)
-                        }
+                HStack (alignment:.center, spacing:0) {
+                    if let user = user, let time_since = time_since {
                         
+                        Text("\(user.name)")
+                            .font(.system(size: 16, weight: .semibold, design: .default))
+                                .onTapGesture {
+                                    activeSheet = .profile
+                                }
+                                .padding(.leading, 8)
+                                .layoutPriority(2) // Higher priority
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+
+                            // Username - truncate if needed
+                            Text("@\(user.username)")
+                                .font(.system(size: 16, weight: .light, design: .default))
+                                .foregroundColor(.secondary)
+                                .onTapGesture {
+                                    activeSheet = .profile
+                                }
+                                .padding(.leading, 4)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .layoutPriority(0) // lowest priority
+
+                            // Verified badge if user is verified
+                            if user.verified == true {
+                                ZStack(alignment: .center) {
+                                    Circle()
+                                        .frame(width: 10, height: 10)
+                                        .foregroundColor(.white)
+                                    Image(systemName: "checkmark.seal.fill")
+                                        .resizable()
+                                        .frame(width: 17, height: 17)
+                                        .foregroundColor(.blue)
+                                }
+                                .padding(.leading, 4)
+                            }
+
+                            // Time
+                            Text("· \(time_since)")
+                                .font(.system(size: 16, weight: .light, design: .default))
+                                .foregroundColor(.secondary)
+                                .padding(.leading, 4)
+                                .layoutPriority(3) // highest priority
+                            
                     } else {
                         //placeholder
-//                        
-//                        Text("@username")
-//                            .padding(.leading, 10)
-//                            .font(.subheadline)
-//                            .bold()
-//                        Image(systemName: "checkmark.seal.fill")
-//                            .foregroundColor(.blue)
-//                            .padding(.leading, 7)
+                        /*
+                        Text("@username")
+                            .padding(.leading, 10)
+                            .font(.subheadline)
+                            .bold()
+                        Image(systemName: "checkmark.seal.fill")
+                            .resizable()
+                            .frame(width: 17, height: 17)
+                            .foregroundColor(.blue)
+                            .padding(.leading, 7)
+                        Text("?h")
+                            .padding(.leading, 10)
+                            .font(.subheadline)
+                         */
                          
                     }
                     
-                    if let time_since = time_since {
-                        Text("\(time_since)")
-                            .font(.subheadline)
-                            .padding(.leading, 10)
-                    } else {
-                        //placeholder
-//                        Text("?h")
-//                            .padding(.leading, 10)
-//                            .font(.caption)
-                    }
                     
                     Spacer()
                     
@@ -145,7 +172,7 @@ struct SubmissionView: View {
                         }
                     } label: {
                         Image(systemName: "ellipsis")
-                            .padding(.leading, 20)
+                            .padding(.leading, 5)
                             .padding(.vertical, 10)
                             .foregroundColor(.secondary)
                     }
@@ -173,6 +200,10 @@ struct SubmissionView: View {
                                 } else {
                                     // For non-link text, display normally
                                     Text(component.text)
+                                        .frame(width: .infinity)
+                                        .lineLimit(8)
+                                        .truncationMode(.tail)
+
                                 }
                             }
                             .font(.body)

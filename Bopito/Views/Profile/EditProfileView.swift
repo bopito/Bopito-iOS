@@ -79,7 +79,7 @@ struct EditProfileView: View {
                 
                 if !incognitoToggleOn {
                     HStack {
-                        Text("Name")
+                        Text("Display Name")
                             .font(.headline)
                             .padding(.leading, 10)
                         Spacer()
@@ -92,7 +92,7 @@ struct EditProfileView: View {
                     
                     
                     HStack {
-                        Text("Username")
+                        Text("@username")
                             .font(.headline)
                             .padding(.leading, 10)
                         Spacer()
@@ -169,7 +169,6 @@ struct EditProfileView: View {
             username = user.username
             bio = user.bio ?? ""
             
-            if name == username { name = ""}
         }
     }
     

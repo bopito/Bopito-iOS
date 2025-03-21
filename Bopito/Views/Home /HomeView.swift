@@ -31,7 +31,7 @@ struct HomeView: View {
         ZStack {
             VStack (spacing:0){
                 
-                Image("bopito-logo")
+                Image("BoobieLogo")
                     .resizable()
                     .frame(width: 30, height: 30)
                     .padding(.bottom, 10)
